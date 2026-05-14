@@ -1,1272 +1,1815 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HPHS Reporting — FY26</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Holloway Reporting Portal — City of West Hollywood</title>
+<script>
+  const SUPABASE_URL = 'https://osilouhgoehyesbastxr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_mCJABa7yJS__DoG1QaSAbA_F8HHPrAl';
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #1F3864;
-    --blue: #2E75B6;
-    --teal: #2C7A7B;
-    --lightblue: #DDEBF7;
-    --cream: #FAF7F0;
-    --grey-50: #F7F7F5;
-    --grey-100: #EFEEEA;
-    --grey-200: #DDDBD3;
-    --grey-400: #9A9892;
-    --grey-700: #4D4B47;
-    --grey-900: #1F1E1B;
-    --accent: #E9B23B;
-    --accent-soft: #FFF5D4;
-    --success: #2F855A;
-    --success-soft: #DCFCE7;
-    --warning: #B45309;
-    --warning-soft: #FEF3C7;
-    --danger: #B91C1C;
-    --danger-soft: #FEE2E2;
-    --border: #E5E3DC;
-    --shadow: 0 1px 2px rgba(0,0,0,0.04);
-    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    --navy: #1B2F5B; --navy-light: #243a72;
+    --gold: #C9A24A; --gold-light: #e0bc6c;
+    --white: #FFFFFF; --off-white: #F7F6F2;
+    --gray-100: #F0EEE9; --gray-200: #E0DDD5; --gray-400: #9B9690; --gray-600: #6B6660; --gray-800: #3A3733;
+    --green: #2D7A4F; --green-light: #EAF5EE;
+    --red: #C0392B; --red-light: #FDECEA;
+    --amber: #D4860A; --amber-light: #FEF6E4;
+    --border: #D8D5CE;
+    --shadow: 0 1px 3px rgba(27,47,91,0.08), 0 4px 16px rgba(27,47,91,0.06);
+    --shadow-lg: 0 8px 32px rgba(27,47,91,0.12);
+    --radius: 6px; --radius-lg: 10px;
   }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; background: var(--cream); color: var(--grey-900); font-family: var(--font); -webkit-font-smoothing: antialiased; }
-  body { min-height: 100vh; }
-  .hidden { display: none !important; }
-  a { color: var(--blue); text-decoration: none; }
-  a:hover { text-decoration: underline; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--off-white); color: var(--gray-800); min-height: 100vh; font-size: 14px; line-height: 1.6; }
 
-  /* Top nav */
-  .topnav { background: var(--navy); color: white; padding: 14px 28px; display: flex; justify-content: space-between; align-items: center; }
-  .topnav .brand { display: flex; align-items: baseline; gap: 12px; }
-  .topnav .brand-title { font-size: 16px; font-weight: 600; letter-spacing: 0.2px; }
-  .topnav .brand-sub { font-size: 12px; opacity: 0.7; }
-  .topnav .nav-links { display: flex; gap: 4px; }
-  .topnav .nav-links button { background: transparent; border: 1px solid transparent; color: white; padding: 7px 14px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: inherit; opacity: 0.85; }
-  .topnav .nav-links button:hover { background: rgba(255,255,255,0.1); opacity: 1; }
-  .topnav .nav-links button.active { background: rgba(255,255,255,0.15); opacity: 1; }
-  .topnav .user-info { font-size: 12px; opacity: 0.7; display: flex; align-items: center; gap: 10px; }
-  .topnav .user-info button { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: inherit; }
-  .topnav .user-info button:hover { background: rgba(255,255,255,0.1); }
+  /* TOPBAR */
+  .topbar { background: var(--navy); color: var(--white); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; height: 58px; border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.18); }
+  .topbar-brand { display: flex; align-items: center; gap: 14px; }
+  .weho-emblem { width: 34px; height: 34px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display', serif; font-size: 15px; color: var(--navy); font-weight: bold; flex-shrink: 0; }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+  .brand-program { font-family: 'DM Serif Display', serif; font-size: 15px; color: var(--white); }
+  .brand-sub { font-size: 10.5px; color: rgba(255,255,255,0.6); font-weight: 300; letter-spacing: 0.05em; text-transform: uppercase; }
+  .topbar-right { display: flex; align-items: center; gap: 20px; }
+  .user-pill { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 12px 4px 6px; font-size: 12.5px; color: rgba(255,255,255,0.88); }
+  .user-avatar { width: 24px; height: 24px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--navy); font-weight: 600; }
+  .logout-btn { font-size: 12px; color: rgba(255,255,255,0.5); background: none; border: none; cursor: pointer; padding: 4px; transition: color 0.2s; }
+  .logout-btn:hover { color: rgba(255,255,255,0.9); }
 
-  /* Main */
-  main { max-width: 1180px; margin: 0 auto; padding: 24px 28px 60px; }
-  .view-title { font-size: 22px; font-weight: 600; margin: 0 0 6px; color: var(--grey-900); }
-  .view-sub { font-size: 14px; color: var(--grey-700); margin: 0 0 24px; }
+  /* LAYOUT */
+  .app-shell { display: flex; min-height: calc(100vh - 58px); }
 
-  /* Landing */
-  .landing-header { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-  .landing-header .program { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--grey-400); margin: 0 0 4px; }
-  .landing-header h1 { font-size: 19px; font-weight: 600; margin: 0; color: var(--navy); }
-  .landing-header .meta { text-align: right; font-size: 13px; color: var(--grey-700); }
-  .landing-header .meta strong { color: var(--navy); }
+  /* SIDEBAR */
+  .sidebar { width: 220px; background: var(--white); border-right: 1px solid var(--border); padding: 24px 0; flex-shrink: 0; position: sticky; top: 58px; height: calc(100vh - 58px); overflow-y: auto; }
+  .sidebar-section { margin-bottom: 24px; }
+  .sidebar-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); padding: 0 18px 8px; }
+  .sidebar-item { display: flex; align-items: center; gap: 9px; padding: 8px 18px; font-size: 13px; color: var(--gray-600); cursor: pointer; border-left: 3px solid transparent; transition: all 0.15s; }
+  .sidebar-item:hover { background: var(--gray-100); color: var(--navy); }
+  .sidebar-item.active { background: #EEF2FA; color: var(--navy); font-weight: 500; border-left-color: var(--navy); }
+  .sidebar-item.active .si-icon { color: var(--gold); }
+  .si-icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
 
-  .stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-  .stat { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; }
-  .stat-label { font-size: 12px; color: var(--grey-700); margin: 0; }
-  .stat-value { font-size: 24px; font-weight: 600; color: var(--navy); margin: 4px 0 0; }
-  .stat-value .small { font-size: 13px; color: var(--grey-400); font-weight: 400; }
+  /* MAIN */
+  .main { flex: 1; padding: 28px 32px; max-width: 1100px; }
 
-  .action-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
-  .action-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 18px; cursor: pointer; transition: all 0.15s; text-align: left; font-family: inherit; }
-  .action-card:hover { border-color: var(--blue); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-  .action-card.primary { border-color: var(--blue); border-width: 2px; padding: 17px; }
-  .action-card .icon { width: 38px; height: 38px; border-radius: 8px; background: var(--lightblue); display: flex; align-items: center; justify-content: center; color: var(--navy); margin-bottom: 12px; }
-  .action-card.primary .icon { background: var(--blue); color: white; }
-  .action-card .icon svg { width: 20px; height: 20px; }
-  .action-card .title { font-size: 15px; font-weight: 600; margin: 0 0 4px; color: var(--grey-900); }
-  .action-card .desc { font-size: 13px; color: var(--grey-700); margin: 0; line-height: 1.4; }
+  /* PAGE HEADER */
+  .page-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+  .page-title { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--navy); line-height: 1.2; }
+  .page-subtitle { font-size: 13px; color: var(--gray-400); margin-top: 3px; font-weight: 300; }
 
-  .recent { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-  .recent-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .recent-header h3 { font-size: 13px; font-weight: 600; margin: 0; color: var(--grey-700); text-transform: uppercase; letter-spacing: 0.4px; }
-  .recent-item { padding: 12px 18px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-  .recent-item:last-child { border-bottom: none; }
-  .recent-item .who { color: var(--grey-400); }
-  .recent-item .hhid { color: var(--blue); font-weight: 600; margin-right: 8px; }
-  .recent-empty { padding: 24px; text-align: center; color: var(--grey-400); font-size: 13px; }
+  /* BUTTONS */
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius); font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
+  .btn-primary { background: var(--navy); color: var(--white); border-color: var(--navy); }
+  .btn-primary:hover { background: var(--navy-light); }
+  .btn-gold { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 600; }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-ghost { background: transparent; color: var(--navy); border-color: var(--border); }
+  .btn-ghost:hover { background: var(--gray-100); border-color: var(--gray-400); }
+  .btn-sm { padding: 5px 11px; font-size: 12px; }
 
-  .sync-strip { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding: 10px 18px; background: white; border: 1px solid var(--border); border-radius: 8px; font-size: 12px; color: var(--grey-700); }
-  .sync-strip .ok { color: var(--success); font-weight: 500; }
-  .sync-strip .warn { color: var(--warning); font-weight: 500; }
-  .sync-strip .actions { display: flex; gap: 8px; }
-  .sync-strip button { font-size: 11px; padding: 4px 10px; }
+  /* BADGES */
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-amber { background: var(--amber-light); color: var(--amber); }
+  .badge-red { background: var(--red-light); color: var(--red); }
+  .badge-navy { background: #EEF2FA; color: var(--navy); }
+  .badge-gray { background: var(--gray-100); color: var(--gray-600); }
+  .badge-dot::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
 
-  /* Buttons */
-  .btn { background: var(--blue); color: white; border: none; padding: 9px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; transition: all 0.15s; }
-  .btn:hover { background: var(--navy); }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  .btn.secondary { background: white; color: var(--grey-900); border: 1px solid var(--border); }
-  .btn.secondary:hover { border-color: var(--blue); color: var(--blue); background: white; }
-  .btn.subtle { background: var(--grey-100); color: var(--grey-900); border: 1px solid var(--border); }
-  .btn.subtle:hover { background: var(--grey-200); }
-  .btn.danger { background: var(--danger); }
-  .btn.danger:hover { background: #991B1B; }
-  .btn.sm { padding: 5px 10px; font-size: 12px; }
+  /* CARDS */
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+  .card-header { padding: 18px 22px 14px; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--navy); }
+  .card-body { padding: 22px; }
 
-  /* Login screen */
-  .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
-  .login-card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 36px; max-width: 420px; width: 100%; }
-  .login-card .program { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--grey-400); margin: 0 0 8px; }
-  .login-card h2 { font-size: 20px; font-weight: 600; margin: 0 0 4px; color: var(--navy); }
-  .login-card .sub { font-size: 14px; color: var(--grey-700); margin: 0 0 24px; }
-  .login-card label { display: block; font-size: 12px; font-weight: 600; color: var(--grey-700); text-transform: uppercase; letter-spacing: 0.4px; margin: 16px 0 6px; }
-  .login-card input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; font-family: inherit; }
-  .login-card input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(46,117,182,0.1); }
-  .login-card .btn { width: 100%; margin-top: 16px; padding: 11px; }
-  .login-msg { margin-top: 12px; font-size: 13px; padding: 10px; border-radius: 6px; }
-  .login-msg.success { background: var(--success-soft); color: var(--success); }
-  .login-msg.error { background: var(--danger-soft); color: var(--danger); }
-  .login-msg.info { background: var(--lightblue); color: var(--navy); }
-  .login-mode { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--grey-400); }
-  .login-mode strong { color: var(--grey-700); }
+  /* KPI ROW */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; box-shadow: var(--shadow); border-top: 3px solid var(--navy); transition: all 0.3s ease; }
+  .kpi-card.gold-accent { border-top-color: var(--gold); }
+  .kpi-card.green-accent { border-top-color: var(--green); }
+  .kpi-card.amber-accent { border-top-color: var(--amber); }
+  .kpi-label { font-size: 11px; color: var(--gray-400); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .kpi-value { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--navy); line-height: 1; transition: all 0.3s ease; }
+  .kpi-sub { font-size: 11.5px; color: var(--gray-400); margin-top: 4px; }
+  .kpi-trend { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; margin-top: 4px; font-weight: 500; }
+  .kpi-trend.up { color: var(--green); }
+  .kpi-trend.down { color: var(--red); }
+  .kpi-trend.neutral { color: var(--gray-400); }
+  .kpi-trend.pending { color: var(--amber); }
 
-  /* Form layouts */
-  .form-section { background: white; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
-  .form-section-header { background: var(--blue); color: white; padding: 11px 18px; font-size: 13px; font-weight: 600; }
-  .form-section-body { padding: 18px 20px; }
-  .form-row { display: grid; grid-template-columns: 240px 1fr; gap: 16px; padding: 10px 0; align-items: center; border-bottom: 1px solid var(--grey-100); }
-  .form-row:last-child { border-bottom: none; }
-  .form-row label { font-size: 13px; color: var(--grey-700); font-weight: 500; }
-  .form-row label .required { color: var(--danger); }
-  .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; font-family: inherit; background: white; }
-  .form-row input:focus, .form-row select:focus, .form-row textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 2px rgba(46,117,182,0.1); }
-  .form-row input[readonly], .form-row .computed { background: var(--grey-50); color: var(--grey-700); cursor: not-allowed; }
-  .form-row textarea { min-height: 100px; resize: vertical; }
-  .form-row .hint { font-size: 12px; color: var(--grey-400); margin-top: 4px; }
-  .form-row .currency-wrap { position: relative; }
-  .form-row .currency-wrap::before { content: "$"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--grey-400); }
-  .form-row .currency-wrap input { padding-left: 24px; }
+  /* QUARTER SELECTOR */
+  .quarter-selector { display: flex; gap: 8px; margin-bottom: 24px; align-items: center; }
+  .quarter-selector-label { font-size: 12px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.06em; text-transform: uppercase; margin-right: 4px; }
+  .q-btn { padding: 7px 18px; border-radius: 20px; font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--white); color: var(--gray-600); transition: all 0.18s; }
+  .q-btn:hover { border-color: var(--navy); color: var(--navy); }
+  .q-btn.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+  .q-btn.submitted { border-color: var(--green); color: var(--green); }
+  .q-btn.submitted.active { background: var(--green); color: var(--white); }
+  .q-btn.review { border-color: var(--navy); color: var(--navy); }
+  .q-btn.review.active { background: var(--navy); color: var(--white); }
+  .q-btn.pending { border-color: var(--amber); color: var(--amber); }
+  .q-btn.pending.active { background: var(--amber); color: var(--white); }
+  .q-btn.upcoming { border-color: var(--border); color: var(--gray-400); }
+  .q-btn.upcoming.active { background: var(--gray-200); color: var(--gray-600); border-color: var(--gray-400); }
 
-  .cert-row { background: var(--accent-soft); border: 1px solid var(--accent); padding: 14px 18px; border-radius: 8px; display: flex; align-items: center; gap: 14px; margin: 14px 0; }
-  .cert-row label { font-size: 13px; font-weight: 600; color: var(--grey-900); flex: 1; }
-  .cert-row select { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; }
+  /* CONTENT GRID */
+  .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
 
-  /* Log tables */
-  .log-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
-  .log-table th { background: var(--grey-50); padding: 8px 10px; text-align: left; font-weight: 600; color: var(--grey-700); border-bottom: 1px solid var(--border); font-size: 12px; }
-  .log-table td { padding: 6px 8px; border-bottom: 1px solid var(--grey-100); vertical-align: middle; }
-  .log-table input, .log-table select { width: 100%; padding: 6px 8px; border: 1px solid transparent; border-radius: 4px; font-size: 13px; background: transparent; font-family: inherit; }
-  .log-table input:hover, .log-table select:hover { border-color: var(--grey-200); background: white; }
-  .log-table input:focus, .log-table select:focus { outline: none; border-color: var(--blue); background: white; }
-  .log-table .quarter-cell { color: var(--grey-400); font-size: 12px; text-align: center; padding: 6px; }
-  .log-table .row-del { background: transparent; border: none; color: var(--grey-400); cursor: pointer; padding: 4px 8px; font-size: 14px; }
-  .log-table .row-del:hover { color: var(--danger); }
-  .log-table tfoot td { padding: 12px 10px; font-weight: 600; background: var(--accent-soft); border-top: 2px solid var(--accent); }
-  .log-add { margin-top: 8px; }
+  /* SUBMISSIONS */
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 12px; }
+  .submissions-grid { display: grid; gap: 12px; margin-bottom: 24px; }
+  .submission-row { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow); transition: box-shadow 0.15s; cursor: pointer; }
+  .submission-row:hover { box-shadow: var(--shadow-lg); border-color: var(--gray-400); }
+  .submission-row.active-form { border-left: 4px solid var(--gold); }
+  .submission-row.locked { opacity: 0.6; cursor: default; }
+  .submission-row.locked:hover { box-shadow: var(--shadow); border-color: var(--border); }
+  .sr-left { display: flex; align-items: center; gap: 14px; }
+  .sr-icon { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+  .sr-icon.report { background: #EEF2FA; }
+  .sr-icon.roster { background: var(--green-light); }
+  .sr-icon.exits { background: var(--amber-light); }
+  .sr-info h4 { font-size: 13.5px; font-weight: 500; color: var(--navy); margin-bottom: 2px; }
+  .sr-info p { font-size: 12px; color: var(--gray-400); }
+  .sr-right { display: flex; align-items: center; gap: 12px; }
+  .sr-due { font-size: 11.5px; color: var(--gray-600); }
 
-  /* Households list */
-  .hh-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
-  .hh-toolbar input { padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; font-family: inherit; min-width: 240px; }
-  .hh-list { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-  .hh-list-row { display: grid; grid-template-columns: 90px 1fr 140px 100px 130px 100px; padding: 11px 18px; align-items: center; font-size: 13px; border-bottom: 1px solid var(--grey-100); cursor: pointer; transition: background 0.1s; }
-  .hh-list-row:hover { background: var(--grey-50); }
-  .hh-list-row.header { background: var(--grey-50); font-weight: 600; color: var(--grey-700); text-transform: uppercase; font-size: 11px; letter-spacing: 0.4px; cursor: default; }
-  .hh-list-row .id { font-weight: 600; color: var(--navy); }
-  .hh-list-row .status { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
-  .status.empty { background: var(--grey-100); color: var(--grey-700); }
-  .status.active { background: var(--lightblue); color: var(--navy); }
-  .status.exited { background: var(--success-soft); color: var(--success); }
-  .status.pending { background: var(--warning-soft); color: var(--warning); }
-  .status.stable { background: var(--success-soft); color: var(--success); }
-  .status.unstable { background: var(--danger-soft); color: var(--danger); }
+  /* PROGRESS */
+  .progress-item { margin-bottom: 14px; }
+  .progress-meta { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .progress-label { font-size: 12.5px; color: var(--gray-600); }
+  .progress-val { font-size: 12.5px; font-weight: 500; color: var(--navy); }
+  .progress-track { height: 6px; background: var(--gray-200); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; background: var(--navy); transition: width 0.6s ease; }
+  .progress-fill.green { background: var(--green); }
+  .progress-fill.amber { background: var(--amber); }
+  .progress-fill.red { background: var(--red); }
 
-  /* Dashboard */
-  .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 18px; }
-  .kpi { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
-  .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--grey-700); margin: 0; font-weight: 600; }
-  .kpi-value { font-size: 24px; font-weight: 600; color: var(--navy); margin: 6px 0 0; }
-  .kpi-sub { font-size: 11px; color: var(--grey-400); margin: 2px 0 0; }
-  .filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; background: white; border: 1px solid var(--border); padding: 12px 16px; border-radius: 8px; }
-  .filter-bar label { font-size: 13px; color: var(--grey-700); font-weight: 500; }
-  .filter-bar select { padding: 7px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; font-family: inherit; }
-  .breakdown-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
-  .breakdown-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
-  .breakdown-card h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--grey-700); margin: 0 0 12px; font-weight: 600; }
-  .breakdown-card table { width: 100%; font-size: 13px; }
-  .breakdown-card td { padding: 5px 0; border-bottom: 1px solid var(--grey-100); }
-  .breakdown-card td:last-child { text-align: right; font-weight: 600; }
-  .chart-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 16px; }
-  .chart-card h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--grey-700); margin: 0 0 12px; font-weight: 600; }
-  .chart-wrap { position: relative; height: 240px; }
-  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  /* NOTICE */
+  .notice { border-radius: var(--radius); padding: 12px 16px; display: flex; align-items: flex-start; gap: 10px; font-size: 13px; margin-bottom: 22px; }
+  .notice.amber { background: var(--amber-light); border: 1px solid #F0C96B; color: #7A5200; }
+  .notice.green { background: var(--green-light); border: 1px solid #9FD4B5; color: #1A5735; }
+  .notice.navy { background: #EEF2FA; border: 1px solid #BFD0F0; color: var(--navy); }
+  .notice.gray { background: var(--gray-100); border: 1px solid var(--border); color: var(--gray-600); }
+  .notice-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
 
-  /* Quarterly report (print) */
-  .print-page { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 36px 44px; max-width: 900px; margin: 0 auto; }
-  .print-header { border-bottom: 2px solid var(--navy); padding-bottom: 14px; margin-bottom: 22px; }
-  .print-header .program { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--grey-400); }
-  .print-header h1 { font-size: 22px; font-weight: 600; color: var(--navy); margin: 4px 0; }
-  .print-header .period { font-size: 13px; color: var(--grey-700); }
-  .print-section { margin-bottom: 22px; }
-  .print-section h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--navy); margin: 0 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-  .print-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .print-kpi { padding: 10px; background: var(--grey-50); border-radius: 6px; }
-  .print-kpi .label { font-size: 10px; text-transform: uppercase; color: var(--grey-700); }
-  .print-kpi .value { font-size: 18px; font-weight: 600; color: var(--navy); }
-  .print-table { width: 100%; font-size: 12px; border-collapse: collapse; }
-  .print-table th, .print-table td { padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--border); }
-  .print-table th { background: var(--grey-50); font-weight: 600; }
-  .print-toolbar { max-width: 900px; margin: 0 auto 14px; display: flex; gap: 10px; justify-content: flex-end; }
+  /* FORM OVERLAY */
+  .form-overlay { display: none; position: fixed; inset: 0; background: rgba(27,47,91,0.55); z-index: 200; align-items: flex-start; justify-content: center; padding: 40px 20px; overflow-y: auto; backdrop-filter: blur(2px); }
+  .form-overlay.open { display: flex; }
+  .form-modal { background: var(--white); border-radius: var(--radius-lg); width: 100%; max-width: 760px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  .form-modal.wide { max-width: 960px; }
+  .form-modal-header { background: var(--navy); padding: 22px 28px; display: flex; align-items: center; justify-content: space-between; }
+  .form-modal-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--white); }
+  .form-modal-meta { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 2px; }
+  .form-close-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--white); width: 30px; height: 30px; border-radius: 6px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }
+  .form-close-btn:hover { background: rgba(255,255,255,0.2); }
+  .form-gold-bar { height: 3px; background: var(--gold); }
 
-  @media print {
-    body { background: white; }
-    .topnav, .print-toolbar, .sync-strip, .filter-bar { display: none !important; }
-    main { max-width: none; padding: 0; }
-    .print-page { border: none; padding: 0; }
+  /* READONLY BANNER */
+  .readonly-banner { background: #EEF2FA; border-bottom: 1px solid #BFD0F0; padding: 10px 28px; font-size: 12.5px; color: var(--navy); display: flex; align-items: center; gap: 8px; }
+
+  /* FORM TABS */
+  .form-tabs { display: flex; background: var(--gray-100); border-bottom: 1px solid var(--border); }
+  .form-tab { padding: 12px 20px; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; flex: 1; text-align: center; }
+  .form-tab.active { color: var(--navy); border-bottom-color: var(--gold); background: var(--white); }
+  .form-tab:hover:not(.active) { color: var(--navy); background: var(--gray-200); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* FORM BODY */
+  .form-body { padding: 28px; max-height: 62vh; overflow-y: auto; }
+  .form-section { margin-bottom: 28px; }
+  .form-section-title { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--gray-200); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .form-row.full { grid-template-columns: 1fr; }
+  .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .field-group { display: flex; flex-direction: column; gap: 5px; }
+  .field-label { font-size: 12px; font-weight: 500; color: var(--gray-600); }
+  .field-label.required::after { content: ' *'; color: var(--red); }
+  .field-input, .field-select, .field-textarea { border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 11px; font-size: 13.5px; font-family: 'DM Sans', sans-serif; color: var(--gray-800); background: var(--white); transition: border-color 0.15s; width: 100%; }
+  .field-input:focus, .field-select:focus, .field-textarea:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(27,47,91,0.08); }
+  .field-input[readonly], .field-input:disabled { background: var(--gray-100); color: var(--gray-600); cursor: default; }
+  .field-textarea { resize: vertical; min-height: 90px; }
+  .field-hint { font-size: 11px; color: var(--gray-400); }
+
+  /* DEMOGRAPHICS GRID */
+  .demo-grid { display: grid; grid-template-columns: 1fr repeat(5, auto); gap: 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; font-size: 12px; }
+  .demo-cell { padding: 6px 8px; border-bottom: 1px solid var(--gray-100); border-right: 1px solid var(--gray-100); }
+  .demo-cell.header { background: var(--navy); color: var(--white); font-size: 10.5px; font-weight: 500; text-align: center; }
+  .demo-cell.row-label { font-weight: 500; color: var(--gray-600); background: var(--gray-100); font-size: 11.5px; }
+  .demo-cell input[type=number] { width: 55px; border: 1px solid var(--border); border-radius: 3px; padding: 3px 5px; font-size: 12px; text-align: center; font-family: 'DM Sans', sans-serif; color: var(--gray-800); }
+  .demo-cell input[type=number]:focus { outline: 1px solid var(--navy); }
+  .demo-cell.auto-calc { background: var(--gray-100); text-align: center; font-weight: 600; color: var(--navy); font-size: 12px; }
+  .demo-cell.ro { background: var(--gray-100); text-align: center; font-weight: 600; color: var(--navy); font-size: 12px; padding: 6px 8px; }
+
+  /* SCOPE TABLE */
+  .svc-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .svc-table th { background: var(--navy); color: var(--white); padding: 9px 12px; text-align: left; font-weight: 500; font-size: 11.5px; }
+  .svc-table td { padding: 7px 12px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+  .svc-table tr:hover td { background: var(--gray-100); }
+  .svc-table .cat-header td { background: #EEF2FA; font-weight: 600; color: var(--navy); font-size: 12px; padding-top: 10px; }
+  .svc-table td input[type=number] { width: 80px; border: 1px solid var(--border); border-radius: 3px; padding: 4px 8px; font-size: 12.5px; font-family: 'DM Sans', sans-serif; text-align: right; }
+  .svc-table td input[type=number]:focus { outline: 1px solid var(--navy); }
+  .svc-table td input[type=number][readonly] { background: var(--gray-100); color: var(--gray-600); }
+  .auto-ytd { background: var(--gray-100); border-radius: 3px; padding: 4px 8px; font-size: 12.5px; color: var(--gray-600); text-align: right; min-width: 60px; display: inline-block; }
+  .goal-badge { font-size: 10.5px; padding: 2px 7px; }
+
+  /* EXIT TABLE */
+  .exit-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  .exit-table th { background: var(--navy); color: var(--white); padding: 8px 8px; text-align: left; font-size: 10.5px; font-weight: 500; white-space: nowrap; }
+  .exit-table td { padding: 6px 8px; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
+  .exit-table tr.historical td { background: var(--gray-100); color: var(--gray-600); }
+  .exit-table td select, .exit-table td input[type=text] { width: 100%; border: 1px solid var(--border); border-radius: 3px; padding: 3px 6px; font-size: 11px; font-family: 'DM Sans', sans-serif; color: var(--gray-800); }
+  .exit-table td select:focus, .exit-table td input[type=text]:focus { outline: 1px solid var(--navy); }
+  .add-row-btn { font-size: 12px; color: var(--navy); background: none; border: 1px dashed var(--border); border-radius: var(--radius); padding: 7px 14px; cursor: pointer; width: 100%; margin-top: 10px; transition: all 0.15s; }
+  .add-row-btn:hover { border-color: var(--navy); background: var(--gray-100); }
+
+  /* UPLOAD ZONE */
+  .upload-zone { border: 2px dashed var(--border); border-radius: var(--radius-lg); padding: 32px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--gray-100); }
+  .upload-zone:hover { border-color: var(--navy); background: #EEF2FA; }
+  .upload-zone-icon { font-size: 30px; margin-bottom: 8px; }
+  .upload-zone-title { font-size: 14px; font-weight: 500; color: var(--navy); margin-bottom: 4px; }
+  .upload-zone-sub { font-size: 12px; color: var(--gray-400); }
+  .upload-zone input[type=file] { display: none; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .checklist li { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--gray-100); font-size: 13px; color: var(--gray-600); }
+  .checklist li:last-child { border-bottom: none; }
+  .check-icon { font-size: 14px; }
+  .check-icon.ok { color: var(--green); }
+  .check-icon.warn { color: var(--amber); }
+
+  /* FORM FOOTER */
+  .form-footer { padding: 16px 28px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--gray-100); }
+  .form-footer-left { font-size: 12px; color: var(--gray-400); }
+
+  /* LOGIN */
+  #login-screen { position: fixed; inset: 0; background: var(--navy); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .login-card { background: var(--white); border-radius: 12px; width: 100%; max-width: 400px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.35); }
+  .login-header { background: var(--navy); padding: 28px 32px; text-align: center; border-bottom: 3px solid var(--gold); }
+  .login-logo { width: 52px; height: 52px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--navy); margin: 0 auto 14px; font-weight: bold; }
+  .login-title { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--white); margin-bottom: 4px; }
+  .login-sub { font-size: 12px; color: rgba(255,255,255,0.55); }
+  .login-body { padding: 28px 32px; }
+  .login-body .field-group { margin-bottom: 14px; }
+  .login-body .field-label { font-size: 13px; }
+  .login-body .field-input { font-size: 14px; padding: 10px 13px; }
+  .login-submit { width: 100%; padding: 11px; background: var(--navy); color: var(--white); border: none; border-radius: var(--radius); font-size: 14px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; margin-top: 6px; transition: background 0.15s; }
+  .login-submit:hover { background: var(--navy-light); }
+  .login-footer { font-size: 12px; text-align: center; margin-top: 16px; color: var(--gray-400); }
+
+  /* ANIMATIONS */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .animate-in { animation: fadeIn 0.3s ease forwards; }
+  @keyframes fadeSwap { from { opacity: 0; } to { opacity: 1; } }
+  .fade-swap { animation: fadeSwap 0.25s ease forwards; }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
+
+  @media (max-width: 900px) {
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .content-grid { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { padding: 20px; }
   }
 
-  /* Modal */
-  .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
-  .modal { background: white; border-radius: 12px; padding: 24px; max-width: 480px; width: 100%; }
-  .modal h3 { margin: 0 0 12px; font-size: 16px; }
-  .modal p { font-size: 13px; color: var(--grey-700); margin: 0 0 16px; }
-  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
-
-  /* Toast */
-  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--grey-900); color: white; padding: 10px 18px; border-radius: 8px; font-size: 13px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 200; opacity: 0; transition: opacity 0.2s; }
-  .toast.show { opacity: 1; }
-  .toast.success { background: var(--success); }
-  .toast.error { background: var(--danger); }
 </style>
 </head>
 <body>
+<div class="loading" id="loading-screen" style="position:fixed;inset:0;background:#1B2F5B;color:white;z-index:2000;display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;">
+  <div style="font-size:36px;">🏠</div>
+  <p style="margin-top:12px;font-size:14px;opacity:0.7;">Loading Holloway Reporting Portal…</p>
+</div>
+
 
 <!-- LOGIN -->
-<div id="login-screen" class="login-wrap">
+<div id="login-screen">
   <div class="login-card">
-    <p class="program">City of West Hollywood</p>
-    <h2>Homelessness Prevention &amp; Housing Stabilization</h2>
-    <p class="sub">FY26 Reporting Tool • Oct 1, 2025 – Sept 30, 2026</p>
-    <form id="login-form">
-      <label for="login-email">Your email</label>
-      <input type="email" id="login-email" required placeholder="you@weho.org" autocomplete="email">
-      <button type="submit" class="btn">Send magic link</button>
-    </form>
-    <div id="login-msg"></div>
-    <div class="login-mode" id="login-mode-text"></div>
+    <div class="login-header">
+      <div class="login-logo">W</div>
+      <div class="login-title">Holloway Reporting Portal</div>
+      <div class="login-sub">City of West Hollywood · Human Services Division</div>
+    </div>
+    <div class="login-body">
+      <div class="field-group"><label class="field-label">Email Address</label><input type="email" id="login-email" class="field-input" autocomplete="email" placeholder="name@example.org"></div>
+      <p id="login-error" style="color:#C0392B;font-size:12px;margin:0 0 8px;"></p>
+      <button class="login-submit" id="login-submit-btn" onclick="doLogin()">Send Secure Login Link →</button>
+      <div class="login-footer">Enter your approved email address and we’ll send a secure login link.<br>Access is restricted to authorized users only.</div>
+    </div>
   </div>
 </div>
 
-<!-- APP SHELL -->
-<div id="app-shell" class="hidden">
-  <nav class="topnav">
-    <div class="brand">
-      <span class="brand-title">HPHS Reporting</span>
-      <span class="brand-sub">FY26 • Oct 2025 – Sep 2026</span>
+<!-- APP -->
+<div id="app" style="display:none;">
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="weho-emblem">W</div>
+    <div class="brand-text">
+      <div class="brand-program">Holloway Reporting Portal</div>
+      <div class="brand-sub">City of West Hollywood · Human Services</div>
     </div>
-    <div class="nav-links">
-      <button data-nav="landing" class="active">Home</button>
-      <button data-nav="dashboard">Dashboard</button>
-      <button data-nav="households">Households</button>
-      <button data-nav="quarterly">Quarterly report</button>
-    </div>
-    <div class="user-info">
-      <span id="user-email"></span>
-      <button id="logout-btn">Sign out</button>
-    </div>
-  </nav>
-
-  <main>
-    <!-- LANDING -->
-    <section id="view-landing">
-      <div class="landing-header">
-        <div>
-          <p class="program">City of West Hollywood</p>
-          <h1>Homelessness Prevention &amp; Housing Stabilization</h1>
-        </div>
-        <div class="meta">
-          <div><strong>FY26</strong> • Oct 1, 2025 – Sep 30, 2026</div>
-          <div>Current period: <strong id="current-quarter">—</strong></div>
-        </div>
-      </div>
-      <div class="stat-strip" id="landing-stats"></div>
-      <div class="action-row">
-        <button class="action-card primary" onclick="newHousehold()">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
-          <p class="title">Add household</p>
-          <p class="desc">Start a new HH record</p>
-        </button>
-        <button class="action-card" onclick="navigate('dashboard')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 14l4-4 4 4 5-5"/></svg></div>
-          <p class="title">Dashboard</p>
-          <p class="desc">KPIs &amp; trends, filterable</p>
-        </button>
-        <button class="action-card" onclick="navigate('households')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18M3 12h18M3 17h18"/></svg></div>
-          <p class="title">Households</p>
-          <p class="desc">Search, edit, status</p>
-        </button>
-        <button class="action-card" onclick="navigate('quarterly')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M9 13h6M9 17h6"/></svg></div>
-          <p class="title">Quarterly report</p>
-          <p class="desc">Print or export CSV</p>
-        </button>
-      </div>
-      <div class="recent">
-        <div class="recent-header">
-          <h3>Recent activity</h3>
-        </div>
-        <div id="recent-list"></div>
-      </div>
-      <div class="sync-strip">
-        <span id="sync-status">—</span>
-        <div class="actions">
-          <button class="btn subtle sm" onclick="exportJsonBackup()">Export backup</button>
-          <button class="btn subtle sm" onclick="document.getElementById('import-file').click()">Restore backup</button>
-          <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJsonBackup(event)">
-        </div>
-      </div>
-    </section>
-
-    <!-- DASHBOARD -->
-    <section id="view-dashboard" class="hidden">
-      <h2 class="view-title">Dashboard</h2>
-      <p class="view-sub">All metrics update live as data is entered. Use the filter to view a specific quarter.</p>
-      <div class="filter-bar">
-        <label>Reporting period:</label>
-        <select id="quarter-filter" onchange="renderDashboard()">
-          <option value="all">All periods (FY26 to date)</option>
-          <option value="Q1 FY26">Q1 FY26 (Oct–Dec 2025)</option>
-          <option value="Q2 FY26">Q2 FY26 (Jan–Mar 2026)</option>
-          <option value="Q3 FY26">Q3 FY26 (Apr–Jun 2026)</option>
-          <option value="Q4 FY26">Q4 FY26 (Jul–Sep 2026)</option>
-        </select>
-        <button class="btn secondary sm" onclick="exportCsv()">Export CSV summary</button>
-      </div>
-      <div class="kpi-grid" id="kpi-grid"></div>
-      <div class="kpi-grid" id="kpi-grid-2"></div>
-      <div class="chart-grid">
-        <div class="chart-card"><h3>Households served by quarter</h3><div class="chart-wrap"><canvas id="ch-quarter"></canvas></div></div>
-        <div class="chart-card"><h3>Financial assistance by quarter ($)</h3><div class="chart-wrap"><canvas id="ch-assist"></canvas></div></div>
-      </div>
-      <div class="breakdown-grid">
-        <div class="breakdown-card"><h3>Race / Ethnicity</h3><table id="bd-race"></table></div>
-        <div class="breakdown-card"><h3>Age band</h3><table id="bd-age"></table></div>
-      </div>
-      <div class="breakdown-grid">
-        <div class="breakdown-card"><h3>Household composition</h3><table id="bd-comp"></table></div>
-        <div class="breakdown-card"><h3>Qualifying event</h3><table id="bd-event"></table></div>
-      </div>
-      <div class="chart-grid">
-        <div class="chart-card"><h3>Housing outcomes (entry vs exit vs 90-day)</h3><div class="chart-wrap"><canvas id="ch-housing"></canvas></div></div>
-        <div class="chart-card"><h3>90-day stability outcomes</h3><div class="chart-wrap"><canvas id="ch-stability"></canvas></div></div>
-      </div>
-    </section>
-
-    <!-- HOUSEHOLDS -->
-    <section id="view-households" class="hidden">
-      <h2 class="view-title">Households</h2>
-      <p class="view-sub">Up to 20 households per fiscal year. Click any row to view or edit.</p>
-      <div class="hh-toolbar">
-        <input type="text" id="hh-search" placeholder="Search by ID, qualifying event, or status…" oninput="renderHouseholdsList()">
-        <button class="btn" onclick="newHousehold()">+ Add household</button>
-      </div>
-      <div class="hh-list">
-        <div class="hh-list-row header">
-          <span>ID</span><span>Composition</span><span>Status</span><span>Sessions</span><span>Total assistance</span><span>Stability</span>
-        </div>
-        <div id="hh-list-body"></div>
-      </div>
-    </section>
-
-    <!-- EDITOR -->
-    <section id="view-editor" class="hidden">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px;">
-        <div>
-          <h2 class="view-title" id="editor-title">Household record</h2>
-          <p class="view-sub">All fields auto-save. No personally identifying information should be entered.</p>
-        </div>
-        <div style="display:flex; gap:8px;">
-          <button class="btn secondary" onclick="navigate('households')">← Back to list</button>
-          <button class="btn danger" onclick="deleteCurrentHousehold()">Delete record</button>
-        </div>
-      </div>
-      <div id="editor-body"></div>
-    </section>
-
-    <!-- QUARTERLY -->
-    <section id="view-quarterly" class="hidden">
-      <div class="print-toolbar">
-        <label style="font-size:13px; color: var(--grey-700);">Quarter:
-          <select id="print-quarter" onchange="renderQuarterly()" style="margin-left:8px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px;">
-            <option value="all">All FY26 to date</option>
-            <option value="Q1 FY26">Q1 FY26 (Oct–Dec 2025)</option>
-            <option value="Q2 FY26">Q2 FY26 (Jan–Mar 2026)</option>
-            <option value="Q3 FY26">Q3 FY26 (Apr–Jun 2026)</option>
-            <option value="Q4 FY26">Q4 FY26 (Jul–Sep 2026)</option>
-          </select>
-        </label>
-        <button class="btn secondary" onclick="exportCsv()">Export CSV</button>
-        <button class="btn" onclick="window.print()">Print / save PDF</button>
-      </div>
-      <div id="print-body" class="print-page"></div>
-    </section>
-  </main>
+  </div>
+  <div class="topbar-right">
+    <span class="badge badge-navy badge-dot" style="font-size:11px;">FY 2025–26</span>
+    <div class="user-pill"><div class="user-avatar">AS</div>Ascencia Staff</div>
+    <button class="logout-btn" onclick="doLogout()">Sign out</button>
+  </div>
 </div>
 
-<div id="toast" class="toast"></div>
+<div class="app-shell">
+<div class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Reporting</div>
+    <div class="sidebar-item active"><span class="si-icon">⊞</span> Dashboard</div>
+    <div class="sidebar-item" onclick="openForm('quarterly')"><span class="si-icon">📋</span> Quarterly Report</div>
+    <div class="sidebar-item" onclick="openForm('roster')"><span class="si-icon">👥</span> Client Roster</div>
+    <div class="sidebar-item" onclick="openForm('exits')"><span class="si-icon">🚪</span> Non-Permanent Exits</div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Reference</div>
+    <div class="sidebar-item"><span class="si-icon">🎯</span> Annual Goals</div>
+    <div class="sidebar-item"><span class="si-icon">📁</span> Past Submissions</div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Program Info</div>
+    <div class="sidebar-item"><span class="si-icon">📞</span> City Contact</div>
+    <div class="sidebar-item"><span class="si-icon">❓</span> Help &amp; Glossary</div>
+  </div>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div class="main animate-in">
+
+  <!-- NOTICE -->
+  <div class="notice amber" id="main-notice">
+    <div class="notice-icon">⚠️</div>
+    <div id="main-notice-text"><strong>Q3 Report Due June 15, 2026.</strong> The Quarterly Program Report, Client Roster, and Non-Permanent Exit Detail for April–June 2026 are due to your City program monitor by the 15th calendar day following the quarter.</div>
+  </div>
+
+  <div class="page-header">
+    <div>
+      <div class="page-title" id="dash-title">Program Dashboard</div>
+      <div class="page-subtitle">Holloway Interim Housing Program · Contract Year: October 1, 2025 – September 30, 2026</div>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-ghost btn-sm">⬇ Export</button>
+      <button class="btn btn-gold" onclick="openForm('quarterly')">+ New Report</button>
+    </div>
+  </div>
+
+  <!-- QUARTER SELECTOR -->
+  <div class="quarter-selector">
+    <span class="quarter-selector-label">Quarter</span>
+    <button class="q-btn submitted active" id="qbtn-Q1" onclick="setQuarter('Q1')">Q1 ✓</button>
+    <button class="q-btn review" id="qbtn-Q2" onclick="setQuarter('Q2')">Q2 ●</button>
+    <button class="q-btn pending" id="qbtn-Q3" onclick="setQuarter('Q3')">Q3 !</button>
+    <button class="q-btn upcoming" id="qbtn-Q4" onclick="setQuarter('Q4')">Q4</button>
+    <span style="font-size:11.5px;color:var(--gray-400);margin-left:8px;" id="q-legend">
+      <span style="color:var(--green);">✓ Accepted</span> &nbsp;
+      <span style="color:var(--navy);">● Under Review</span> &nbsp;
+      <span style="color:var(--amber);">! Due</span> &nbsp;
+      <span style="color:var(--gray-400);">Upcoming</span>
+    </span>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row" id="kpi-row"></div>
+
+  <!-- CONTENT GRID -->
+  <div class="content-grid">
+    <div>
+      <div class="section-label" id="submissions-label">Submission Status — Q1</div>
+      <div class="submissions-grid" id="submissions-grid"></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-header">
+          <div class="card-title">Annual Goal Progress</div>
+          <span class="badge badge-gray" id="ytd-label">Through Q1</span>
+        </div>
+        <div class="card-body" id="goals-card"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Reporting Guide</div></div>
+        <div class="card-body" style="font-size:12.5px;color:var(--gray-600);">
+          <p style="margin-bottom:10px;"><strong style="color:var(--navy);">1. Quarterly Report</strong><br>High-level narrative covering demographics, KPIs, occupancy, and program updates.</p>
+          <p style="margin-bottom:10px;"><strong style="color:var(--navy);">2. Client Roster</strong><br>HMIS-generated export of all clients active during the quarter. Backs up reported figures.</p>
+          <p><strong style="color:var(--navy);">3. Non-Permanent Exit Detail</strong><br>One row per non-PH exit — reasons, follow-up status, and context.</p>
+          <div class="divider" style="margin:14px 0;"></div>
+          <p style="color:var(--gray-400);">Questions? Contact your City program monitor in the Human Services Division.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+</div><!-- /app-shell -->
+</div><!-- /app -->
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- QUARTERLY REPORT MODAL                 -->
+<!-- ═══════════════════════════════════════ -->
+<div class="form-overlay" id="quarterly-modal">
+  <div class="form-modal">
+    <div class="form-modal-header">
+      <div>
+        <div class="form-modal-title">📋 Quarterly Program Report</div>
+        <div class="form-modal-meta" id="qr-modal-meta">Holloway Interim Housing Program</div>
+      </div>
+      <button class="form-close-btn" onclick="closeForm('quarterly')">✕</button>
+    </div>
+    <div class="form-gold-bar"></div>
+    <div class="readonly-banner" id="qr-readonly-banner" style="display:none;">
+      🔒 This quarter's report has been submitted. Data shown is read-only.
+    </div>
+    <div class="form-tabs">
+      <div class="form-tab active" onclick="switchTab(this,'qr-cover')">Cover Page</div>
+      <div class="form-tab" onclick="switchTab(this,'qr-scope')">Scope of Services</div>
+      <div class="form-tab" onclick="switchTab(this,'qr-narrative')">Narrative</div>
+      <div class="form-tab" onclick="switchTab(this,'qr-review')">Review &amp; Submit</div>
+    </div>
+
+    <!-- COVER -->
+    <div id="qr-cover" class="tab-panel active">
+      <div class="form-body">
+        <div class="form-section">
+          <div class="form-section-title">Program Information</div>
+          <div class="form-row">
+            <div class="field-group"><label class="field-label">Agency</label><input class="field-input" value="Ascencia" readonly></div>
+            <div class="field-group"><label class="field-label">Program</label><input class="field-input" value="Holloway Interim Housing Program" readonly></div>
+          </div>
+          <div class="form-row">
+            <div class="field-group"><label class="field-label">Reporting Quarter</label><input class="field-input" id="qr-quarter-display" readonly></div>
+            <div class="field-group"><label class="field-label">Contract Year</label><input class="field-input" value="October 1, 2025 – September 30, 2026" readonly></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">New, Unduplicated Persons Served</div>
+          <div class="form-row three">
+            <div class="field-group">
+              <label class="field-label required">This Quarter (WeHo)</label>
+              <input type="number" class="field-input" id="qr-persons-quarter" placeholder="0" min="0">
+              <span class="field-hint">New, unduplicated WeHo clients this quarter</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Year-to-Date (WeHo)</label>
+              <input type="number" class="field-input" id="qr-persons-ytd" readonly>
+              <span class="field-hint">Cumulative from Q1 through this quarter</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Total Project</label>
+              <input type="number" class="field-input" id="qr-persons-total" placeholder="0" min="0">
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Data Source</label>
+            <input class="field-input" id="qr-data-source" placeholder="e.g. Data was collected through enrollment via HMIS">
+          </div>
+        </div>
+
+        <!-- DEMOGRAPHICS -->
+        <div class="form-section">
+          <div class="form-section-title">Demographics — Age &amp; Gender (New, Unduplicated WeHo Clients This Quarter)</div>
+          <div class="demo-grid" id="demo-grid">
+            <div class="demo-cell header">Age Group</div>
+            <div class="demo-cell header">Male (incl. Trans Male)</div>
+            <div class="demo-cell header">Female (incl. Trans Female)</div>
+            <div class="demo-cell header">Nonbinary / GNC</div>
+            <div class="demo-cell header">Unknown</div>
+            <div class="demo-cell header">Total</div>
+          </div>
+        </div>
+
+        <!-- ETHNICITY + LANGUAGE -->
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label" style="margin-bottom:8px;">Ethnicity</label>
+            <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+              <table class="svc-table" style="width:100%;"><thead><tr><th>Ethnicity</th><th style="text-align:right;width:70px;">Qtr</th><th style="text-align:right;width:65px;">YTD</th></tr></thead>
+              <tbody id="ethnicity-table"></tbody></table>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" style="margin-bottom:8px;">Household Language</label>
+            <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+              <table class="svc-table" style="width:100%;"><thead><tr><th>Language</th><th style="text-align:right;width:70px;">Qtr</th><th style="text-align:right;width:65px;">YTD</th></tr></thead>
+              <tbody id="language-table"></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section" style="margin-top:20px;">
+          <div class="form-section-title">Signatory</div>
+          <div class="form-row three">
+            <div class="field-group"><label class="field-label required">Name / Title</label><input class="field-input" id="qr-signatory" value="Laura Duncan, Executive Director"></div>
+            <div class="field-group"><label class="field-label required">Date</label><input type="date" class="field-input" id="qr-sig-date"></div>
+            <div class="field-group"><label class="field-label">E-Signature Confirmation</label>
+              <select class="field-select" id="qr-sig-confirm"><option value="">— Select —</option><option>I confirm this is my electronic signature</option></select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCOPE -->
+    <div id="qr-scope" class="tab-panel">
+      <div class="form-body">
+        <div class="form-section">
+          <div class="form-section-title" id="scope-title">Scope of Services</div>
+          <div style="font-size:12px;color:var(--gray-400);margin-bottom:14px;">YTD columns reflect cumulative totals through the end of the selected quarter. Gray cells are auto-calculated.</div>
+          <div style="overflow-x:auto;"><table class="svc-table" id="scope-table"></table></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NARRATIVE -->
+    <div id="qr-narrative" class="tab-panel">
+      <div class="form-body">
+        <div class="form-section">
+          <div class="form-section-title" id="narrative-title">Narrative</div>
+          <div style="font-size:12.5px;color:var(--gray-400);margin-bottom:14px;padding:12px;background:var(--gray-100);border-radius:var(--radius);line-height:1.5;">
+            Keep the narrative to approximately one page. Include special events, successes, challenges, personnel changes, and explanation of elements ±10% of goal. Narrative content should relate to West Hollywood affiliated clients and programs.
+          </div>
+          <div class="field-group">
+            <label class="field-label required">Narrative</label>
+            <textarea class="field-textarea" id="qr-narrative-text" style="min-height:220px;" placeholder="During this quarter, the Holloway Interim Housing Program…"></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field-group"><label class="field-label required">Submitted By</label><input class="field-input" id="qr-narrative-name" value="Laura Duncan, Executive Director"></div>
+          <div class="field-group"><label class="field-label required">Date</label><input type="date" class="field-input" id="qr-narrative-date"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEW -->
+    <div id="qr-review" class="tab-panel">
+      <div class="form-body">
+        <div class="form-section">
+          <div class="form-section-title">Submission Summary</div>
+          <div id="review-summary" style="font-size:13px;color:var(--gray-600);margin-bottom:16px;"></div>
+          <ul class="checklist" id="review-checklist"></ul>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">What Happens Next</div>
+          <p style="font-size:13px;color:var(--gray-600);line-height:1.6;">Once submitted, your report is sent to your City program monitor in the Human Services Division for review. You can track status on the dashboard. All three components — Quarterly Report, Client Roster, and Non-Permanent Exit Detail — should be submitted together.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <div class="form-footer-left" id="qr-footer-note">Auto-saved · Holloway Interim Housing Program</div>
+      <div style="display:flex;gap:10px;" id="qr-footer-btns">
+        <button class="btn btn-ghost" onclick="closeForm('quarterly')">Close</button>
+        <button class="btn btn-ghost" id="qr-save-btn">Save Draft</button>
+        <button class="btn btn-gold" id="qr-submit-btn" onclick="submitForm('quarterly')">Submit Report →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CLIENT ROSTER MODAL                    -->
+<!-- ═══════════════════════════════════════ -->
+<div class="form-overlay" id="roster-modal">
+  <div class="form-modal" style="max-width:620px;">
+    <div class="form-modal-header">
+      <div>
+        <div class="form-modal-title">👥 Client Roster</div>
+        <div class="form-modal-meta" id="roster-modal-meta">HMIS-generated export</div>
+      </div>
+      <button class="form-close-btn" onclick="closeForm('roster')">✕</button>
+    </div>
+    <div class="form-gold-bar"></div>
+    <div class="readonly-banner" id="roster-readonly-banner" style="display:none;">🔒 Roster submitted. Shown for reference only.</div>
+    <div class="form-body" style="max-height:none;">
+      <div id="roster-submitted-view" style="display:none;">
+        <div class="notice green" style="margin-bottom:20px;"><div class="notice-icon">✅</div><div id="roster-accepted-text"></div></div>
+        <div style="border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;">
+          <table class="svc-table" style="width:100%;">
+            <thead><tr><th>Field</th><th>Value</th></tr></thead>
+            <tbody id="roster-summary-table"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="roster-upload-view">
+        <div class="form-section">
+          <div class="form-section-title">What to Upload</div>
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">The Client Roster is an HMIS-generated export listing all clients active during the reporting quarter. Run the <strong>Program Roster Report</strong> in HMIS filtered to the quarter dates, then upload here.</p>
+          <div style="background:var(--gray-100);border-radius:var(--radius);padding:12px 14px;font-size:12.5px;color:var(--gray-600);">
+            <strong style="color:var(--navy);">Expected columns:</strong> Project Type, Program Name, # Enrollments, # Unique Clients, # Households — plus client-level rows with entry/exit dates and housing outcomes.
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Upload HMIS Export</div>
+          <label class="upload-zone"><input type="file" accept=".xlsx,.csv,.xls">
+            <div class="upload-zone-icon">📁</div>
+            <div class="upload-zone-title">Click to select your HMIS export file</div>
+            <div class="upload-zone-sub">Accepts .xlsx, .xls, or .csv — exported from Clarity / HMIS</div>
+          </label>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Roster Period &amp; Summary</div>
+          <div class="form-row">
+            <div class="field-group"><label class="field-label required">Period Start</label><input type="date" class="field-input" id="roster-start"></div>
+            <div class="field-group"><label class="field-label required">Period End</label><input type="date" class="field-input" id="roster-end"></div>
+          </div>
+          <div class="form-row three">
+            <div class="field-group"><label class="field-label">Unique Clients</label><input type="number" class="field-input" id="roster-unique" placeholder="0"></div>
+            <div class="field-group"><label class="field-label">Enrollments</label><input type="number" class="field-input" id="roster-enroll" placeholder="0"></div>
+            <div class="field-group"><label class="field-label">Households</label><input type="number" class="field-input" id="roster-households" placeholder="0"></div>
+          </div>
+          <div class="field-group" style="margin-top:4px;"><label class="field-label">Notes</label><textarea class="field-textarea" style="min-height:60px;" id="roster-notes" placeholder="Date exported, who ran the report, etc."></textarea></div>
+        </div>
+      </div>
+    </div>
+    <div class="form-footer" id="roster-footer">
+      <div class="form-footer-left">Roster backs up figures in the Quarterly Report</div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-ghost" onclick="closeForm('roster')">Close</button>
+        <button class="btn btn-gold" id="roster-submit-btn" onclick="submitForm('roster')">Upload Roster →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- NON-PERMANENT EXIT MODAL               -->
+<!-- ═══════════════════════════════════════ -->
+<div class="form-overlay" id="exits-modal">
+  <div class="form-modal wide">
+    <div class="form-modal-header">
+      <div>
+        <div class="form-modal-title">🚪 Non-Permanent Exit Detail</div>
+        <div class="form-modal-meta" id="exits-modal-meta">One row per non-PH exit</div>
+      </div>
+      <button class="form-close-btn" onclick="closeForm('exits')">✕</button>
+    </div>
+    <div class="form-gold-bar"></div>
+    <div class="readonly-banner" id="exits-readonly-banner" style="display:none;">🔒 Historical exits shown for reference. Add new Q3 exits in the rows below.</div>
+    <div class="form-body">
+      <div class="form-section">
+        <div class="form-section-title" id="exits-section-title">Exit Detail</div>
+        <div style="font-size:12.5px;color:var(--gray-400);background:var(--gray-100);border-radius:var(--radius);padding:12px;line-height:1.5;margin-bottom:14px;" id="exits-instruction">
+          Complete one row for each client who exited without permanent housing. For <em>Temporary / Interim Housing</em> exits, identify the receiving program. Shaded rows are previously submitted exits shown for reference.
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="exit-table"><thead><tr>
+            <th style="width:28px;">#</th><th style="width:55px;">Qtr</th>
+            <th style="width:150px;">Exit Type</th>
+            <th style="width:100px;">Vol./Invol.?</th>
+            <th style="min-width:160px;">Reason for Exit</th>
+            <th style="width:120px;">If Interim — Which Program?</th>
+            <th style="min-width:140px;">Why Better Fit?</th>
+            <th style="width:120px;">Return to Homelessness Context</th>
+            <th style="width:80px;">Follow-Up?</th>
+            <th style="min-width:120px;">Notes</th>
+          </tr></thead>
+          <tbody id="exits-tbody"></tbody></table>
+        </div>
+        <button class="add-row-btn" id="exits-add-btn" onclick="addExitRow()">+ Add Exit Row</button>
+      </div>
+    </div>
+    <div class="form-footer">
+      <div class="form-footer-left" id="exits-footer-note">Exits are cumulative across the contract year</div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-ghost" onclick="closeForm('exits')">Close</button>
+        <button class="btn btn-ghost">Save Draft</button>
+        <button class="btn btn-gold" id="exits-submit-btn" onclick="submitForm('exits')">Submit Detail →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <script>
-// ============================================================
-// CONFIG — paste your Supabase project URL and anon key here.
-// If left as PLACEHOLDER, the app runs in DEMO MODE (localStorage).
-// ============================================================
-const SUPABASE_URL = "https://ppimdipicqwphpilykto.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_PtwivzGYbWXqFmwjOOzXjA_rhEzwZyd";
-
-const DEMO_MODE = SUPABASE_URL === "PLACEHOLDER_URL";
-let sb = null;
-if (!DEMO_MODE) {
-  sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: {
-      detectSessionInUrl: true,
-      persistSession: true,
-      autoRefreshToken: true,
-      flowType: "implicit"
-    }
-  });
-}
-
-function appRedirectUrl() {
-  // Uses the exact hosted page URL without temporary auth tokens.
-  return window.location.origin + window.location.pathname;
-}
-
-function cleanAuthUrl() {
-  // Removes Supabase access tokens from the address bar after sign-in.
-  if (window.location.hash && (
-      window.location.hash.includes("access_token") ||
-      window.location.hash.includes("refresh_token") ||
-      window.location.hash.includes("type=")
-    )) {
-    window.history.replaceState({}, document.title, appRedirectUrl());
-  }
-}
-
-// Constants
-const HH_COMPOSITION = ["Single Adult","Adult Couple (no children)","Single Parent w/ Children","Two Parents w/ Children","Multi-generational","Other"];
-const HOUSING_STATUS_INTAKE = ["Permanently Housed - Lease in own name","Permanently Housed - On lease w/ others","Doubled-up / Couch Surfing","Rental w/ Eviction Notice","Hotel/Motel (self-pay)","Subsidized Housing","Other"];
-const HOUSING_STATUS_FULL = [...HOUSING_STATUS_INTAKE.slice(0,5),"Emergency Shelter","Transitional Housing","Unsheltered",...HOUSING_STATUS_INTAKE.slice(5)];
-const QUALIFYING_EVENT = ["Loss of Employment","Reduction in Income","Medical Emergency","Domestic Violence","Death of Household Member","Disability Onset","Eviction Notice","Utility Shutoff","Family Conflict","Natural Disaster","Other"];
-const RACE_ETHNICITY = ["American Indian or Alaska Native","Asian","Black or African American","Hispanic or Latino/a/e","Middle Eastern or North African","Native Hawaiian or Pacific Islander","White","Multi-racial","Client Declined","Unknown"];
-const GENDER = ["Female","Male","Non-binary","Transgender","Other","Client Declined"];
-const ASSISTANCE_TYPE = ["Rental Arrears","Forward Rent","Security Deposit","Utility Assistance","Moving Costs","Application Fees","Furniture/Household Goods","Transportation","Childcare","Other"];
-const SERVICE_CATEGORY = ["Intake Assessment","Case Management","Housing Search Support","Landlord Mediation","Benefits Enrollment","Employment Support","Financial Counseling","Legal Referral","Mental Health Referral","Follow-up Check-in","Other"];
-
-// State
-let state = { user: null, households: [], activity: [], currentHHId: null };
-let charts = {};
-
-// ============================================================
-// UTILITY
-// ============================================================
-function fmt$(n) { if (!n) return "$0"; return "$" + Math.round(n).toLocaleString(); }
-function fmtPct(n) { if (!n || isNaN(n)) return "0.0%"; return (n * 100).toFixed(1) + "%"; }
-function fiscalQuarter(dateStr) {
-  if (!dateStr) return "";
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return "";
-  const m = d.getMonth() + 1, y = d.getFullYear();
-  let q, fy;
-  if (m >= 10) { q = Math.ceil((m - 9) / 3); fy = y + 1; }
-  else { q = Math.ceil((m + 3) / 3); fy = y; }
-  return `Q${q} FY${String(fy).slice(2)}`;
-}
-function ageBand(age) {
-  if (age == null || age === "") return "";
-  age = Number(age);
-  if (age < 18) return "Under 18";
-  if (age < 25) return "18-24";
-  if (age < 35) return "25-34";
-  if (age < 45) return "35-44";
-  if (age < 55) return "45-54";
-  if (age < 62) return "55-61";
-  return "62+";
-}
-function isStable(exit, ninety) {
-  if (!exit || !ninety) return "pending";
-  const ok = s => s && (s.includes("Permanently") || s.includes("Subsidized"));
-  return ok(exit) && ok(ninety) ? "stable" : "unstable";
-}
-function todayQuarter() { return fiscalQuarter(new Date().toISOString().slice(0,10)); }
-function toast(msg, kind) {
-  const t = document.getElementById("toast");
-  t.textContent = msg; t.className = "toast show " + (kind || "");
-  setTimeout(() => t.className = "toast", 2400);
-}
-function uid() { return "hh_" + Math.random().toString(36).slice(2,10); }
-
-// ============================================================
-// AUTH + STORAGE
-// ============================================================
-async function init() {
-  document.getElementById("login-mode-text").innerHTML = DEMO_MODE
-    ? `<strong>Demo mode</strong> — data stays in this browser only (no shared database). To enable shared multi-user mode, follow the steps in <code>SETUP_GUIDE.md</code> and paste your Supabase credentials at the top of <code>index.html</code>.`
-    : `<strong>Live mode</strong> — connected to Supabase. Data is shared across all authorized users. Use the hosted website URL for sign-in.`;
-
-  if (DEMO_MODE) {
-    // Auto-login as a fake user
-    const email = localStorage.getItem("demo_user") || "demo@weho.org";
-    state.user = { email };
-    loadFromLocalStorage();
-    showApp();
-  } else {
-    if (window.location.hash && window.location.hash.includes("access_token")) {
-      await new Promise(resolve => setTimeout(resolve, 400));
-    }
-
-    const { data } = await sb.auth.getSession();
-
-    if (data.session) {
-      cleanAuthUrl();
-      state.user = data.session.user;
-      await loadFromSupabase();
-      showApp();
-    } else {
-      showLogin();
-    }
-    sb.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN") {
-        cleanAuthUrl();
-        state.user = session.user;
-        loadFromSupabase().then(showApp);
+// ════════════════════════════════════════
+// DATA STORE — Q1 & Q2 from actual files
+// ════════════════════════════════════════
+const QUARTERS = {
+  Q1: {
+    label: 'Q1', period: 'October 1 – December 31, 2025', due: 'January 15, 2026',
+    status: 'accepted', // accepted | review | pending | upcoming
+    cover: {
+      personsQuarter: 24, personsYTD: 24, personsTotal: 24,
+      dataSource: 'Data was collected through enrollment via HMIS',
+      signatory: 'Laura Duncan, Executive Director', sigDate: '2026-01-14',
+      demographics: {
+        ageGender: {
+          '18–24':   {male:2, female:1, nb:0, unk:0},
+          '25–39':   {male:0, female:2, nb:0, unk:0},
+          '40–49':   {male:3, female:2, nb:0, unk:0},
+          '50–61':   {male:3, female:1, nb:0, unk:0},
+          '62–64':   {male:3, female:4, nb:0, unk:0},
+          '65–74':   {male:2, female:1, nb:0, unk:0},
+          '75–84':   {male:0, female:0, nb:0, unk:0},
+          '85+':     {male:0, female:0, nb:0, unk:0},
+        },
+        ethnicity: {
+          'Asian/Pacific Islander': 1,
+          'Black, African American, or African': 5,
+          'Hispanic/Latina/o/e': 9,
+          'American Indian / Alaska Native': 1,
+          'White': 7,
+          'Other (Middle Eastern/North African)': 1,
+          'Unknown': 0
+        },
+        language: { 'English': 24, 'Spanish': 0, 'Russian': 0, 'Farsi': 0, 'Other': 0 }
       }
-      if (event === "SIGNED_OUT") { state.user = null; showLogin(); }
-    });
-  }
-
-  document.getElementById("login-form").onsubmit = handleLogin;
-  document.getElementById("logout-btn").onclick = handleLogout;
-  document.querySelectorAll("[data-nav]").forEach(b => b.onclick = () => navigate(b.dataset.nav));
-}
-
-async function handleLogin(e) {
-  e.preventDefault();
-  const email = document.getElementById("login-email").value.trim();
-  const msg = document.getElementById("login-msg");
-  if (DEMO_MODE) {
-    localStorage.setItem("demo_user", email);
-    state.user = { email };
-    loadFromLocalStorage();
-    showApp();
-    return;
-  }
-  msg.className = "login-msg info"; msg.textContent = "Sending magic link…";
-  const { error } = await sb.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: appRedirectUrl() }
-  });
-  if (error) { msg.className = "login-msg error"; msg.textContent = error.message; }
-  else { msg.className = "login-msg success"; msg.textContent = "Check your inbox — click the link to sign in."; }
-}
-
-async function handleLogout() {
-  if (DEMO_MODE) { state.user = null; localStorage.removeItem("demo_user"); showLogin(); }
-  else { await sb.auth.signOut(); }
-}
-
-function showLogin() {
-  document.getElementById("login-screen").classList.remove("hidden");
-  document.getElementById("app-shell").classList.add("hidden");
-}
-function showApp() {
-  document.getElementById("login-screen").classList.add("hidden");
-  document.getElementById("app-shell").classList.remove("hidden");
-  document.getElementById("user-email").textContent = state.user.email;
-  navigate("landing");
-}
-
-function loadFromLocalStorage() {
-  try {
-    const raw = localStorage.getItem("hphs_fy26");
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      state.households = parsed.households || [];
-      state.activity = parsed.activity || [];
+    },
+    scope: {
+      activeResidents: 19, residentsServed: 24, unduplicatedYTD: 24, newIntakes: 24,
+      bedNightsAvail: 1740, bedNightsOcc: 1402,
+      phExits: 1, avgDaysToPH: 57,
+      sixMonthPlacements: null, sixMonthHoused: null,
+      twelveMonthPlacements: null, twelveMonthHoused: null,
+      suppServicesEngaged: 16,
+      incomeIncrease: 2, incomeMaintained: 19,
+      satSatisfied: 1, satTotal: 1,
+      exitsTemp: 2, exitsInstitutional: 0, exitsHomeless: 1, exitsUnknown: 1
+    },
+    narrative: '', // Not captured in original file
+    roster: {
+      submitted: true, submittedDate: 'January 14, 2026',
+      uniqueClients: 24, enrollments: 24, households: 24,
+      periodStart: '2025-10-01', periodEnd: '2025-12-31',
+      notes: 'Program Roster Report — Active within 10/01/2025 – 12/31/2025. Generated from HMIS/Clarity.'
     }
-  } catch (e) { console.error(e); }
-}
-function saveToLocalStorage() {
-  localStorage.setItem("hphs_fy26", JSON.stringify({
-    households: state.households, activity: state.activity, lastSaved: new Date().toISOString()
-  }));
-}
-
-async function loadFromSupabase() {
-  const { data: hhs } = await sb.from("households").select("*").order("hh_id");
-  const { data: act } = await sb.from("activity_log").select("*").order("created_at", { ascending: false }).limit(10);
-  state.households = hhs || [];
-  state.activity = act || [];
-}
-
-async function persistHousehold(hh) {
-  if (DEMO_MODE) {
-    const idx = state.households.findIndex(h => h.id === hh.id);
-    if (idx >= 0) state.households[idx] = hh; else state.households.push(hh);
-    saveToLocalStorage();
-  } else {
-    const { error } = await sb.from("households").upsert(hh);
-    if (error) toast("Save error: " + error.message, "error");
-    await loadFromSupabase();
-  }
-}
-
-async function logActivity(action, hhId) {
-  const entry = {
-    id: uid(), hh_id: hhId, action,
-    actor: state.user.email, created_at: new Date().toISOString()
-  };
-  state.activity.unshift(entry);
-  state.activity = state.activity.slice(0, 10);
-  if (DEMO_MODE) saveToLocalStorage();
-  else await sb.from("activity_log").insert(entry);
-}
-
-// ============================================================
-// NAVIGATION
-// ============================================================
-function navigate(view) {
-  document.querySelectorAll("main > section").forEach(s => s.classList.add("hidden"));
-  document.getElementById("view-" + view).classList.remove("hidden");
-  document.querySelectorAll("[data-nav]").forEach(b => b.classList.toggle("active", b.dataset.nav === view));
-  if (view === "landing") renderLanding();
-  if (view === "dashboard") renderDashboard();
-  if (view === "households") renderHouseholdsList();
-  if (view === "quarterly") renderQuarterly();
-}
-
-// ============================================================
-// LANDING VIEW
-// ============================================================
-function renderLanding() {
-  document.getElementById("current-quarter").textContent = todayQuarter();
-  const served = state.households.filter(h => h.intake_date).length;
-  const totalAssist = state.households.reduce((s, h) => s + computeAssistTotal(h), 0);
-  const stableCount = state.households.filter(h => isStable(h.housing_at_exit, h.housing_90day) === "stable").length;
-  const totalWithOutcome = state.households.filter(h => h.housing_at_exit && h.housing_90day).length;
-  const stableRate = totalWithOutcome ? stableCount / totalWithOutcome : 0;
-
-  // Days until quarter end
-  const today = new Date();
-  const m = today.getMonth() + 1, y = today.getFullYear();
-  let qEnd;
-  if (m >= 10) qEnd = new Date(y, 11, 31);
-  else if (m <= 3) qEnd = new Date(y, 2, 31);
-  else if (m <= 6) qEnd = new Date(y, 5, 30);
-  else qEnd = new Date(y, 8, 30);
-  const daysToQEnd = Math.ceil((qEnd - today) / (1000*60*60*24));
-
-  document.getElementById("landing-stats").innerHTML = `
-    <div class="stat"><p class="stat-label">Households tracked</p><p class="stat-value">${served} <span class="small">of 20</span></p></div>
-    <div class="stat"><p class="stat-label">Assistance disbursed</p><p class="stat-value">${fmt$(totalAssist)}</p></div>
-    <div class="stat"><p class="stat-label">Days to quarter end</p><p class="stat-value">${daysToQEnd}</p></div>
-    <div class="stat"><p class="stat-label">90-day stability rate</p><p class="stat-value">${totalWithOutcome ? fmtPct(stableRate) : "—"}</p></div>
-  `;
-
-  // Recent activity
-  const list = document.getElementById("recent-list");
-  if (state.activity.length === 0) {
-    list.innerHTML = `<div class="recent-empty">No recent activity yet. Add a household to get started.</div>`;
-  } else {
-    list.innerHTML = state.activity.slice(0, 5).map(a => `
-      <div class="recent-item">
-        <span><span class="hhid">${a.hh_id || "—"}</span>${escapeHtml(a.action)}</span>
-        <span class="who">${timeAgo(a.created_at)} • ${escapeHtml(a.actor)}</span>
-      </div>`).join("");
-  }
-
-  // Sync status
-  const lastBackup = localStorage.getItem("last_backup_at");
-  const sync = document.getElementById("sync-status");
-  if (DEMO_MODE) {
-    if (!lastBackup) {
-      sync.innerHTML = `<span class="warn">⚠ Demo mode — no backup yet</span> · Export a JSON backup regularly so you don't lose data.`;
-    } else {
-      const days = Math.floor((Date.now() - new Date(lastBackup).getTime()) / (1000*60*60*24));
-      sync.innerHTML = days > 7
-        ? `<span class="warn">⚠ Last backup ${days} days ago</span> · Consider exporting again.`
-        : `<span class="ok">✓ Last backup ${days === 0 ? "today" : days + " day(s) ago"}</span>`;
+  },
+  Q2: {
+    label: 'Q2', period: 'January 1 – March 31, 2026', due: 'April 15, 2026',
+    status: 'review',
+    cover: {
+      personsQuarter: 8, personsYTD: 32, personsTotal: 8,
+      dataSource: 'Data was collected through enrollment via HMIS',
+      signatory: 'Laura Duncan, Executive Director', sigDate: '2026-04-15',
+      demographics: {
+        ageGender: {
+          '18–24':   {male:0, female:0, nb:0, unk:0},
+          '25–39':   {male:1, female:1, nb:0, unk:0},
+          '40–49':   {male:2, female:1, nb:0, unk:0},
+          '50–61':   {male:2, female:0, nb:0, unk:0},
+          '62–64':   {male:0, female:0, nb:0, unk:0},
+          '65–74':   {male:1, female:0, nb:0, unk:0},
+          '75–84':   {male:0, female:0, nb:0, unk:0},
+          '85+':     {male:0, female:0, nb:0, unk:0},
+        },
+        ethnicity: {
+          'Asian/Pacific Islander': 0,
+          'Black, African American, or African': 4,
+          'Hispanic/Latina/o/e': 0,
+          'American Indian / Alaska Native': 0,
+          'White': 4,
+          'Other (Middle Eastern/North African)': 0,
+          'Unknown': 0
+        },
+        language: { 'English': 8, 'Spanish': 0, 'Russian': 0, 'Farsi': 0, 'Other': 0 }
+      }
+    },
+    scope: {
+      activeResidents: 20, residentsServed: 29, unduplicatedYTD: 32, newIntakes: 8,
+      bedNightsAvail: 1800, bedNightsOcc: 1710,
+      phExits: 0, avgDaysToPH: null,
+      sixMonthPlacements: null, sixMonthHoused: null,
+      twelveMonthPlacements: null, twelveMonthHoused: null,
+      suppServicesEngaged: 26,
+      incomeIncrease: 5, incomeMaintained: 16,
+      satSatisfied: 4, satTotal: 4,
+      exitsTemp: 2, exitsInstitutional: 0, exitsHomeless: 1, exitsUnknown: 4
+    },
+    narrative: '',
+    roster: {
+      submitted: true, submittedDate: 'April 15, 2026',
+      uniqueClients: 32, enrollments: 32, households: 32,
+      periodStart: '2026-01-01', periodEnd: '2026-03-31',
+      notes: 'Program Roster Report — Active within 01/01/2025 – 03/31/2026. Generated Wed Apr 1 2026.'
     }
-  } else {
-    sync.innerHTML = `<span class="ok">✓ Synced to Supabase</span>`;
+  },
+  Q3: {
+    label: 'Q3', period: 'April 1 – June 30, 2026', due: 'June 15, 2026',
+    status: 'pending',
+    cover: { personsQuarter: null, personsYTD: null, personsTotal: null, dataSource: '', signatory: 'Laura Duncan, Executive Director', sigDate: '', demographics: { ageGender: { '18–24':{male:0,female:0,nb:0,unk:0},'25–39':{male:0,female:0,nb:0,unk:0},'40–49':{male:0,female:0,nb:0,unk:0},'50–61':{male:0,female:0,nb:0,unk:0},'62–64':{male:0,female:0,nb:0,unk:0},'65–74':{male:0,female:0,nb:0,unk:0},'75–84':{male:0,female:0,nb:0,unk:0},'85+':{male:0,female:0,nb:0,unk:0} }, ethnicity: {'Asian/Pacific Islander':0,'Black, African American, or African':0,'Hispanic/Latina/o/e':0,'American Indian / Alaska Native':0,'White':0,'Other (Middle Eastern/North African)':0,'Unknown':0}, language: {'English':0,'Spanish':0,'Russian':0,'Farsi':0,'Other':0} } },
+    scope: { activeResidents:null, residentsServed:null, unduplicatedYTD:null, newIntakes:null, bedNightsAvail:null, bedNightsOcc:null, phExits:null, avgDaysToPH:null, sixMonthPlacements:null, sixMonthHoused:null, twelveMonthPlacements:null, twelveMonthHoused:null, suppServicesEngaged:null, incomeIncrease:null, incomeMaintained:null, satSatisfied:null, satTotal:null, exitsTemp:null, exitsInstitutional:null, exitsHomeless:null, exitsUnknown:null },
+    narrative: '',
+    roster: { submitted: false }
+  },
+  Q4: {
+    label: 'Q4', period: 'July 1 – September 30, 2026', due: 'October 15, 2026',
+    status: 'upcoming',
+    cover: { personsQuarter: null, personsYTD: null, personsTotal: null, dataSource: '', signatory: 'Laura Duncan, Executive Director', sigDate: '', demographics: { ageGender: { '18–24':{male:0,female:0,nb:0,unk:0},'25–39':{male:0,female:0,nb:0,unk:0},'40–49':{male:0,female:0,nb:0,unk:0},'50–61':{male:0,female:0,nb:0,unk:0},'62–64':{male:0,female:0,nb:0,unk:0},'65–74':{male:0,female:0,nb:0,unk:0},'75–84':{male:0,female:0,nb:0,unk:0},'85+':{male:0,female:0,nb:0,unk:0} }, ethnicity: {'Asian/Pacific Islander':0,'Black, African American, or African':0,'Hispanic/Latina/o/e':0,'American Indian / Alaska Native':0,'White':0,'Other (Middle Eastern/North African)':0,'Unknown':0}, language: {'English':0,'Spanish':0,'Russian':0,'Farsi':0,'Other':0} } },
+    scope: { activeResidents:null, residentsServed:null, unduplicatedYTD:null, newIntakes:null, bedNightsAvail:null, bedNightsOcc:null, phExits:null, avgDaysToPH:null, sixMonthPlacements:null, sixMonthHoused:null, twelveMonthPlacements:null, twelveMonthHoused:null, suppServicesEngaged:null, incomeIncrease:null, incomeMaintained:null, satSatisfied:null, satTotal:null, exitsTemp:null, exitsInstitutional:null, exitsHomeless:null, exitsUnknown:null },
+    narrative: '',
+    roster: { submitted: false }
   }
+};
+
+// Historical exits from actual file
+const HISTORICAL_EXITS = [
+  {id:1,qtr:'Q1',type:'Temporary / Interim Housing',vol:'Involuntary',reason:'Client self-exited due to inability to comply with curfew hours.',program:'Marktown',fit:'Client has more flexibility regarding curfew and allowance of food and beverages in living space.',context:'No',followup:'No',notes:'Client continued to receive violations due to not coming in by curfew or being AWOL.'},
+  {id:2,qtr:'Q1',type:'Temporary / Interim Housing',vol:'Involuntary',reason:'Client had multiple violations and drug paraphernalia in room. Connected to substance abuse program but did not report.',program:'North Hollywood Shelter',fit:'More flexibility with curfew and food/beverages in living space.',context:'No',followup:'Yes',notes:'After exit, client was found near Holloway. Thanked program manager for opportunity; still at North Hollywood Shelter but struggling with substance use.'},
+  {id:3,qtr:'Q1',type:'Returned to Homelessness',vol:'Voluntary',reason:'Unknown',program:'N/A',fit:'N/A',context:'Unknown',followup:'No',notes:''},
+  {id:4,qtr:'Q1',type:'Unknown / Left Program',vol:'Voluntary',reason:'Unknown',program:'N/A',fit:'N/A',context:'N/A',followup:'No',notes:''},
+  {id:5,qtr:'Q2',type:'Temporary / Interim Housing',vol:'Voluntary',reason:'Client stated she found a program more suitable for her.',program:'Hawkes',fit:'Location was better for the client — closer to skid row area.',context:'No',followup:'Yes',notes:'Client moved to IH program on skid row per her preference.'},
+  {id:6,qtr:'Q2',type:'Temporary / Interim Housing',vol:'Involuntary',reason:"Client did not meet weekly, showed no effort to increase income, continued violations after behavioral contract. 90 days passed, no PH connection. Client harassed and threatened staff.",program:'Mark Twain',fit:'More flexible with curfew and allowance of food in living space.',context:'No',followup:'No',notes:''},
+  {id:7,qtr:'Q2',type:'Unknown / Left Program',vol:'Voluntary',reason:'Client did not like lighting in room; destroyed fixtures. Claimed she was being starved but refused meal periods. Severe mental health conditions; refused offered services. Exited shortly after.',program:'N/A',fit:'N/A',context:'Unknown',followup:'No response',notes:''},
+  {id:8,qtr:'Q2',type:'Unknown / Left Program',vol:'Voluntary',reason:'Client stated he was moving out of state to live with a family member.',program:'N/A',fit:'N/A',context:'N/A',followup:'No response',notes:'While in program was not compliant — would not meet with CM weekly, more than 10 curfew violations, AWOL for almost a week.'},
+  {id:9,qtr:'Q2',type:'Unknown / Left Program',vol:'Voluntary',reason:"Partner to Client #8; stated he was going with his partner to stay with relatives. Advised to consider solid housing options available. Room was empty by end of day.",program:'N/A',fit:'N/A',context:'N/A',followup:'No response',notes:''},
+  {id:10,qtr:'Q2',type:'Unknown / Left Program',vol:'Voluntary',reason:'Stated he was going to move in with his partner.',program:'N/A',fit:'N/A',context:'Refused to provide letter from partner proving residency.',followup:'Yes',notes:'Remains with partner.'},
+];
+
+// YTD computed fields
+function getYTD(field) {
+  return (QUARTERS.Q1.scope[field]||0) + (QUARTERS.Q2.scope[field]||0);
+}
+function getYTDThrough(q, field) {
+  const qs = ['Q1','Q2','Q3','Q4'];
+  let total = 0;
+  for (let i = 0; i <= qs.indexOf(q); i++) {
+    total += (QUARTERS[qs[i]].scope[field] || 0);
+  }
+  return total;
+}
+function getYTDPersons(q) {
+  const qs = ['Q1','Q2','Q3','Q4'];
+  let total = 0;
+  for (let i = 0; i <= qs.indexOf(q); i++) {
+    total += (QUARTERS[qs[i]].cover.personsQuarter || 0);
+  }
+  return total;
 }
 
-function timeAgo(iso) {
-  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
-  if (diff < 60) return "just now";
-  if (diff < 3600) return Math.floor(diff/60) + " min ago";
-  if (diff < 86400) return Math.floor(diff/3600) + "h ago";
-  return Math.floor(diff/86400) + "d ago";
-}
-function escapeHtml(s) {
-  return (s == null ? "" : String(s)).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[c]);
-}
+// ════════════════════
+// STATE
+// ════════════════════
+let currentQuarter = 'Q1';
+let newExitRows = 0;
 
-// ============================================================
-// HOUSEHOLDS LIST
-// ============================================================
-function computeAssistTotal(h) {
-  return (h.assistance_log || []).reduce((s, e) => s + (Number(e.amount) || 0), 0);
-}
-function computeSessions(h) { return (h.service_log || []).length; }
-function hhStatus(h) {
-  if (!h.intake_date) return { label: "Empty", cls: "empty" };
-  if (!h.assistance_end) return { label: "Active", cls: "active" };
-  return { label: "Exited", cls: "exited" };
-}
-
-function renderHouseholdsList() {
-  const q = (document.getElementById("hh-search")?.value || "").toLowerCase();
-  const body = document.getElementById("hh-list-body");
-  const sorted = [...state.households].sort((a,b) => (a.hh_id || "").localeCompare(b.hh_id || ""));
-  const filtered = sorted.filter(h => {
-    if (!q) return true;
-    return [h.hh_id, h.qualifying_event, hhStatus(h).label].some(x => (x || "").toLowerCase().includes(q));
+// ════════════════════
+// LOGIN
+// ════════════════════
+// ════════════════════
+// QUARTER SELECTOR
+// ════════════════════
+function setQuarter(q) {
+  currentQuarter = q;
+  ['Q1','Q2','Q3','Q4'].forEach(qk => {
+    const btn = document.getElementById('qbtn-' + qk);
+    btn.classList.remove('active');
+    const statusClass = {accepted:'submitted',review:'review',pending:'pending',upcoming:'upcoming'}[QUARTERS[qk].status];
+    btn.className = 'q-btn ' + statusClass;
+    if (qk === q) btn.classList.add('active');
   });
-  if (filtered.length === 0) {
-    body.innerHTML = `<div style="padding: 36px; text-align: center; color: var(--grey-400); font-size: 14px;">No households yet. Click "+ Add household" to create the first record.</div>`;
-    return;
-  }
-  body.innerHTML = filtered.map(h => {
-    const st = hhStatus(h);
-    const stab = isStable(h.housing_at_exit, h.housing_90day);
-    const stabLabel = stab === "stable" ? "Stable" : (stab === "unstable" ? "Unstable" : "—");
-    const stabCls = stab === "stable" ? "stable" : (stab === "unstable" ? "unstable" : "empty");
-    return `<div class="hh-list-row" onclick="openHousehold('${h.id}')">
-      <span class="id">${escapeHtml(h.hh_id || "—")}</span>
-      <span>${escapeHtml(h.hh_composition || "—")}</span>
-      <span><span class="status ${st.cls}">${st.label}</span></span>
-      <span>${computeSessions(h)}</span>
-      <span>${fmt$(computeAssistTotal(h))}</span>
-      <span><span class="status ${stabCls}">${stabLabel}</span></span>
-    </div>`;
-  }).join("");
+  renderDashboard(q);
 }
 
-async function newHousehold() {
-  // Find next HH-### slot
-  const usedIds = new Set(state.households.map(h => h.hh_id));
-  let nextNum = 1;
-  while (usedIds.has(`HH-${String(nextNum).padStart(3, "0")}`) && nextNum <= 99) nextNum++;
-  const hh = {
-    id: uid(),
-    hh_id: `HH-${String(nextNum).padStart(3, "0")}`,
-    intake_date: null,
-    hh_composition: "",
-    hh_size: null,
-    monthly_income: null,
-    housing_at_intake: "",
-    age_primary: null,
-    race_ethnicity: "",
-    gender: "",
-    veteran: "",
-    disability: "",
-    eligible: "",
-    qualifying_event: "",
-    assistance_start: null,
-    assistance_end: null,
-    arrears_flag: "",
-    arrears_amount: 0,
-    benefits_cert: "",
-    housing_at_entry: "",
-    housing_at_exit: "",
-    housing_90day: "",
-    success_story: "",
-    assistance_log: [],
-    service_log: [],
-    updated_at: new Date().toISOString(),
-    updated_by: state.user.email
-  };
-  await persistHousehold(hh);
-  await logActivity("Created new household", hh.hh_id);
-  openHousehold(hh.id);
-}
-
-function openHousehold(id) {
-  state.currentHHId = id;
-  renderEditor();
-  navigate("editor");
-}
-
-async function deleteCurrentHousehold() {
-  if (!state.currentHHId) return;
-  if (!confirm("Delete this household record permanently? This cannot be undone.")) return;
-  const hh = state.households.find(h => h.id === state.currentHHId);
-  if (DEMO_MODE) {
-    state.households = state.households.filter(h => h.id !== state.currentHHId);
-    saveToLocalStorage();
-  } else {
-    await sb.from("households").delete().eq("id", state.currentHHId);
-    await loadFromSupabase();
-  }
-  await logActivity("Deleted record", hh?.hh_id);
-  state.currentHHId = null;
-  navigate("households");
-  toast("Record deleted");
-}
-
-// ============================================================
-// EDITOR
-// ============================================================
-function renderEditor() {
-  const hh = state.households.find(h => h.id === state.currentHHId);
-  if (!hh) { navigate("households"); return; }
-  document.getElementById("editor-title").textContent = `Household record • ${hh.hh_id}`;
-  const body = document.getElementById("editor-body");
-  body.innerHTML = `
-    <div class="form-section">
-      <div class="form-section-header">1. Basic client tracking information</div>
-      <div class="form-section-body">
-        ${field(hh, "hh_id", "Client / Household ID", "text", { readonly: true })}
-        ${field(hh, "intake_date", "Date of intake", "date")}
-        ${field(hh, "hh_composition", "Household composition", "select", { options: HH_COMPOSITION })}
-        ${field(hh, "hh_size", "Household size", "number", { min: 1 })}
-        ${field(hh, "monthly_income", "Monthly household income", "currency")}
-        ${field(hh, "housing_at_intake", "Housing status at intake", "select", { options: HOUSING_STATUS_INTAKE })}
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="form-section-header">2. Demographics of primary household member (no PII)</div>
-      <div class="form-section-body">
-        ${field(hh, "age_primary", "Age of primary member", "number", { min: 0, max: 110 })}
-        <div class="form-row"><label>Age band</label><input class="computed" readonly value="${escapeHtml(ageBand(hh.age_primary))}"></div>
-        ${field(hh, "race_ethnicity", "Race / Ethnicity", "select", { options: RACE_ETHNICITY })}
-        ${field(hh, "gender", "Gender", "select", { options: GENDER })}
-        ${field(hh, "veteran", "Veteran status", "select", { options: ["Yes","No"] })}
-        ${field(hh, "disability", "Disability status", "select", { options: ["Yes","No"] })}
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="form-section-header">3. Eligibility &amp; crisis documentation</div>
-      <div class="form-section-body">
-        ${field(hh, "eligible", "Met program eligibility requirements", "select", { options: ["Yes","No"] })}
-        ${field(hh, "qualifying_event", "Qualifying event / crisis", "select", { options: QUALIFYING_EVENT })}
-        ${field(hh, "assistance_start", "Date assistance began", "date")}
-        ${field(hh, "assistance_end", "Date assistance ended (blank if active)", "date")}
-        <div class="form-row"><label>Currently active</label><input class="computed" readonly value="${hh.assistance_end ? "No (exited)" : (hh.intake_date ? "Yes" : "")}"></div>
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="form-section-header">4. Financial assistance</div>
-      <div class="form-section-body">
-        ${field(hh, "arrears_flag", "Rental arrears at intake?", "select", { options: ["Yes","No"] })}
-        ${field(hh, "arrears_amount", "Amount of rental arrears owed at intake", "currency")}
-        <div style="margin-top: 14px;">
-          <h4 style="font-size: 13px; font-weight: 600; color: var(--grey-700); margin: 0 0 8px;">Disbursement log</h4>
-          <table class="log-table">
-            <thead><tr><th style="width:130px">Date</th><th>Type</th><th style="width:120px">Amount</th><th style="width:90px">Quarter</th><th>Notes</th><th style="width:40px"></th></tr></thead>
-            <tbody id="assist-log-body"></tbody>
-            <tfoot><tr><td colspan="2">Running total</td><td id="assist-total"></td><td colspan="3"></td></tr></tfoot>
-          </table>
-          <div class="log-add"><button class="btn subtle sm" onclick="addAssistRow()">+ Add disbursement</button></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="form-section-header">5. Service delivery (case management)</div>
-      <div class="form-section-body">
-        <div class="cert-row">
-          <label>☑ Certification: Client received Benefits Impact Consultation</label>
-          <select id="cert-select" onchange="updateField('benefits_cert', this.value)">
-            <option value="" ${hh.benefits_cert === "" ? "selected" : ""}>— Select —</option>
-            <option value="Yes" ${hh.benefits_cert === "Yes" ? "selected" : ""}>Yes</option>
-            <option value="No" ${hh.benefits_cert === "No" ? "selected" : ""}>No</option>
-          </select>
-        </div>
-        <div style="margin-top: 14px;">
-          <h4 style="font-size: 13px; font-weight: 600; color: var(--grey-700); margin: 0 0 8px;">Session log</h4>
-          <table class="log-table">
-            <thead><tr><th style="width:130px">Session date</th><th>Category</th><th style="width:90px">Quarter</th><th>Notes / topics</th><th style="width:40px"></th></tr></thead>
-            <tbody id="service-log-body"></tbody>
-            <tfoot><tr><td colspan="3">Total sessions</td><td id="service-total" colspan="2"></td></tr></tfoot>
-          </table>
-          <div class="log-add"><button class="btn subtle sm" onclick="addServiceRow()">+ Add session</button></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="form-section-header">6. Housing outcomes over time</div>
-      <div class="form-section-body">
-        ${field(hh, "housing_at_entry", "Housing status at program entry", "select", { options: HOUSING_STATUS_INTAKE })}
-        ${field(hh, "housing_at_exit", "Housing status at program exit", "select", { options: HOUSING_STATUS_FULL })}
-        ${field(hh, "housing_90day", "Housing status 90 days after exit", "select", { options: HOUSING_STATUS_FULL })}
-        <div class="form-row"><label>Housing stability maintained at 90 days</label><input class="computed" readonly value="${{stable: "Yes — stable", unstable: "No — unstable", pending: "Pending"}[isStable(hh.housing_at_exit, hh.housing_90day)]}"></div>
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="form-section-header">7. Narrative / success story (optional)</div>
-      <div class="form-section-body">
-        <div class="form-row" style="grid-template-columns: 1fr;">
-          <textarea onchange="updateField('success_story', this.value)" placeholder="Enter qualitative case notes or a brief success story. Do not include the client's name or other PII.">${escapeHtml(hh.success_story || "")}</textarea>
-        </div>
-      </div>
-    </div>
-  `;
-  renderAssistLog(hh);
-  renderServiceLog(hh);
-}
-
-function field(hh, key, label, type, opts = {}) {
-  const val = hh[key];
-  const id = `f-${key}`;
-  let input;
-  if (type === "select") {
-    input = `<select id="${id}" onchange="updateField('${key}', this.value)">
-      <option value="">— Select —</option>
-      ${opts.options.map(o => `<option value="${escapeHtml(o)}" ${val === o ? "selected" : ""}>${escapeHtml(o)}</option>`).join("")}
-    </select>`;
-  } else if (type === "currency") {
-    input = `<div class="currency-wrap"><input id="${id}" type="number" min="0" step="1" value="${val || ""}" onchange="updateField('${key}', Number(this.value))"></div>`;
-  } else if (type === "number") {
-    input = `<input id="${id}" type="number" ${opts.min != null ? `min="${opts.min}"` : ""} ${opts.max != null ? `max="${opts.max}"` : ""} value="${val == null ? "" : val}" onchange="updateField('${key}', Number(this.value))">`;
-  } else if (type === "date") {
-    input = `<input id="${id}" type="date" value="${val || ""}" onchange="updateField('${key}', this.value || null)">`;
-  } else {
-    input = `<input id="${id}" type="text" value="${escapeHtml(val || "")}" ${opts.readonly ? "readonly class='computed'" : `onchange="updateField('${key}', this.value)"`}>`;
-  }
-  return `<div class="form-row"><label>${label}</label>${input}</div>`;
-}
-
-async function updateField(key, value) {
-  const hh = state.households.find(h => h.id === state.currentHHId);
-  if (!hh) return;
-  hh[key] = value;
-  hh.updated_at = new Date().toISOString();
-  hh.updated_by = state.user.email;
-  await persistHousehold(hh);
-  // Update derived fields shown in editor
-  if (key === "age_primary" || key === "assistance_end" || key === "housing_at_exit" || key === "housing_90day" || key === "intake_date") {
-    renderEditor();
-  }
-  toast("Saved", "success");
-}
-
-function renderAssistLog(hh) {
-  const tbody = document.getElementById("assist-log-body");
-  const log = hh.assistance_log || [];
-  tbody.innerHTML = log.map((row, i) => `
-    <tr>
-      <td><input type="date" value="${row.date || ""}" onchange="updateAssistField(${i}, 'date', this.value)"></td>
-      <td><select onchange="updateAssistField(${i}, 'type', this.value)">
-        <option value="">—</option>${ASSISTANCE_TYPE.map(t => `<option ${row.type === t ? "selected" : ""}>${t}</option>`).join("")}
-      </select></td>
-      <td><input type="number" min="0" step="1" value="${row.amount || ""}" onchange="updateAssistField(${i}, 'amount', Number(this.value))"></td>
-      <td class="quarter-cell">${fiscalQuarter(row.date)}</td>
-      <td><input type="text" value="${escapeHtml(row.notes || "")}" onchange="updateAssistField(${i}, 'notes', this.value)"></td>
-      <td><button class="row-del" onclick="removeAssistRow(${i})">✕</button></td>
-    </tr>`).join("");
-  document.getElementById("assist-total").textContent = fmt$(log.reduce((s, r) => s + (Number(r.amount) || 0), 0));
-}
-async function addAssistRow() {
-  const hh = state.households.find(h => h.id === state.currentHHId);
-  hh.assistance_log = hh.assistance_log || [];
-  hh.assistance_log.push({ date: null, type: "", amount: 0, notes: "" });
-  await persistHousehold(hh);
-  renderAssistLog(hh);
-}
-async function updateAssistField(i, key, val) {
-  const hh = state.households.find(h => h.id === state.currentHHId);
-  hh.assistance_log[i][key] = val;
-  await persistHousehold(hh);
-  renderAssistLog(hh);
-}
-async function removeAssistRow(i) {
-  const hh = state.households.find(h => h.id === state.currentHHId);
-  hh.assistance_log.splice(i, 1);
-  await persistHousehold(hh);
-  renderAssistLog(hh);
-}
-
-function renderServiceLog(hh) {
-  const tbody = document.getElementById("service-log-body");
-  const log = hh.service_log || [];
-  tbody.innerHTML = log.map((row, i) => `
-    <tr>
-      <td><input type="date" value="${row.date || ""}" onchange="updateServiceField(${i}, 'date', this.value)"></td>
-      <td><select onchange="updateServiceField(${i}, 'category', this.value)">
-        <option value="">—</option>${SERVICE_CATEGORY.map(t => `<option ${row.category === t ? "selected" : ""}>${t}</option>`).join("")}
-      </select></td>
-      <td class="quarter-cell">${fiscalQuarter(row.date)}</td>
-      <td><input type="text" value="${escapeHtml(row.notes || "")}" onchange="updateServiceField(${i}, 'notes', this.value)"></td>
-      <td><button class="row-del" onclick="removeServiceRow(${i})">✕</button></td>
-    </tr>`).join("");
-  document.getElementById("service-total").textContent = log.length;
-}
-async function addServiceRow() {
-  const hh = state.households.find(h => h.id === state.currentHHId);
-  hh.service_log = hh.service_log || [];
-  hh.service_log.push({ date: null, category: "", notes: "" });
-  await persistHousehold(hh);
-  renderServiceLog(hh);
-}
-async function updateServiceField(i, key, val) {
-  const hh = state.households.find(h => h.id === state.currentHHId);
-  hh.service_log[i][key] = val;
-  await persistHousehold(hh);
-  renderServiceLog(hh);
-}
-async function removeServiceRow(i) {
-  const hh = state.households.find(h => h.id === state.currentHHId);
-  hh.service_log.splice(i, 1);
-  await persistHousehold(hh);
-  renderServiceLog(hh);
-}
-
-// ============================================================
+// ════════════════════
 // DASHBOARD
-// ============================================================
-function filterByQuarter(filter) {
-  if (filter === "all") return state.households.filter(h => h.intake_date);
-  return state.households.filter(h => h.intake_date && fiscalQuarter(h.intake_date) === filter);
+// ════════════════════
+function renderDashboard(q) {
+  const qd = QUARTERS[q];
+  document.getElementById('dash-title').textContent = 'Program Dashboard';
+
+  // Notice
+  const notice = document.getElementById('main-notice');
+  const noticeText = document.getElementById('main-notice-text');
+  if (qd.status === 'accepted') {
+    notice.className = 'notice green';
+    noticeText.innerHTML = `<strong>${q} Report Accepted.</strong> All three components for ${qd.period} have been reviewed and accepted by the City.`;
+  } else if (qd.status === 'review') {
+    notice.className = 'notice navy';
+    noticeText.innerHTML = `<strong>${q} Report Under Review.</strong> Submitted ${qd.due}. Your City program monitor is reviewing the Quarterly Report, Client Roster, and Non-Permanent Exit Detail.`;
+  } else if (qd.status === 'pending') {
+    notice.className = 'notice amber';
+    noticeText.innerHTML = `<strong>${q} Report Due ${qd.due}.</strong> The Quarterly Program Report, Client Roster, and Non-Permanent Exit Detail for ${qd.period} are due to your City program monitor by the 15th calendar day following the quarter.`;
+  } else {
+    notice.className = 'notice gray';
+    noticeText.innerHTML = `<strong>${q} reporting period has not yet begun.</strong> ${qd.period}. Due date: ${qd.due}.`;
+  }
+
+  renderKPIs(q);
+  renderSubmissions(q);
+  renderGoals(q);
 }
 
-function renderDashboard() {
-  const filter = document.getElementById("quarter-filter").value;
-  const filtered = filterByQuarter(filter);
-  const all = state.households.filter(h => h.intake_date);
+function val(v, suffix='') { return v !== null && v !== undefined ? v + suffix : '—'; }
+function pct(n, d) { return (d && d > 0) ? Math.round(n/d*100) + '%' : '—'; }
 
-  const totalServed = filtered.length;
-  const totalAssist = filtered.reduce((s, h) => s + computeAssistTotal(h), 0);
-  const avgAssist = totalServed ? totalAssist / totalServed : 0;
-  const totalSessions = filtered.reduce((s, h) => s + computeSessions(h), 0);
-  const withArrears = filtered.filter(h => h.arrears_flag === "Yes").length;
+function renderKPIs(q) {
+  const s = QUARTERS[q].scope;
+  const c = QUARTERS[q].cover;
+  const ytdPersons = getYTDPersons(q);
+  const occupancy = s.bedNightsAvail ? Math.round(s.bedNightsOcc / s.bedNightsAvail * 100) : null;
+  const phRate = ytdPersons > 0 ? Math.round(getYTDThrough(q,'phExits') / ytdPersons * 100) : 0;
+  const suppRate = s.residentsServed > 0 ? Math.round(s.suppServicesEngaged / s.residentsServed * 100) : null;
 
-  const avgArrears = (() => {
-    const arr = all.filter(h => h.arrears_flag === "Yes" && Number(h.arrears_amount) > 0).map(h => Number(h.arrears_amount));
-    return arr.length ? arr.reduce((s,x) => s+x, 0) / arr.length : 0;
-  })();
-  const stableCount = all.filter(h => isStable(h.housing_at_exit, h.housing_90day) === "stable").length;
-  const activeCount = all.filter(h => !h.assistance_end).length;
-  const pctCert = all.length ? all.filter(h => h.benefits_cert === "Yes").length / all.length : 0;
-  const stableRateBase = all.filter(h => h.housing_at_exit && h.housing_90day);
-  const stableRate = stableRateBase.length ? stableCount / stableRateBase.length : 0;
-
-  document.getElementById("kpi-grid").innerHTML = `
-    <div class="kpi"><p class="kpi-label">Households served</p><p class="kpi-value">${totalServed}</p><p class="kpi-sub">${filter === "all" ? "FY26 to date" : filter}</p></div>
-    <div class="kpi"><p class="kpi-label">Total assistance</p><p class="kpi-value">${fmt$(totalAssist)}</p></div>
-    <div class="kpi"><p class="kpi-label">Avg / household</p><p class="kpi-value">${fmt$(avgAssist)}</p></div>
-    <div class="kpi"><p class="kpi-label">Case mgmt sessions</p><p class="kpi-value">${totalSessions}</p></div>
-    <div class="kpi"><p class="kpi-label">HH with rental arrears</p><p class="kpi-value">${withArrears}</p></div>
-  `;
-  document.getElementById("kpi-grid-2").innerHTML = `
-    <div class="kpi"><p class="kpi-label">Avg arrears amount</p><p class="kpi-value">${fmt$(avgArrears)}</p><p class="kpi-sub">All periods</p></div>
-    <div class="kpi"><p class="kpi-label">Stable @ 90 days</p><p class="kpi-value">${stableCount}</p><p class="kpi-sub">All periods</p></div>
-    <div class="kpi"><p class="kpi-label">Currently active</p><p class="kpi-value">${activeCount}</p></div>
-    <div class="kpi"><p class="kpi-label">% benefits consultation</p><p class="kpi-value">${fmtPct(pctCert)}</p></div>
-    <div class="kpi"><p class="kpi-label">90-day stability rate</p><p class="kpi-value">${fmtPct(stableRate)}</p></div>
-  `;
-
-  // Breakdown tables (program-to-date, not filtered)
-  renderBreakdown("bd-race", RACE_ETHNICITY, all, h => h.race_ethnicity);
-  renderBreakdown("bd-age", ["Under 18","18-24","25-34","35-44","45-54","55-61","62+"], all, h => ageBand(h.age_primary));
-  renderBreakdown("bd-comp", HH_COMPOSITION, all, h => h.hh_composition);
-  renderBreakdown("bd-event", QUALIFYING_EVENT, all, h => h.qualifying_event);
-
-  // Charts
-  drawCharts(all);
-}
-
-function renderBreakdown(elId, options, all, accessor) {
-  const counts = {};
-  options.forEach(o => counts[o] = 0);
-  all.forEach(h => {
-    const v = accessor(h);
-    if (v && counts[v] != null) counts[v]++;
-  });
-  const total = all.length;
-  document.getElementById(elId).innerHTML = options
-    .filter(o => counts[o] > 0)
-    .map(o => `<tr><td>${escapeHtml(o)}</td><td>${counts[o]} <span style="color:var(--grey-400); font-weight:400;">(${total ? ((counts[o]/total)*100).toFixed(0) : 0}%)</span></td></tr>`)
-    .join("") || `<tr><td colspan="2" style="text-align:center; color:var(--grey-400); padding:14px;">No data yet</td></tr>`;
-}
-
-function drawCharts(all) {
-  const quarters = ["Q1 FY26","Q2 FY26","Q3 FY26","Q4 FY26"];
-  const byQ = q => all.filter(h => fiscalQuarter(h.intake_date) === q);
-  const counts = quarters.map(q => byQ(q).length);
-  const amounts = quarters.map(q => byQ(q).reduce((s,h) => s + computeAssistTotal(h), 0));
-
-  drawChart("ch-quarter", "bar", {
-    labels: quarters,
-    datasets: [{ label: "Households", data: counts, backgroundColor: "#2E75B6" }]
-  });
-  drawChart("ch-assist", "line", {
-    labels: quarters,
-    datasets: [{ label: "Assistance ($)", data: amounts, borderColor: "#1F3864", backgroundColor: "rgba(31,56,100,0.1)", tension: 0.3, fill: true }]
-  });
-
-  // Housing outcomes: stacked
-  const statuses = HOUSING_STATUS_FULL;
-  const entryCounts = statuses.map(s => all.filter(h => h.housing_at_entry === s).length);
-  const exitCounts = statuses.map(s => all.filter(h => h.housing_at_exit === s).length);
-  const ninetyCounts = statuses.map(s => all.filter(h => h.housing_90day === s).length);
-  // Keep only statuses with any data
-  const keep = statuses.map((s, i) => entryCounts[i] + exitCounts[i] + ninetyCounts[i] > 0);
-  const lbls = statuses.filter((_, i) => keep[i]);
-  drawChart("ch-housing", "bar", {
-    labels: lbls,
-    datasets: [
-      { label: "Entry", data: entryCounts.filter((_,i)=>keep[i]), backgroundColor: "#DDEBF7" },
-      { label: "Exit", data: exitCounts.filter((_,i)=>keep[i]), backgroundColor: "#2E75B6" },
-      { label: "90-day", data: ninetyCounts.filter((_,i)=>keep[i]), backgroundColor: "#1F3864" },
-    ]
-  });
-
-  // Stability pie
-  const stable = all.filter(h => isStable(h.housing_at_exit, h.housing_90day) === "stable").length;
-  const unstable = all.filter(h => isStable(h.housing_at_exit, h.housing_90day) === "unstable").length;
-  const pending = all.filter(h => isStable(h.housing_at_exit, h.housing_90day) === "pending").length;
-  drawChart("ch-stability", "doughnut", {
-    labels: ["Stable","Unstable","Pending"],
-    datasets: [{ data: [stable, unstable, pending], backgroundColor: ["#2F855A","#B91C1C","#9A9892"] }]
-  });
-}
-
-function drawChart(id, type, data) {
-  if (charts[id]) charts[id].destroy();
-  const ctx = document.getElementById(id).getContext("2d");
-  charts[id] = new Chart(ctx, {
-    type, data,
-    options: { responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: type !== "bar" || data.datasets.length > 1, position: "bottom" }},
-      scales: type === "doughnut" ? {} : { y: { beginAtZero: true }, x: { ticks: { maxRotation: 30 } }}
-    }
-  });
-}
-
-// ============================================================
-// QUARTERLY PRINT REPORT
-// ============================================================
-function renderQuarterly() {
-  const filter = document.getElementById("print-quarter").value;
-  const all = state.households.filter(h => h.intake_date);
-  const filtered = filter === "all" ? all : all.filter(h => fiscalQuarter(h.intake_date) === filter);
-  const totalServed = filtered.length;
-  const totalAssist = filtered.reduce((s, h) => s + computeAssistTotal(h), 0);
-  const avgAssist = totalServed ? totalAssist / totalServed : 0;
-  const totalSessions = filtered.reduce((s, h) => s + computeSessions(h), 0);
-  const withArrears = filtered.filter(h => h.arrears_flag === "Yes").length;
-  const stable = filtered.filter(h => isStable(h.housing_at_exit, h.housing_90day) === "stable").length;
-  const exited = filtered.filter(h => h.assistance_end).length;
-  const active = filtered.filter(h => !h.assistance_end).length;
-  const pctCert = totalServed ? filtered.filter(h => h.benefits_cert === "Yes").length / totalServed : 0;
-
-  document.getElementById("print-body").innerHTML = `
-    <div class="print-header">
-      <p class="program">City of West Hollywood</p>
-      <h1>Homelessness Prevention &amp; Housing Stabilization</h1>
-      <p class="period">Reporting period: ${filter === "all" ? "FY26 to date (Oct 1, 2025 – Sept 30, 2026)" : filter} • Report generated ${new Date().toLocaleDateString()}</p>
+  document.getElementById('kpi-row').innerHTML = `
+    <div class="kpi-card">
+      <div class="kpi-label">Unduplicated Persons (YTD)</div>
+      <div class="kpi-value">${val(ytdPersons > 0 ? ytdPersons : (c.personsYTD || '—'))}</div>
+      <div class="kpi-sub">This quarter: ${val(c.personsQuarter)}</div>
+      <div class="kpi-trend ${q==='Q1'?'neutral':'up'}">${q==='Q1'?'→ Program launch quarter':'↑ '+(c.personsQuarter||'—')+' new in '+q}</div>
     </div>
-    <div class="print-section">
-      <h2>Headline metrics</h2>
-      <div class="print-kpi-grid">
-        <div class="print-kpi"><p class="label">Households served</p><p class="value">${totalServed}</p></div>
-        <div class="print-kpi"><p class="label">Total assistance</p><p class="value">${fmt$(totalAssist)}</p></div>
-        <div class="print-kpi"><p class="label">Avg / household</p><p class="value">${fmt$(avgAssist)}</p></div>
-        <div class="print-kpi"><p class="label">Case mgmt sessions</p><p class="value">${totalSessions}</p></div>
-        <div class="print-kpi"><p class="label">HH w/ rental arrears</p><p class="value">${withArrears}</p></div>
-        <div class="print-kpi"><p class="label">Stable @ 90 days</p><p class="value">${stable}</p></div>
-        <div class="print-kpi"><p class="label">Currently active</p><p class="value">${active}</p></div>
-        <div class="print-kpi"><p class="label">% benefits consult.</p><p class="value">${fmtPct(pctCert)}</p></div>
+    <div class="kpi-card gold-accent">
+      <div class="kpi-label">Occupancy Rate (${q})</div>
+      <div class="kpi-value">${occupancy !== null ? occupancy+'%' : '—'}</div>
+      <div class="kpi-sub">Goal: ≥90% · ${val(s.bedNightsOcc)} of ${val(s.bedNightsAvail)} bed-nights</div>
+      <div class="kpi-trend ${occupancy >= 90 ? 'up' : occupancy !== null ? 'down' : 'pending'}">${occupancy !== null ? (occupancy >= 90 ? '↑ Above goal' : '↓ Below 90% goal') : '→ Pending data'}</div>
+    </div>
+    <div class="kpi-card green-accent">
+      <div class="kpi-label">PH Exits (YTD through ${q})</div>
+      <div class="kpi-value">${getYTDThrough(q,'phExits')}</div>
+      <div class="kpi-sub">Annual Goal: 12 (30% of served)</div>
+      <div class="kpi-trend ${phRate >= 30 ? 'up' : 'neutral'}">${phRate > 0 ? phRate+'% of served' : '→ Primary gap area'}</div>
+    </div>
+    <div class="kpi-card amber-accent">
+      <div class="kpi-label">Supportive Services (${q})</div>
+      <div class="kpi-value">${suppRate !== null ? suppRate+'%' : '—'}</div>
+      <div class="kpi-sub">Goal: ≥65% · ${val(s.suppServicesEngaged)} of ${val(s.residentsServed)} residents</div>
+      <div class="kpi-trend ${suppRate >= 65 ? 'up' : suppRate !== null ? 'down' : 'pending'}">${suppRate !== null ? (suppRate >= 65 ? '↑ Above goal' : '↓ Below goal') : '→ Pending data'}</div>
+    </div>
+  `;
+}
+
+function renderSubmissions(q) {
+  const qd = QUARTERS[q];
+  document.getElementById('submissions-label').textContent = `Submission Status — ${q} (${qd.period})`;
+  document.getElementById('ytd-label').textContent = `Through ${q}`;
+  const isEditable = qd.status === 'pending' || qd.status === 'upcoming';
+  const isLocked = qd.status === 'accepted' || qd.status === 'review';
+
+  const statusBadge = {
+    accepted: '<span class="badge badge-green badge-dot">Accepted</span>',
+    review:   '<span class="badge badge-navy badge-dot">Under Review</span>',
+    pending:  '<span class="badge badge-amber badge-dot">Due '+qd.due+'</span>',
+    upcoming: '<span class="badge badge-gray">Upcoming</span>',
+  }[qd.status];
+
+  const actionBtn = isEditable
+    ? `<button class="btn btn-gold btn-sm" onclick="event.stopPropagation(); openForm('quarterly')">Start →</button>`
+    : `<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); openForm('quarterly')">View</button>`;
+
+  const rosterAction = isEditable
+    ? `<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); openForm('roster')">Upload</button>`
+    : `<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); openForm('roster')">View</button>`;
+
+  const exitsAction = isEditable
+    ? `<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); openForm('exits')">Start</button>`
+    : `<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); openForm('exits')">View</button>`;
+
+  const rosterInfo = qd.roster.submitted
+    ? `HMIS-generated · ${qd.roster.uniqueClients} unique clients · ${qd.roster.enrollments} enrollments`
+    : 'HMIS-generated export · Attach file for City review';
+
+  const q1exits = HISTORICAL_EXITS.filter(e=>e.qtr==='Q1').length;
+  const q2exits = HISTORICAL_EXITS.filter(e=>e.qtr==='Q2').length;
+  const allExits = HISTORICAL_EXITS.filter(e=>['Q1','Q2'].includes(e.qtr)).length;
+  const exitsInfo = q === 'Q1' ? `${q1exits} exits — 2 interim housing, 1 returned to homelessness, 1 unknown`
+    : q === 'Q2' ? `${q2exits} exits this quarter · ${allExits} YTD — cumulative Q1+Q2 detail`
+    : q === 'Q3' ? `Document each non-PH exit · ${allExits} historical exits shown for reference`
+    : 'Document each non-PH exit when applicable';
+
+  document.getElementById('submissions-grid').innerHTML = `
+    <div class="submission-row ${isEditable?'active-form':''} ${isEditable?'':'locked'}" onclick="openForm('quarterly')">
+      <div class="sr-left">
+        <div class="sr-icon report">📋</div>
+        <div class="sr-info">
+          <h4>${q} Quarterly Report${isEditable?' <span class="badge badge-amber" style="font-size:10px;margin-left:4px;">Due '+qd.due+'</span>':''}</h4>
+          <p>${qd.period} · Cover Page, Scope of Services, Narrative</p>
+        </div>
+      </div>
+      <div class="sr-right">
+        ${isLocked ? `<span class="sr-due">Submitted ${qd.due}</span>${statusBadge}` : `<span class="sr-due">Due ${qd.due}</span>${actionBtn}`}
       </div>
     </div>
-    <div class="print-section">
-      <h2>Household roster</h2>
-      <table class="print-table">
-        <thead><tr><th>ID</th><th>Intake</th><th>Quarter</th><th>Composition</th><th>Event</th><th>Total $</th><th>Sessions</th><th>Status</th><th>Stability</th></tr></thead>
-        <tbody>${filtered.map(h => {
-          const st = h.assistance_end ? "Exited" : "Active";
-          const stab = {stable: "Stable", unstable: "Unstable", pending: "Pending"}[isStable(h.housing_at_exit, h.housing_90day)];
-          return `<tr><td><strong>${h.hh_id}</strong></td><td>${h.intake_date || ""}</td><td>${fiscalQuarter(h.intake_date)}</td><td>${escapeHtml(h.hh_composition || "")}</td><td>${escapeHtml(h.qualifying_event || "")}</td><td>${fmt$(computeAssistTotal(h))}</td><td>${computeSessions(h)}</td><td>${st}</td><td>${stab}</td></tr>`;
-        }).join("")}</tbody>
-      </table>
+    <div class="submission-row ${isEditable?'active-form':''} ${isEditable?'':'locked'}" onclick="openForm('roster')">
+      <div class="sr-left">
+        <div class="sr-icon roster">👥</div>
+        <div class="sr-info">
+          <h4>${q} Client Roster${isEditable?' <span class="badge badge-amber" style="font-size:10px;margin-left:4px;">Due '+qd.due+'</span>':''}</h4>
+          <p>${rosterInfo}</p>
+        </div>
+      </div>
+      <div class="sr-right">
+        ${isLocked ? `<span class="sr-due">Submitted ${qd.due}</span>${statusBadge}` : `<span class="sr-due">Due ${qd.due}</span>${rosterAction}`}
+      </div>
     </div>
-    <div class="print-section" style="margin-top: 32px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 11px; color: var(--grey-400);">
-      Generated by HPHS Reporting Tool • No personally identifying information is included in this report.
+    <div class="submission-row ${isEditable?'active-form':''} ${isEditable?'':'locked'}" onclick="openForm('exits')">
+      <div class="sr-left">
+        <div class="sr-icon exits">🚪</div>
+        <div class="sr-info">
+          <h4>${q} Non-Permanent Exit Detail${isEditable?' <span class="badge badge-amber" style="font-size:10px;margin-left:4px;">Due '+qd.due+'</span>':''}</h4>
+          <p>${exitsInfo}</p>
+        </div>
+      </div>
+      <div class="sr-right">
+        ${isLocked ? `<span class="sr-due">Submitted ${qd.due}</span>${statusBadge}` : `<span class="sr-due">Due ${qd.due}</span>${exitsAction}`}
+      </div>
     </div>
   `;
 }
 
-// ============================================================
-// EXPORTS
-// ============================================================
-function exportCsv() {
-  const all = state.households.filter(h => h.intake_date);
-  const cols = ["hh_id","intake_date","quarter","hh_composition","hh_size","monthly_income","housing_at_intake",
-    "age_primary","age_band","race_ethnicity","gender","veteran","disability",
-    "eligible","qualifying_event","assistance_start","assistance_end","active",
-    "arrears_flag","arrears_amount","total_assistance","case_mgmt_sessions",
-    "housing_at_entry","housing_at_exit","housing_90day","stability","benefits_cert"];
-  const rows = all.map(h => ({
-    ...h,
-    quarter: fiscalQuarter(h.intake_date),
-    age_band: ageBand(h.age_primary),
-    active: h.assistance_end ? "No" : "Yes",
-    total_assistance: computeAssistTotal(h),
-    case_mgmt_sessions: computeSessions(h),
-    stability: ({stable:"Yes - Stable", unstable:"No - Unstable", pending:"Pending"})[isStable(h.housing_at_exit, h.housing_90day)]
-  }));
-  const csv = [cols.join(",")].concat(rows.map(r => cols.map(c => {
-    const v = r[c] == null ? "" : String(r[c]);
-    return /[",\n]/.test(v) ? `"${v.replace(/"/g,'""')}"` : v;
-  }).join(","))).join("\n");
-  downloadBlob(csv, "text/csv", `HPHS_FY26_summary_${new Date().toISOString().slice(0,10)}.csv`);
-  toast("CSV downloaded");
+function renderGoals(q) {
+  const ytdOcc  = getYTDThrough(q,'bedNightsOcc');
+  const ytdAvail = getYTDThrough(q,'bedNightsAvail');
+  const ytdPersons = getYTDPersons(q);
+  const ytdPH   = getYTDThrough(q,'phExits');
+  const ytdSupp  = getYTDThrough(q,'suppServicesEngaged');
+  const ytdRes   = getYTDThrough(q,'residentsServed');
+  const ytdInc  = getYTDThrough(q,'incomeIncrease');
+  const ytdSatS  = getYTDThrough(q,'satSatisfied');
+  const ytdSatT  = getYTDThrough(q,'satTotal');
+
+  const occPct = ytdAvail > 0 ? Math.round(ytdOcc/ytdAvail*100) : 0;
+  const phPct  = ytdPersons > 0 ? Math.round(ytdPH/ytdPersons*100) : 0;
+  const suppPct = ytdRes > 0 ? Math.round(ytdSupp/ytdRes*100) : 0;
+  const satPct  = ytdSatT > 0 ? Math.round(ytdSatS/ytdSatT*100) : 0;
+
+  function bar(label, actual, goal, color, displayActual, displayGoal) {
+    const width = Math.min(100, Math.round(actual/goal*100));
+    return `<div class="progress-item">
+      <div class="progress-meta"><span class="progress-label">${label}</span><span class="progress-val">${displayActual} / ${displayGoal}</span></div>
+      <div class="progress-track"><div class="progress-fill ${color}" style="width:${width}%"></div></div>
+    </div>`;
+  }
+
+  document.getElementById('goals-card').innerHTML =
+    bar('Occupancy Rate', occPct, 90, occPct>=90?'green':'red', occPct+'%', '90%') +
+    bar('Supportive Services', suppPct, 65, suppPct>=65?'green':'amber', suppPct+'%', '65%') +
+    bar('PH Exit Rate (% of served)', phPct, 30, phPct>=30?'green':'red', phPct+'%', '30%') +
+    bar('Income/Benefit Improvement', ytdInc, ytdPersons*0.75||1, (ytdInc/(ytdPersons*0.75||1))>=1?'green':'amber',
+        ytdInc+' clients', '75% of served') +
+    `<div class="progress-item" style="margin-bottom:0">
+      <div class="progress-meta"><span class="progress-label">Resident Satisfaction</span><span class="progress-val">${satPct>0?satPct+'%':'—'} / 85%</span></div>
+      <div class="progress-track"><div class="progress-fill ${satPct>=85?'green':'amber'}" style="width:${Math.min(100,satPct)}%"></div></div>
+    </div>`;
 }
 
-function exportJsonBackup() {
-  const payload = { schemaVersion: 1, exportedAt: new Date().toISOString(), exportedBy: state.user.email, households: state.households, activity: state.activity };
-  downloadBlob(JSON.stringify(payload, null, 2), "application/json", `HPHS_FY26_backup_${new Date().toISOString().slice(0,10)}.json`);
-  localStorage.setItem("last_backup_at", new Date().toISOString());
-  toast("Backup downloaded", "success");
-  renderLanding();
+// ════════════════════
+// FORM OPENING
+// ════════════════════
+function openForm(type) {
+  const q = currentQuarter;
+  const qd = QUARTERS[q];
+  const isReadOnly = qd.status === 'accepted' || qd.status === 'review';
+  const isUpcoming = qd.status === 'upcoming';
+
+  if (type === 'quarterly') {
+    document.getElementById('qr-modal-meta').textContent = `Holloway Interim Housing Program · ${q}: ${qd.period}`;
+    document.getElementById('qr-readonly-banner').style.display = isReadOnly ? 'flex' : 'none';
+    document.getElementById('qr-quarter-display').value = `${q} — ${qd.period}`;
+    populateQuarterlyForm(q, isReadOnly);
+    // Reset to first tab
+    document.querySelector('#quarterly-modal .form-tab').click();
+  }
+  if (type === 'roster') {
+    document.getElementById('roster-modal-meta').textContent = `HMIS-generated · ${q}: ${qd.period}`;
+    document.getElementById('roster-readonly-banner').style.display = isReadOnly ? 'flex' : 'none';
+    populateRosterForm(q, isReadOnly);
+  }
+  if (type === 'exits') {
+    document.getElementById('exits-modal-meta').textContent = `${q}: ${qd.period} · One row per non-PH exit`;
+    document.getElementById('exits-readonly-banner').style.display = (q==='Q3'||q==='Q4') ? 'flex' : 'none';
+    populateExitsForm(q, isReadOnly);
+  }
+
+  document.getElementById(type + '-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
-function importJsonBackup(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  if (!confirm("Replace all current data with the contents of this backup file?")) { e.target.value = ""; return; }
-  const reader = new FileReader();
-  reader.onload = async () => {
-    try {
-      const data = JSON.parse(reader.result);
-      if (!Array.isArray(data.households)) throw new Error("Invalid backup file");
-      state.households = data.households;
-      state.activity = data.activity || [];
-      if (DEMO_MODE) saveToLocalStorage();
+function closeForm(type) {
+  document.getElementById(type + '-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.form-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) closeForm(el.id.replace('-modal','')); });
+});
+
+// ════════════════════
+// POPULATE QUARTERLY
+// ════════════════════
+const AGE_ROWS = ['18–24','25–39','40–49','50–61','62–64','65–74','75–84','85+'];
+const ETHNICITY_KEYS = ['Asian/Pacific Islander','Black, African American, or African','Hispanic/Latina/o/e','American Indian / Alaska Native','White','Other (Middle Eastern/North African)','Unknown'];
+const LANG_KEYS = ['English','Spanish','Russian','Farsi','Other'];
+
+function populateQuarterlyForm(q, ro) {
+  const qd = QUARTERS[q];
+  const c = qd.cover;
+  const s = qd.scope;
+  const ytdPersons = getYTDPersons(q);
+
+  // Cover
+  setField('qr-persons-quarter', c.personsQuarter, ro);
+  setField('qr-persons-ytd', ytdPersons || c.personsYTD, true);
+  setField('qr-persons-total', c.personsTotal, ro);
+  setField('qr-data-source', c.dataSource, ro);
+  setField('qr-signatory', c.signatory, ro);
+  setField('qr-sig-date', c.sigDate, ro);
+
+  // Demo grid
+  const grid = document.getElementById('demo-grid');
+  // Remove old data rows (keep 6 header cells)
+  while (grid.children.length > 6) grid.removeChild(grid.lastChild);
+
+  // Compute YTD demographics
+  const ytdAG = {};
+  ['Q1','Q2'].forEach(qk => {
+    if (QUARTERS[qk].cover.demographics) {
+      AGE_ROWS.forEach(age => {
+        if (!ytdAG[age]) ytdAG[age] = {male:0,female:0,nb:0,unk:0};
+        const row = QUARTERS[qk].cover.demographics.ageGender[age] || {};
+        ytdAG[age].male += row.male||0;
+        ytdAG[age].female += row.female||0;
+        ytdAG[age].nb += row.nb||0;
+        ytdAG[age].unk += row.unk||0;
+      });
+    }
+  });
+
+  AGE_ROWS.forEach(age => {
+    const row = c.demographics.ageGender[age] || {male:0,female:0,nb:0,unk:0};
+    const total = row.male + row.female + row.nb + row.unk;
+    ['label','male','female','nb','unk','total'].forEach(col => {
+      const cell = document.createElement('div');
+      cell.className = 'demo-cell';
+      if (col === 'label') { cell.className += ' row-label'; cell.textContent = age; }
+      else if (col === 'total') { cell.className += ' auto-calc'; cell.textContent = total || '0'; }
       else {
-        // Upsert each household into Supabase
-        for (const hh of data.households) {
-          await sb.from("households").upsert(hh);
+        if (ro || q === 'Q4' || q === 'Q3') {
+          cell.className += ' ro'; cell.textContent = row[col] || '0';
+        } else {
+          const inp = document.createElement('input');
+          inp.type = 'number'; inp.min = '0'; inp.value = row[col] || 0;
+          inp.addEventListener('input', updateDemoTotals);
+          cell.appendChild(inp);
         }
       }
-      toast("Backup restored", "success");
-      navigate("landing");
-    } catch (err) { toast("Restore failed: " + err.message, "error"); }
-    e.target.value = "";
+      grid.appendChild(cell);
+    });
+  });
+
+  // Totals row
+  ['TOTAL','','','','',''].forEach((t, i) => {
+    const cell = document.createElement('div');
+    cell.className = i === 0 ? 'demo-cell row-label' : 'demo-cell auto-calc';
+    cell.id = i === 0 ? '' : 'demo-col-total-' + i;
+    cell.textContent = t;
+    cell.style.fontWeight = '700';
+    if (i === 0) cell.style.color = 'var(--navy)';
+    grid.appendChild(cell);
+  });
+  updateDemoTotals();
+
+  // Ethnicity
+  const etbody = document.getElementById('ethnicity-table');
+  etbody.innerHTML = '';
+  // Compute YTD ethnicity
+  const ytdEth = {};
+  ['Q1','Q2'].forEach(qk => {
+    const eth = QUARTERS[qk].cover.demographics?.ethnicity || {};
+    ETHNICITY_KEYS.forEach(k => { ytdEth[k] = (ytdEth[k]||0) + (eth[k]||0); });
+  });
+  ETHNICITY_KEYS.forEach(k => {
+    const qVal = c.demographics.ethnicity[k] || 0;
+    const ytdVal = (ytdEth[k]||0) + (c.demographics.ethnicity[k]||0);
+    const inputHTML = (ro || q==='Q3'||q==='Q4') ? `<span style="float:right;font-weight:500;">${qVal}</span>`
+      : `<input type="number" style="width:55px;float:right;" value="${qVal}" min="0">`;
+    etbody.innerHTML += `<tr><td>${k}</td><td>${inputHTML}</td><td><span class="auto-ytd">${ytdVal}</span></td></tr>`;
+  });
+
+  // Language
+  const ltbody = document.getElementById('language-table');
+  ltbody.innerHTML = '';
+  const ytdLang = {};
+  ['Q1','Q2'].forEach(qk => {
+    const lang = QUARTERS[qk].cover.demographics?.language || {};
+    LANG_KEYS.forEach(k => { ytdLang[k] = (ytdLang[k]||0) + (lang[k]||0); });
+  });
+  LANG_KEYS.forEach(k => {
+    const qVal = c.demographics.language[k] || 0;
+    const ytdVal = (ytdLang[k]||0) + (c.demographics.language[k]||0);
+    const inputHTML = (ro || q==='Q3'||q==='Q4') ? `<span style="float:right;font-weight:500;">${qVal}</span>`
+      : `<input type="number" style="width:55px;float:right;" value="${qVal}" min="0">`;
+    ltbody.innerHTML += `<tr><td>${k}</td><td>${inputHTML}</td><td><span class="auto-ytd">${ytdVal}</span></td></tr>`;
+  });
+
+  // Scope of services
+  const scopeTitle = `Scope of Services — ${q} (${qd.period})`;
+  document.getElementById('scope-title').textContent = scopeTitle;
+  document.getElementById('narrative-title').textContent = `Narrative — ${q}`;
+  buildScopeTable(q, s, ro);
+
+  // Narrative
+  setField('qr-narrative-text', qd.narrative || '', ro);
+  setField('qr-narrative-name', c.signatory, ro);
+  setField('qr-narrative-date', c.sigDate, ro);
+
+  // Review
+  buildReview(q, qd);
+
+  // Footer
+  document.getElementById('qr-footer-note').textContent = `${ro ? 'Read-only — ' : 'Auto-saved · '}${q} · Holloway Interim Housing Program`;
+  document.getElementById('qr-save-btn').style.display = ro ? 'none' : '';
+  document.getElementById('qr-submit-btn').style.display = ro ? 'none' : '';
+}
+
+function setField(id, val, ro) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.value = val !== null && val !== undefined ? val : '';
+  el.readOnly = ro || false;
+  if (ro) el.style.background = 'var(--gray-100)';
+  else el.style.background = '';
+}
+
+function buildScopeTable(q, s, ro) {
+  const ytdQ = (field) => getYTDThrough(q, field);
+  const inp = (field, v) => {
+    if (ro || q === 'Q4') return `<input type="number" value="${v||''}" readonly style="width:80px;background:var(--gray-100);border:1px solid var(--border);border-radius:3px;padding:4px 8px;font-size:12.5px;font-family:'DM Sans',sans-serif;text-align:right;">`;
+    return `<input type="number" min="0" placeholder="0" value="${v||''}" style="width:80px;border:1px solid var(--border);border-radius:3px;padding:4px 8px;font-size:12.5px;font-family:'DM Sans',sans-serif;text-align:right;">`;
   };
-  reader.readAsText(file);
+  const ytdCell = (val) => `<span class="auto-ytd">${val !== null && val !== undefined ? val : '—'}</span>`;
+  const cat = (label) => `<tr class="cat-header"><td colspan="5">${label}</td></tr>`;
+
+  document.getElementById('scope-table').innerHTML = `
+    <thead><tr><th style="width:200px;">Category</th><th>Metric</th><th style="width:110px;">This Quarter</th><th style="width:100px;">YTD</th><th style="width:100px;">Goal</th></tr></thead>
+    <tbody>
+      ${cat('People Served — Snapshots')}
+      <tr><td></td><td>Active Residents (point-in-time, quarter end)</td><td>${inp('activeResidents', s.activeResidents)}</td><td>${ytdCell('—')}</td><td><span class="badge badge-gray goal-badge">Snapshot</span></td></tr>
+      <tr><td></td><td>Residents Served During Quarter</td><td>${inp('residentsServed', s.residentsServed)}</td><td>${ytdCell('—')}</td><td><span class="badge badge-gray goal-badge">Snapshot</span></td></tr>
+      <tr><td></td><td>Unduplicated Persons Served (YTD)</td><td><span class="auto-ytd">—</span></td><td>${ytdCell(ytdQ('newIntakes'))}</td><td><span class="badge badge-gray goal-badge">N/A</span></td></tr>
+      <tr><td></td><td>New Intakes</td><td>${inp('newIntakes', s.newIntakes)}</td><td>${ytdCell(ytdQ('newIntakes'))}</td><td><span class="badge badge-gray goal-badge">N/A</span></td></tr>
+      ${cat('Occupancy')}
+      <tr><td></td><td>Bed-nights Available</td><td>${inp('bedNightsAvail', s.bedNightsAvail)}</td><td>${ytdCell(ytdQ('bedNightsAvail'))}</td><td><span class="badge badge-navy goal-badge">Goal: ≥90%</span></td></tr>
+      <tr><td></td><td>Bed-nights Occupied</td><td>${inp('bedNightsOcc', s.bedNightsOcc)}</td><td>${ytdCell(ytdQ('bedNightsOcc'))}</td><td></td></tr>
+      ${cat('Permanent Housing Exits')}
+      <tr><td></td><td>Exits to Permanent Housing</td><td>${inp('phExits', s.phExits)}</td><td>${ytdCell(ytdQ('phExits'))}</td><td><span class="badge badge-red goal-badge">Goal: 12</span></td></tr>
+      <tr><td></td><td>Avg Days: Entry → PH</td><td>${inp('avgDaysToPH', s.avgDaysToPH)}</td><td>${ytdCell(QUARTERS.Q1.scope.avgDaysToPH ? QUARTERS.Q1.scope.avgDaysToPH + ' days' : '—')}</td><td><span class="badge badge-gray goal-badge">Goal: ≤270 days</span></td></tr>
+      ${cat('6-Month Retention After PH')}
+      <tr><td></td><td>Placements Reaching 6-Month Check</td><td>${inp('sixMonthPlacements', s.sixMonthPlacements)}</td><td>${ytdCell('N/A')}</td><td><span class="badge badge-navy goal-badge">Goal: 90%</span></td></tr>
+      <tr><td></td><td>Still Housed at 6 Months</td><td>${inp('sixMonthHoused', s.sixMonthHoused)}</td><td>${ytdCell('N/A')}</td><td></td></tr>
+      ${cat('12-Month Retention After PH')}
+      <tr><td></td><td>Placements Reaching 12-Month Check</td><td>${inp('twelveMonthPlacements', s.twelveMonthPlacements)}</td><td>${ytdCell('N/A')}</td><td><span class="badge badge-navy goal-badge">Goal: 80%</span></td></tr>
+      <tr><td></td><td>Still Housed at 12 Months</td><td>${inp('twelveMonthHoused', s.twelveMonthHoused)}</td><td>${ytdCell('N/A')}</td><td></td></tr>
+      ${cat('Participation in Supportive Services')}
+      <tr><td></td><td>Residents Engaged ≥1 Meaningful Service/Month</td><td>${inp('suppServicesEngaged', s.suppServicesEngaged)}</td><td>${ytdCell('Quarter only')}</td><td><span class="badge badge-green goal-badge">Goal: ≥65%</span></td></tr>
+      ${cat('Income / Benefit Improvement')}
+      <tr><td></td><td>Clients with ↑ Earned Income or New/↑ Benefits</td><td>${inp('incomeIncrease', s.incomeIncrease)}</td><td>${ytdCell(ytdQ('incomeIncrease'))}</td><td><span class="badge badge-amber goal-badge">Goal: 75%</span></td></tr>
+      <tr><td></td><td>Clients Who Maintained Income/Benefits</td><td>${inp('incomeMaintained', s.incomeMaintained)}</td><td>${ytdCell(ytdQ('incomeMaintained'))}</td><td></td></tr>
+      ${cat('Resident Satisfaction')}
+      <tr><td></td><td>Satisfied/Very Satisfied Responses</td><td>${inp('satSatisfied', s.satSatisfied)}</td><td><span class="auto-ytd">N/A</span></td><td><span class="badge badge-green goal-badge">Goal: ≥85%</span></td></tr>
+      <tr><td></td><td>Total Survey Responses</td><td>${inp('satTotal', s.satTotal)}</td><td><span class="auto-ytd">N/A</span></td><td></td></tr>
+      ${cat('Non-Permanent Housing Exits')}
+      <tr><td></td><td>Temporary Housing</td><td>${inp('exitsTemp', s.exitsTemp)}</td><td>${ytdCell(ytdQ('exitsTemp'))}</td><td></td></tr>
+      <tr><td></td><td>Institutional Setting</td><td>${inp('exitsInstitutional', s.exitsInstitutional)}</td><td>${ytdCell(ytdQ('exitsInstitutional'))}</td><td></td></tr>
+      <tr><td></td><td>Returned to Homelessness</td><td>${inp('exitsHomeless', s.exitsHomeless)}</td><td>${ytdCell(ytdQ('exitsHomeless'))}</td><td></td></tr>
+      <tr><td></td><td>Unknown / Left Program</td><td>${inp('exitsUnknown', s.exitsUnknown)}</td><td>${ytdCell(ytdQ('exitsUnknown'))}</td><td></td></tr>
+    </tbody>`;
 }
 
-function downloadBlob(content, mime, filename) {
-  const blob = new Blob([content], { type: mime });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = filename; a.click();
-  URL.revokeObjectURL(url);
+function buildReview(q, qd) {
+  const isEditable = qd.status === 'pending';
+  document.getElementById('review-summary').innerHTML =
+    `Reviewing <strong>${q} Quarterly Report</strong> for ${qd.period}. Status: <strong>${{accepted:'Accepted',review:'Under Review',pending:'Not yet submitted',upcoming:'Upcoming'}[qd.status]}</strong>.`;
+
+  document.getElementById('review-checklist').innerHTML = isEditable ? `
+    <li><span class="check-icon ok">✓</span> Agency and program information complete</li>
+    <li><span class="check-icon ok">✓</span> Reporting quarter selected</li>
+    <li><span class="check-icon warn">!</span> Enter persons served this quarter (Cover Page)</li>
+    <li><span class="check-icon warn">!</span> Complete Scope of Services data</li>
+    <li><span class="check-icon warn">!</span> Complete Narrative section</li>
+    <li><span class="check-icon warn">!</span> Add signatory date</li>
+  ` : `
+    <li><span class="check-icon ok">✓</span> Cover Page submitted</li>
+    <li><span class="check-icon ok">✓</span> Scope of Services submitted</li>
+    <li><span class="check-icon ok">✓</span> Signatory: ${qd.cover.signatory}</li>
+    <li><span class="check-icon ok">✓</span> Date: ${qd.cover.sigDate}</li>
+  `;
 }
 
-// Init
-init();
+// ════════════════════
+// POPULATE ROSTER
+// ════════════════════
+function populateRosterForm(q, ro) {
+  const qd = QUARTERS[q];
+  const r = qd.roster;
+  if (r.submitted) {
+    document.getElementById('roster-submitted-view').style.display = '';
+    document.getElementById('roster-upload-view').style.display = 'none';
+    document.getElementById('roster-submit-btn').style.display = 'none';
+    document.getElementById('roster-accepted-text').innerHTML =
+      `<strong>Roster submitted ${r.submittedDate}.</strong> Shown for reference. Contact your City program monitor to request a correction.`;
+    document.getElementById('roster-summary-table').innerHTML = `
+      <tr><td style="font-weight:500;width:160px;">Reporting Period</td><td>${r.periodStart} – ${r.periodEnd}</td></tr>
+      <tr><td style="font-weight:500;">Unique Clients</td><td>${r.uniqueClients}</td></tr>
+      <tr><td style="font-weight:500;">Enrollments</td><td>${r.enrollments}</td></tr>
+      <tr><td style="font-weight:500;">Households</td><td>${r.households}</td></tr>
+      <tr><td style="font-weight:500;">Notes</td><td style="font-size:12px;color:var(--gray-600);">${r.notes}</td></tr>
+    `;
+  } else {
+    document.getElementById('roster-submitted-view').style.display = 'none';
+    document.getElementById('roster-upload-view').style.display = '';
+    document.getElementById('roster-submit-btn').style.display = '';
+    document.getElementById('roster-start').value = qd.status==='Q3' ? '2026-04-01' : qd.status==='Q4' ? '2026-07-01' : '';
+    document.getElementById('roster-end').value = qd.status==='Q3' ? '2026-06-30' : qd.status==='Q4' ? '2026-09-30' : '';
+  }
+}
+
+// ════════════════════
+// POPULATE EXITS
+// ════════════════════
+function populateExitsForm(q, ro) {
+  const qd = QUARTERS[q];
+  newExitRows = 0;
+  const tbody = document.getElementById('exits-tbody');
+  tbody.innerHTML = '';
+
+  // Which historical exits to show
+  let showExits = [];
+  if (q === 'Q1') showExits = HISTORICAL_EXITS.filter(e => e.qtr === 'Q1');
+  else if (q === 'Q2') showExits = HISTORICAL_EXITS.filter(e => ['Q1','Q2'].includes(e.qtr));
+  else if (q === 'Q3' || q === 'Q4') showExits = HISTORICAL_EXITS; // show all as reference
+
+  showExits.forEach(e => {
+    const isHistoricalForThisQ = (q === 'Q3' || q === 'Q4') && e.qtr !== q;
+    const tr = document.createElement('tr');
+    if (isHistoricalForThisQ) tr.className = 'historical';
+    tr.innerHTML = `
+      <td style="text-align:center;color:var(--gray-400);font-size:11px;">${e.id}</td>
+      <td><span class="badge badge-gray" style="font-size:10px;">${e.qtr}</span></td>
+      <td style="font-size:11px;">${e.type}</td>
+      <td style="font-size:11px;">${e.vol}</td>
+      <td style="font-size:11px;">${e.reason}</td>
+      <td style="font-size:11px;">${e.program}</td>
+      <td style="font-size:11px;">${e.fit}</td>
+      <td style="font-size:11px;">${e.context}</td>
+      <td style="font-size:11px;">${e.followup}</td>
+      <td style="font-size:11px;">${e.notes}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Add new editable row for pending quarters
+  const addBtn = document.getElementById('exits-add-btn');
+  const submitBtn = document.getElementById('exits-submit-btn');
+  if (qd.status === 'pending') {
+    addBtn.style.display = '';
+    submitBtn.style.display = '';
+    document.getElementById('exits-section-title').textContent = `Exit Detail — ${q} (add new exits below)`;
+    addExitRow();
+  } else if (qd.status === 'upcoming') {
+    addBtn.style.display = '';
+    submitBtn.style.display = '';
+    document.getElementById('exits-section-title').textContent = `Exit Detail — ${q}`;
+    addExitRow();
+  } else {
+    addBtn.style.display = 'none';
+    submitBtn.style.display = 'none';
+    document.getElementById('exits-section-title').textContent = `Exit Detail — ${q} (read-only)`;
+  }
+  document.getElementById('exits-footer-note').textContent =
+    `${HISTORICAL_EXITS.length} exits on record through Q2 · Exits are cumulative across the contract year`;
+}
+
+let globalExitCount = HISTORICAL_EXITS.length;
+function addExitRow() {
+  globalExitCount++;
+  newExitRows++;
+  const tbody = document.getElementById('exits-tbody');
+  const currentQ = currentQuarter;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="text-align:center;color:var(--gold);font-weight:600;">${globalExitCount}</td>
+    <td><select><option>${currentQ}</option></select></td>
+    <td><select><option value="">— Select —</option><option>Temporary / Interim Housing</option><option>Institutional Setting</option><option>Returned to Homelessness</option><option>Unknown / Left Program</option></select></td>
+    <td><select><option value="">— Select —</option><option>Voluntary</option><option>Involuntary</option><option>Unknown</option></select></td>
+    <td><input type="text" placeholder="Brief narrative…"></td>
+    <td><input type="text" placeholder="Program name (if applicable)"></td>
+    <td><input type="text" placeholder="Why better fit?"></td>
+    <td><input type="text" placeholder="Context (if applicable)"></td>
+    <td><select><option value="">—</option><option>Yes</option><option>No</option><option>No response</option></select></td>
+    <td><input type="text" placeholder="Additional notes…"></td>
+  `;
+  tbody.appendChild(tr);
+}
+
+// ════════════════════
+// DEMO TOTALS
+// ════════════════════
+function updateDemoTotals() {
+  const grid = document.getElementById('demo-grid');
+  if (!grid) return;
+  const cells = [...grid.children];
+  const colTotals = [0,0,0,0];
+  AGE_ROWS.forEach((age, rowIdx) => {
+    const startIdx = 6 + rowIdx * 6;
+    let rowTotal = 0;
+    [0,1,2,3].forEach(col => {
+      const cell = cells[startIdx + 1 + col];
+      if (!cell) return;
+      const inp = cell.querySelector('input');
+      const val = inp ? parseInt(inp.value)||0 : parseInt(cell.textContent)||0;
+      rowTotal += val;
+      colTotals[col] += val;
+    });
+    const totalCell = cells[startIdx + 5];
+    if (totalCell) totalCell.textContent = rowTotal;
+  });
+  // Update column totals row (last 6 cells)
+  const lastRow = cells.slice(-6);
+  [1,2,3,4].forEach(i => { if (lastRow[i]) lastRow[i].textContent = colTotals[i-1]; });
+  if (lastRow[5]) lastRow[5].textContent = colTotals.reduce((a,b)=>a+b,0);
+}
+
+// ════════════════════
+// TABS
+// ════════════════════
+function switchTab(btn, panelId) {
+  const modal = btn.closest('.form-modal');
+  modal.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+  modal.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+// ════════════════════
+// SUBMIT
+// ════════════════════
+
+// ════════════════════════════════════════════════════════════
+// SUPABASE CLIENT
+// ════════════════════════════════════════════════════════════
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+async function loadUserProfile(userId) {
+  const { data: profile, error } = await sb
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error || !profile) {
+    throw new Error('Login succeeded, but no profile was found. In Supabase, check Table Editor → profiles and confirm this user has a row.');
+  }
+
+  window._userProfile = profile;
+  window._programId = profile.program_id;
+
+  if (!window._programId && profile.role === 'city_admin') {
+    const { data: program, error: programError } = await sb
+      .from('programs')
+      .select('id')
+      .limit(1)
+      .single();
+    if (programError || !program) {
+      throw new Error('No program record was found in the programs table.');
+    }
+    window._programId = program.id;
+  }
+
+  if (!window._programId) {
+    throw new Error('This user profile does not have a program_id. Set program_id for reporter users in Supabase → Table Editor → profiles.');
+  }
+}
+
+async function enterApp(userId) {
+  await loadUserProfile(userId);
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  await loadAllData();
+  setQuarter('Q1');
+}
+
+async function doLogin() {
+  const emailEl = document.querySelector('#login-email');
+  const errorEl = document.getElementById('login-error');
+  const submitBtn = document.getElementById('login-submit-btn');
+  errorEl.style.color = '#C0392B';
+  errorEl.textContent = '';
+
+  const email = emailEl.value.trim();
+
+  if (!email) {
+    errorEl.textContent = 'Enter your approved email address.';
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending link…';
+
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: {
+      shouldCreateUser: false,
+      emailRedirectTo: 'https://fgomez0555.github.io/weho-holloway-reporting/'
+    }
+  });
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Send Secure Login Link →';
+
+  if (error) {
+    errorEl.textContent = 'This email is not authorized or the login link could not be sent.';
+    return;
+  }
+
+  errorEl.style.color = '#2D7A4F';
+  errorEl.textContent = 'Check your email for a secure login link. You can close this page after the email arrives.';
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-submit-btn').style.display = '';
+}
+
+async function loadAllData() {
+  const pid = window._programId;
+  if (!pid) throw new Error('Missing program_id.');
+
+  const [{ data: reports, error: reportsError }, { data: rosters, error: rostersError }, { data: exits, error: exitsError }, { data: bundles, error: bundlesError }] = await Promise.all([
+    sb.from('quarterly_reports').select('*').eq('program_id', pid).eq('fiscal_year', 'FY2025-26'),
+    sb.from('client_rosters').select('*').eq('program_id', pid).eq('fiscal_year', 'FY2025-26'),
+    sb.from('non_permanent_exits').select('*').eq('program_id', pid).eq('fiscal_year', 'FY2025-26').order('quarter').order('exit_number'),
+    sb.from('submission_bundles').select('*').eq('program_id', pid).eq('fiscal_year', 'FY2025-26')
+  ]);
+
+  const firstError = reportsError || rostersError || exitsError || bundlesError;
+  if (firstError) throw new Error('Database load error: ' + firstError.message);
+
+  const statusMap = {
+    accepted: 'accepted',
+    under_review: 'review',
+    draft: 'pending',
+    incomplete: 'pending',
+    submitted: 'review'
+  };
+
+  ['Q1','Q2','Q3','Q4'].forEach(q => {
+    const report = reports?.find(r => r.quarter === q);
+    const roster = rosters?.find(r => r.quarter === q);
+    const bundle = bundles?.find(b => b.quarter === q);
+    const qExits = exits?.filter(e => e.quarter === q) || [];
+
+    const bundleStatus = bundle?.bundle_status || report?.status || 'incomplete';
+    QUARTERS[q].status = statusMap[bundleStatus] || 'upcoming';
+
+    if (report) {
+      QUARTERS[q].cover = {
+        personsQuarter: report.persons_quarter,
+        personsYTD: report.persons_ytd,
+        personsTotal: report.persons_total,
+        dataSource: report.data_source_note || '',
+        signatory: report.signatory_name || 'Laura Duncan, Executive Director',
+        sigDate: report.signatory_date || '',
+        demographics: {
+          ageGender: report.demographics_age_gender || QUARTERS[q].cover.demographics.ageGender || {},
+          ethnicity: report.demographics_ethnicity || QUARTERS[q].cover.demographics.ethnicity || {},
+          language: report.demographics_language || QUARTERS[q].cover.demographics.language || {}
+        }
+      };
+      QUARTERS[q].scope = {
+        activeResidents: report.active_residents,
+        residentsServed: report.residents_served,
+        unduplicatedYTD: report.unduplicated_ytd,
+        newIntakes: report.new_intakes,
+        bedNightsAvail: report.bed_nights_available,
+        bedNightsOcc: report.bed_nights_occupied,
+        phExits: report.ph_exits,
+        avgDaysToPH: report.avg_days_to_ph,
+        sixMonthPlacements: report.six_month_placements,
+        sixMonthHoused: report.six_month_housed,
+        twelveMonthPlacements: report.twelve_month_placements,
+        twelveMonthHoused: report.twelve_month_housed,
+        suppServicesEngaged: report.supp_services_engaged,
+        incomeIncrease: report.income_increase,
+        incomeMaintained: report.income_maintained,
+        satSatisfied: report.satisfaction_satisfied,
+        satTotal: report.satisfaction_total,
+        exitsTemp: report.exits_temp_housing,
+        exitsInstitutional: report.exits_institutional,
+        exitsHomeless: report.exits_returned_homeless,
+        exitsUnknown: report.exits_unknown
+      };
+      QUARTERS[q].narrative = report.narrative_text || '';
+      QUARTERS[q]._reportId = report.id;
+    }
+
+    if (roster) {
+      QUARTERS[q].roster = {
+        submitted: true,
+        submittedDate: roster.uploaded_at?.split('T')[0] || '',
+        uniqueClients: roster.unique_clients,
+        enrollments: roster.enrollments,
+        households: roster.households,
+        periodStart: roster.period_start,
+        periodEnd: roster.period_end,
+        notes: roster.notes || '',
+        _rosterId: roster.id
+      };
+    }
+
+    qExits.forEach(e => {
+      const existing = HISTORICAL_EXITS.find(h => h.id === e.exit_number && h.qtr === q);
+      if (!existing) {
+        HISTORICAL_EXITS.push({
+          id: e.exit_number,
+          qtr: e.quarter,
+          type: e.exit_type,
+          vol: e.voluntary_involuntary,
+          reason: e.reason_for_exit,
+          program: e.interim_program_name,
+          fit: e.interim_program_reason,
+          context: e.return_context,
+          followup: e.staff_followup,
+          notes: e.additional_notes
+        });
+      }
+    });
+  });
+}
+
+async function saveDraft(q = currentQuarter) {
+  const pid = window._programId;
+
+  const payload = {
+    program_id: pid,
+    quarter: q,
+    fiscal_year: 'FY2025-26',
+    status: 'draft',
+    signatory_name: document.getElementById('qr-signatory')?.value,
+    signatory_date: document.getElementById('qr-sig-date')?.value || null,
+    persons_quarter: parseInt(document.getElementById('qr-persons-quarter')?.value) || null,
+    persons_ytd: parseInt(document.getElementById('qr-persons-ytd')?.value) || null,
+    persons_total: parseInt(document.getElementById('qr-persons-total')?.value) || null,
+    data_source_note: document.getElementById('qr-data-source')?.value,
+    narrative_text: document.getElementById('qr-narrative-text')?.value,
+    narrative_submitted_by: document.getElementById('qr-narrative-name')?.value,
+    narrative_date: document.getElementById('qr-narrative-date')?.value || null,
+    updated_at: new Date().toISOString()
+  };
+
+  const { data, error } = await sb
+    .from('quarterly_reports')
+    .upsert(payload, { onConflict: 'program_id,quarter,fiscal_year' })
+    .select()
+    .single();
+
+  if (error) {
+    alert('Error saving draft: ' + error.message);
+    return;
+  }
+
+  QUARTERS[q]._reportId = data.id;
+  const note = document.getElementById('qr-footer-note');
+  if (note) note.textContent = 'Draft saved ✓ · ' + new Date().toLocaleTimeString();
+}
+
+async function submitForm(type) {
+  const q = currentQuarter;
+  const pid = window._programId;
+
+  if (type === 'quarterly') {
+    await saveDraft(q);
+    const { error } = await sb
+      .from('quarterly_reports')
+      .update({
+        status: 'submitted',
+        submitted_at: new Date().toISOString(),
+        submitted_by: window._userProfile?.id
+      })
+      .eq('program_id', pid)
+      .eq('quarter', q)
+      .eq('fiscal_year', 'FY2025-26');
+
+    if (error) { alert('Submission error: ' + error.message); return; }
+
+    await sb.from('submission_bundles')
+      .update({ bundle_status: 'submitted', submitted_at: new Date().toISOString() })
+      .eq('program_id', pid)
+      .eq('quarter', q)
+      .eq('fiscal_year', 'FY2025-26');
+  }
+
+  if (type === 'roster') {
+    const fileInput = document.querySelector('#roster-upload-view input[type=file]');
+    const file = fileInput?.files?.[0];
+
+    if (!file) {
+      alert('Please choose a roster file before submitting.');
+      return;
+    }
+
+    const path = `${pid}/${q}/${Date.now()}-${file.name}`;
+    const { error: uploadError } = await sb.storage
+      .from('hmis-rosters')
+      .upload(path, file, { upsert: true });
+    if (uploadError) { alert('Upload error: ' + uploadError.message); return; }
+
+    const { error: rosterError } = await sb.from('client_rosters').upsert({
+      program_id: pid,
+      quarter: q,
+      fiscal_year: 'FY2025-26',
+      file_path: path,
+      file_name: file.name,
+      period_start: document.getElementById('roster-start')?.value || null,
+      period_end: document.getElementById('roster-end')?.value || null,
+      unique_clients: parseInt(document.getElementById('roster-unique')?.value) || null,
+      enrollments: parseInt(document.getElementById('roster-enroll')?.value) || null,
+      households: parseInt(document.getElementById('roster-households')?.value) || null,
+      notes: document.getElementById('roster-notes')?.value,
+      status: 'uploaded',
+      uploaded_by: window._userProfile?.id
+    }, { onConflict: 'program_id,quarter,fiscal_year' });
+    if (rosterError) { alert('Roster save error: ' + rosterError.message); return; }
+  }
+
+  if (type === 'exits') {
+    const tbody = document.getElementById('exits-tbody');
+    const rows = [...tbody.querySelectorAll('tr:not(.historical)')];
+    const groupId = crypto.randomUUID();
+
+    for (let i = 0; i < rows.length; i++) {
+      const selects = rows[i].querySelectorAll('select');
+      const inputs = rows[i].querySelectorAll('input[type=text]');
+      const { error } = await sb.from('non_permanent_exits').insert({
+        program_id: pid,
+        quarter: q,
+        fiscal_year: 'FY2025-26',
+        submission_group_id: groupId,
+        exit_number: HISTORICAL_EXITS.length + i + 1,
+        exit_type: selects[1]?.value || null,
+        voluntary_involuntary: selects[2]?.value || null,
+        reason_for_exit: inputs[0]?.value || null,
+        interim_program_name: inputs[1]?.value || null,
+        interim_program_reason: inputs[2]?.value || null,
+        return_context: inputs[3]?.value || null,
+        staff_followup: selects[3]?.value || null,
+        additional_notes: inputs[4]?.value || null,
+        submitted_by: window._userProfile?.id
+      });
+      if (error) { alert('Exit save error: ' + error.message); return; }
+    }
+  }
+
+  await loadAllData();
+  closeForm(type);
+  renderDashboard(q);
+  alert('✅ Submitted successfully.');
+}
+
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target?.id === 'login-email') {
+    doLogin();
+  }
+});
+
+document.addEventListener('change', e => {
+  if (e.target.type === 'file' && e.target.closest('.upload-zone')) {
+    const file = e.target.files[0];
+    if (file) {
+      e.target.closest('.upload-zone').querySelector('.upload-zone-title').textContent = '✓ ' + file.name;
+      e.target.closest('.upload-zone').style.borderColor = 'var(--green)';
+    }
+  }
+});
+
+document.addEventListener('click', e => {
+  if (e.target?.id === 'qr-save-btn') saveDraft(currentQuarter);
+});
+
+window.addEventListener('load', async () => {
+  const loading = document.getElementById('loading-screen');
+  if (loading) loading.style.display = 'none';
+
+  const errorEl = document.getElementById('login-error');
+  const { data: { session } } = await sb.auth.getSession();
+
+  if (session) {
+    try {
+      await enterApp(session.user.id);
+    } catch (err) {
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('app').style.display = 'none';
+      errorEl.textContent = err.message;
+    }
+  } else {
+    document.getElementById('login-screen').style.display = 'flex';
+  }
+});
 </script>
 </body>
 </html>
