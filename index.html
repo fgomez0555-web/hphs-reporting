@@ -413,13 +413,36 @@
 // CONFIG — paste your Supabase project URL and anon key here.
 // If left as PLACEHOLDER, the app runs in DEMO MODE (localStorage).
 // ============================================================
-const SUPABASE_URL = "PLACEHOLDER_URL";
-const SUPABASE_ANON_KEY = "PLACEHOLDER_KEY";
+const SUPABASE_URL = "https://ppimdipicqwphpilykto.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_PtwivzGYbWXqFmwjOOzXjA_rhEzwZyd";
 
 const DEMO_MODE = SUPABASE_URL === "PLACEHOLDER_URL";
 let sb = null;
 if (!DEMO_MODE) {
-  sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: {
+      detectSessionInUrl: true,
+      persistSession: true,
+      autoRefreshToken: true,
+      flowType: "implicit"
+    }
+  });
+}
+
+function appRedirectUrl() {
+  // Uses the exact hosted page URL without temporary auth tokens.
+  return window.location.origin + window.location.pathname;
+}
+
+function cleanAuthUrl() {
+  // Removes Supabase access tokens from the address bar after sign-in.
+  if (window.location.hash && (
+      window.location.hash.includes("access_token") ||
+      window.location.hash.includes("refresh_token") ||
+      window.location.hash.includes("type=")
+    )) {
+    window.history.replaceState({}, document.title, appRedirectUrl());
+  }
 }
 
 // Constants
@@ -481,7 +504,7 @@ function uid() { return "hh_" + Math.random().toString(36).slice(2,10); }
 async function init() {
   document.getElementById("login-mode-text").innerHTML = DEMO_MODE
     ? `<strong>Demo mode</strong> — data stays in this browser only (no shared database). To enable shared multi-user mode, follow the steps in <code>SETUP_GUIDE.md</code> and paste your Supabase credentials at the top of <code>index.html</code>.`
-    : `<strong>Live mode</strong> — connected to Supabase. Data is shared across all authorized users.`;
+    : `<strong>Live mode</strong> — connected to Supabase. Data is shared across all authorized users. Use the hosted website URL for sign-in.`;
 
   if (DEMO_MODE) {
     // Auto-login as a fake user
@@ -490,8 +513,14 @@ async function init() {
     loadFromLocalStorage();
     showApp();
   } else {
+    if (window.location.hash && window.location.hash.includes("access_token")) {
+      await new Promise(resolve => setTimeout(resolve, 400));
+    }
+
     const { data } = await sb.auth.getSession();
+
     if (data.session) {
+      cleanAuthUrl();
       state.user = data.session.user;
       await loadFromSupabase();
       showApp();
@@ -499,7 +528,11 @@ async function init() {
       showLogin();
     }
     sb.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN") { state.user = session.user; loadFromSupabase().then(showApp); }
+      if (event === "SIGNED_IN") {
+        cleanAuthUrl();
+        state.user = session.user;
+        loadFromSupabase().then(showApp);
+      }
       if (event === "SIGNED_OUT") { state.user = null; showLogin(); }
     });
   }
@@ -521,7 +554,10 @@ async function handleLogin(e) {
     return;
   }
   msg.className = "login-msg info"; msg.textContent = "Sending magic link…";
-  const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: window.location.href }});
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: appRedirectUrl() }
+  });
   if (error) { msg.className = "login-msg error"; msg.textContent = error.message; }
   else { msg.className = "login-msg success"; msg.textContent = "Check your inbox — click the link to sign in."; }
 }
