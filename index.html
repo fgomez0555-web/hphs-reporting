@@ -175,7 +175,7 @@ function breakdown(id,opts,h,fn){let total=h.length,counts={};opts.forEach(o=>co
 function drawDash(h){let qs=['Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26'],counts=qs.map(q=>h.filter(x=>fiscalQuarter(x.intake_date)===q).length),amounts=qs.map(q=>h.filter(x=>fiscalQuarter(x.intake_date)===q).reduce((s,x)=>s+assistTotal(x),0));draw('chartQ','bar',qs,counts,'Households');draw('chartA','line',qs,amounts,'Assistance $')}function draw(id,type,labels,data,label){if(state.charts[id])state.charts[id].destroy();let ctx=document.getElementById(id);state.charts[id]=new Chart(ctx,{type,data:{labels,datasets:[{label,data,borderWidth:2,backgroundColor:'rgba(37,99,235,.35)',borderColor:'#1B2F5B',tension:.25,fill:type==='line'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}})}
 
 function reportScopedHouseholds(){
-  let base=reportScopedHouseholds();
+  let base=scopedHouseholds();
   if(isCity()){
     let agency=state.reportAgency||'all';
     if(agency==='apla'||agency==='ncjw') return state.households.filter(h=>String(h.agency_id).toLowerCase()===agency);
