@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HPHS Reporting — FY26</title>
+<title>RPHP Reporting Portal — City of West Hollywood</title>
 <style>
   :root {
     --navy: #1F3864;
@@ -227,6 +227,14 @@
   .toast.show { opacity: 1; }
   .toast.success { background: var(--success); }
   .toast.error { background: var(--danger); }
+
+
+/* Portal refresh: align RPHP tool with index reporting portal */
+:root { --navy:#1B2F5B; --navy-light:#243a72; --blue:#1B2F5B; --gold:#C9A24A; --cream:#F7F6F2; --off-white:#F7F6F2; --grey-50:#F7F6F2; --grey-100:#F0EEE9; --grey-200:#E0DDD5; --grey-400:#9B9690; --grey-700:#6B6660; --grey-900:#3A3733; --border:#D8D5CE; --shadow:0 1px 3px rgba(27,47,91,0.08),0 4px 16px rgba(27,47,91,0.06); --shadow-lg:0 8px 32px rgba(27,47,91,0.12); --radius:6px; --radius-lg:10px; --font:'DM Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-height:1.6;} button,input,select,textarea{font-family:var(--font);} button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid rgba(201,162,74,.45);outline-offset:2px}.hidden{display:none!important}#app-shell:not(.hidden){display:block}.login-wrap{background:var(--navy);color:white}.login-card{border:0;border-radius:12px;padding:0;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.35)}.login-card::before{content:"";display:block;height:3px;background:var(--gold)}.login-card .login-brand-panel{background:var(--navy);padding:28px 32px;text-align:center;border-bottom:3px solid var(--gold)}.login-card .login-logo-img{display:block;width:auto;max-width:190px;max-height:70px;object-fit:contain;margin:0 auto 16px;border-radius:4px;box-shadow:0 6px 20px rgba(0,0,0,.18)}.login-card .login-fields{padding:28px 32px}.login-card .program{color:rgba(255,255,255,.65);margin-bottom:6px}.login-card h2{color:white;font-family:Georgia,'Times New Roman',serif;font-size:20px;font-weight:500}.login-card .sub{color:rgba(255,255,255,.72);margin-bottom:0}.login-card label{color:var(--grey-700)}.login-mode{color:var(--grey-400)}
+.topbar{background:var(--navy);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 28px;min-height:58px;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.18)}.topbar-brand{display:flex;align-items:center;gap:14px;min-width:0}.weho-logo-header{display:block;width:auto;max-width:132px;max-height:30px;height:auto;object-fit:contain;border-radius:3px;flex-shrink:0}.brand-program{font-family:Georgia,'Times New Roman',serif;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand-sub{font-size:10.5px;color:rgba(255,255,255,.65);letter-spacing:.05em;text-transform:uppercase}.topbar-right{display:flex;align-items:center;gap:12px}.deadline-chip{font-size:12px;border-radius:18px;padding:4px 10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:white}.deadline-chip.amber{background:rgba(180,83,9,.28);color:#FFE4A3}.deadline-chip.red{background:rgba(185,28,28,.26);color:#FFD0CA}.user-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px 4px 6px;font-size:12.5px}.user-avatar{width:24px;height:24px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px}.logout-btn{font-size:12px;color:rgba(255,255,255,.7);background:none;border:0;cursor:pointer}.app-layout{display:flex;min-height:calc(100vh - 58px)}.sidebar{width:230px;background:white;border-right:1px solid var(--border);padding:24px 0;flex-shrink:0;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto}.sidebar-label{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--grey-400);padding:0 18px 8px}.sidebar-section{margin-bottom:22px}.sidebar button{width:100%;display:flex;align-items:center;gap:9px;padding:9px 18px;font-size:13px;color:var(--grey-700);cursor:pointer;border:0;border-left:3px solid transparent;background:transparent;text-align:left;transition:.15s}.sidebar button:hover{background:var(--grey-100);color:var(--navy)}.sidebar button.active{background:#EEF2FA;color:var(--navy);font-weight:700;border-left-color:var(--navy)}.si-icon{font-size:15px;width:18px;text-align:center}main{flex:1;max-width:1180px;margin:0;padding:28px 32px 60px}.view-title{font-family:Georgia,'Times New Roman',serif;font-size:28px;color:var(--navy);line-height:1.2}.view-sub{font-size:13px;color:var(--grey-400);margin-bottom:22px}.landing-header,.recent,.sync-strip,.form-section,.breakdown-card,.chart-card,.hh-list,.filter-bar,.print-page{border-color:var(--border);box-shadow:var(--shadow)}.landing-header{border-radius:var(--radius-lg);border-top:4px solid var(--navy)}.landing-header h1{font-family:Georgia,'Times New Roman',serif;font-size:26px;color:var(--navy)}.stat,.kpi{border-radius:var(--radius-lg);box-shadow:var(--shadow);border-top:3px solid var(--navy)}.stat:nth-child(2),.kpi:nth-child(2){border-top-color:var(--gold)}.stat:nth-child(3),.kpi:nth-child(3){border-top-color:var(--success)}.stat:nth-child(4),.kpi:nth-child(4){border-top-color:var(--warning)}.stat-label,.kpi-label,.recent-header h3,.breakdown-card h3,.chart-card h3{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--grey-400)}.stat-value,.kpi-value{font-family:Georgia,'Times New Roman',serif;font-weight:500;color:var(--navy)}.action-card{border-radius:var(--radius-lg);box-shadow:var(--shadow)}.action-card.primary{border-color:var(--navy)}.action-card:hover{border-color:var(--navy);box-shadow:var(--shadow-lg)}.action-card .icon{background:#EEF2FA;color:var(--navy)}.action-card.primary .icon{background:var(--navy);color:white}.btn{border-radius:var(--radius);font-weight:700;background:var(--navy)}.btn:hover{background:var(--navy-light)}.btn.secondary,.btn.subtle{background:white;color:var(--navy);border:1px solid var(--border)}.btn.secondary:hover,.btn.subtle:hover{border-color:var(--navy);color:var(--navy);background:#EEF2FA}.btn.danger{background:var(--danger);color:white}.form-section-header{background:var(--navy);border-bottom:3px solid var(--gold)}.form-row input:focus,.form-row select:focus,.form-row textarea:focus,.hh-toolbar input:focus,.filter-bar select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,47,91,.10);outline:none}.log-table th,.hh-list-row.header{background:#EEF2FA;color:var(--navy)}.log-table tbody tr:nth-child(even) td,.hh-list-row:nth-child(even):not(.header){background:#FBFAF7}.log-table tfoot td{background:#EEF2FA;color:var(--navy);border-top:2px solid var(--navy)}.print-header{border-bottom:3px solid var(--gold)}.print-header h1{font-family:Georgia,'Times New Roman',serif;color:var(--navy)}.print-kpi{border:1px solid var(--border);background:#fff;border-top:3px solid var(--navy)}.print-table th{background:var(--navy);color:white}.print-table tbody tr:nth-child(even) td{background:#F7F6F2}.confirm-modal{position:fixed;inset:0;background:rgba(27,47,91,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;backdrop-filter:blur(2px)}.confirm-modal.open{display:flex}.confirm-card{background:white;border-radius:var(--radius-lg);max-width:480px;width:100%;box-shadow:var(--shadow-lg);overflow:hidden}.confirm-card-header{padding:18px 22px;border-bottom:1px solid var(--border);font-family:Georgia,'Times New Roman',serif;color:var(--navy);font-size:18px}.confirm-card-body{padding:22px}.confirm-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}.toast{border-radius:22px;box-shadow:var(--shadow-lg)}
+@media (max-width:980px){.stat-strip,.action-row,.kpi-grid,.chart-grid,.breakdown-grid{grid-template-columns:1fr 1fr}}@media (max-width:800px){.sidebar{display:none}main{padding:20px}.topbar{padding:0 16px}.brand-sub{display:none}.weho-logo-header{max-width:112px;max-height:26px}.topbar-right .deadline-chip{display:none}.stat-strip,.action-row,.kpi-grid,.chart-grid,.breakdown-grid{grid-template-columns:1fr}}@media print{.topbar,.sidebar,.sync-strip,.filter-bar,.print-toolbar,.toast,.confirm-modal{display:none!important}.app-layout{display:block}main{max-width:none;padding:0}}
+
 </style>
 </head>
 <body>
@@ -234,37 +242,57 @@
 <!-- LOGIN -->
 <div id="login-screen" class="login-wrap">
   <div class="login-card">
-    <p class="program">City of West Hollywood</p>
-    <h2>Homelessness Prevention &amp; Housing Stabilization</h2>
-    <p class="sub">FY26 Reporting Tool • Oct 1, 2025 – Sept 30, 2026</p>
-    <form id="login-form">
-      <label for="login-email">Your email</label>
-      <input type="email" id="login-email" required placeholder="you@weho.org" autocomplete="email">
-      <button type="submit" class="btn">Send magic link</button>
-    </form>
-    <div id="login-msg"></div>
-    <div class="login-mode" id="login-mode-text"></div>
+    <div class="login-brand-panel">
+      <img class="login-logo-img" src="https://www.governmentjobs.com/AgencyPages/weho/agencyImages/download/weho_white_on_blue.jpg" alt="City of West Hollywood logo">
+      <p class="program">City of West Hollywood · Human Services Division</p>
+      <h2>RPHP Reporting Portal</h2>
+      <p class="sub">Homelessness Prevention &amp; Housing Stabilization · FY26</p>
+    </div>
+    <div class="login-fields">
+      <form id="login-form">
+        <label for="login-email">Email Address</label>
+        <input type="email" id="login-email" required placeholder="you@weho.org" autocomplete="email">
+        <button type="submit" class="btn">Send Secure Login Link →</button>
+      </form>
+      <div id="login-msg"></div>
+      <div class="login-mode" id="login-mode-text"></div>
+    </div>
   </div>
 </div>
 
 <!-- APP SHELL -->
 <div id="app-shell" class="hidden">
-  <nav class="topnav">
-    <div class="brand">
-      <span class="brand-title">HPHS Reporting</span>
-      <span class="brand-sub">FY26 • Oct 2025 – Sep 2026</span>
+  <header class="topbar">
+    <div class="topbar-brand">
+      <img class="weho-logo-header" src="https://www.governmentjobs.com/AgencyPages/weho/agencyImages/download/weho_white_on_blue.jpg" alt="City of West Hollywood logo">
+      <div>
+        <div class="brand-program">RPHP Reporting Portal</div>
+        <div class="brand-sub">Homelessness Prevention &amp; Housing Stabilization · FY26</div>
+      </div>
     </div>
-    <div class="nav-links">
-      <button data-nav="landing" class="active">Home</button>
-      <button data-nav="dashboard">Dashboard</button>
-      <button data-nav="households">Households</button>
-      <button data-nav="quarterly">Quarterly report</button>
+    <div class="topbar-right">
+      <span id="deadline-chip" class="deadline-chip">FY26</span>
+      <div class="user-pill"><div class="user-avatar" id="user-avatar">U</div><span id="user-email"></span></div>
+      <button class="logout-btn" id="logout-btn">Sign out</button>
     </div>
-    <div class="user-info">
-      <span id="user-email"></span>
-      <button id="logout-btn">Sign out</button>
-    </div>
-  </nav>
+  </header>
+
+  <div class="app-layout">
+    <aside class="sidebar" aria-label="Main navigation">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Workspace</div>
+        <button data-nav="landing" class="active"><span class="si-icon">⊞</span>Home</button>
+        <button data-nav="dashboard"><span class="si-icon">📊</span>Dashboard</button>
+        <button data-nav="households"><span class="si-icon">👥</span>Households</button>
+        <button data-nav="quarterly"><span class="si-icon">📄</span>Quarterly Report</button>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Quick Actions</div>
+        <button type="button" onclick="newHousehold()"><span class="si-icon">＋</span>Add Household</button>
+        <button type="button" onclick="exportCsv()"><span class="si-icon">⇩</span>Export CSV</button>
+        <button type="button" onclick="exportJsonBackup()"><span class="si-icon">☁</span>Backup Data</button>
+      </div>
+    </aside>
 
   <main>
     <!-- LANDING -->
@@ -402,6 +430,20 @@
       <div id="print-body" class="print-page"></div>
     </section>
   </main>
+  </div>
+</div>
+
+<div id="confirm-modal" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+  <div class="confirm-card">
+    <div class="confirm-card-header" id="confirm-title">Confirm Action</div>
+    <div class="confirm-card-body">
+      <p id="confirm-message" style="font-size:13px;color:var(--grey-700);margin:0;"></p>
+      <div class="confirm-actions">
+        <button class="btn secondary" id="confirm-cancel">Cancel</button>
+        <button class="btn" id="confirm-ok">Confirm</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div id="toast" class="toast"></div>
@@ -575,6 +617,9 @@ function showApp() {
   document.getElementById("login-screen").classList.add("hidden");
   document.getElementById("app-shell").classList.remove("hidden");
   document.getElementById("user-email").textContent = state.user.email;
+  const avatar = document.getElementById("user-avatar");
+  if (avatar) avatar.textContent = (state.user.email || "U").slice(0,1).toUpperCase();
+  updateDeadlineChip();
   navigate("landing");
 }
 
@@ -631,6 +676,7 @@ function navigate(view) {
   document.querySelectorAll("main > section").forEach(s => s.classList.add("hidden"));
   document.getElementById("view-" + view).classList.remove("hidden");
   document.querySelectorAll("[data-nav]").forEach(b => b.classList.toggle("active", b.dataset.nav === view));
+  updateDeadlineChip();
   if (view === "landing") renderLanding();
   if (view === "dashboard") renderDashboard();
   if (view === "households") renderHouseholdsList();
@@ -793,7 +839,7 @@ function openHousehold(id) {
 
 async function deleteCurrentHousehold() {
   if (!state.currentHHId) return;
-  if (!confirm("Delete this household record permanently? This cannot be undone.")) return;
+  if (!(await portalConfirm("Delete this household record permanently? This cannot be undone.", "Delete record"))) return;
   const hh = state.households.find(h => h.id === state.currentHHId);
   if (DEMO_MODE) {
     state.households = state.households.filter(h => h.id !== state.currentHHId);
@@ -1162,8 +1208,8 @@ function renderQuarterly() {
 
   document.getElementById("print-body").innerHTML = `
     <div class="print-header">
-      <p class="program">City of West Hollywood</p>
-      <h1>Homelessness Prevention &amp; Housing Stabilization</h1>
+      <p class="program">City of West Hollywood · Human Services Division</p>
+      <h1>RPHP Quarterly Report</h1>
       <p class="period">Reporting period: ${filter === "all" ? "FY26 to date (Oct 1, 2025 – Sept 30, 2026)" : filter} • Report generated ${new Date().toLocaleDateString()}</p>
     </div>
     <div class="print-section">
@@ -1191,7 +1237,7 @@ function renderQuarterly() {
       </table>
     </div>
     <div class="print-section" style="margin-top: 32px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 11px; color: var(--grey-400);">
-      Generated by HPHS Reporting Tool • No personally identifying information is included in this report.
+      Generated by RPHP Reporting Portal • No personally identifying information is included in this report.
     </div>
   `;
 }
@@ -1219,13 +1265,13 @@ function exportCsv() {
     const v = r[c] == null ? "" : String(r[c]);
     return /[",\n]/.test(v) ? `"${v.replace(/"/g,'""')}"` : v;
   }).join(","))).join("\n");
-  downloadBlob(csv, "text/csv", `HPHS_FY26_summary_${new Date().toISOString().slice(0,10)}.csv`);
+  downloadBlob(csv, "text/csv", `RPHP_FY26_summary_${new Date().toISOString().slice(0,10)}.csv`);
   toast("CSV downloaded");
 }
 
 function exportJsonBackup() {
   const payload = { schemaVersion: 1, exportedAt: new Date().toISOString(), exportedBy: state.user.email, households: state.households, activity: state.activity };
-  downloadBlob(JSON.stringify(payload, null, 2), "application/json", `HPHS_FY26_backup_${new Date().toISOString().slice(0,10)}.json`);
+  downloadBlob(JSON.stringify(payload, null, 2), "application/json", `RPHP_FY26_backup_${new Date().toISOString().slice(0,10)}.json`);
   localStorage.setItem("last_backup_at", new Date().toISOString());
   toast("Backup downloaded", "success");
   renderLanding();
@@ -1234,7 +1280,13 @@ function exportJsonBackup() {
 function importJsonBackup(e) {
   const file = e.target.files[0];
   if (!file) return;
-  if (!confirm("Replace all current data with the contents of this backup file?")) { e.target.value = ""; return; }
+  portalConfirm("Replace all current data with the contents of this backup file?", "Restore backup").then(confirmed => {
+    if (!confirmed) { e.target.value = ""; return; }
+    continueImportJsonBackup(e, file);
+  });
+}
+
+function continueImportJsonBackup(e, file) {
   const reader = new FileReader();
   reader.onload = async () => {
     try {
@@ -1265,6 +1317,37 @@ function downloadBlob(content, mime, filename) {
   URL.revokeObjectURL(url);
 }
 
+
+
+function updateDeadlineChip() {
+  const chip = document.getElementById("deadline-chip");
+  if (!chip) return;
+  const q = todayQuarter();
+  const endMap = { "Q1 FY26":"2025-12-31", "Q2 FY26":"2026-03-31", "Q3 FY26":"2026-06-30", "Q4 FY26":"2026-09-30" };
+  const end = endMap[q] ? new Date(endMap[q] + "T23:59:59") : null;
+  if (!end) { chip.textContent = "FY26"; return; }
+  const days = Math.ceil((end - new Date()) / 86400000);
+  chip.classList.remove("amber", "red");
+  if (days < 0) { chip.textContent = `${q} closed`; chip.classList.add("red"); }
+  else { chip.textContent = `${q} · ${days} days left`; if (days <= 7) chip.classList.add("red"); else if (days <= 21) chip.classList.add("amber"); }
+}
+
+function portalConfirm(message, okText = "Confirm") {
+  const modal = document.getElementById("confirm-modal");
+  const msg = document.getElementById("confirm-message");
+  const ok = document.getElementById("confirm-ok");
+  const cancel = document.getElementById("confirm-cancel");
+  if (!modal || !msg || !ok || !cancel) return Promise.resolve(confirm(message));
+  msg.textContent = message;
+  ok.textContent = okText;
+  modal.classList.add("open");
+  return new Promise(resolve => {
+    const cleanup = (value) => { modal.classList.remove("open"); ok.onclick = null; cancel.onclick = null; modal.onclick = null; resolve(value); };
+    ok.onclick = () => cleanup(true);
+    cancel.onclick = () => cleanup(false);
+    modal.onclick = (e) => { if (e.target === modal) cleanup(false); };
+  });
+}
 // Init
 init();
 </script>
