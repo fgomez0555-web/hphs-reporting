@@ -752,13 +752,55 @@ function saveToLocalStorage() {
   }));
 }
 
+function normalizeHousehold(h = {}) {
+  return {
+    id: h.id || uid(),
+    hh_id: h.hh_id || "",
+    intake_date: h.intake_date || null,
+    hh_composition: h.hh_composition || "",
+    hh_size: h.hh_size == null ? null : Number(h.hh_size),
+    monthly_income: h.monthly_income == null ? null : Number(h.monthly_income),
+    housing_at_intake: h.housing_at_intake || "",
+    age_primary: h.age_primary == null ? null : Number(h.age_primary),
+    race_ethnicity: h.race_ethnicity || "",
+    gender: h.gender || "",
+    veteran: h.veteran || "",
+    disability: h.disability || "",
+    eligible: h.eligible || "",
+    qualifying_event: h.qualifying_event || "",
+    assistance_start: h.assistance_start || null,
+    assistance_end: h.assistance_end || null,
+    arrears_flag: h.arrears_flag || "",
+    arrears_amount: h.arrears_amount == null ? 0 : Number(h.arrears_amount),
+    benefits_cert: h.benefits_cert || "",
+    housing_at_entry: h.housing_at_entry || "",
+    housing_at_exit: h.housing_at_exit || "",
+    housing_90day: h.housing_90day || "",
+    success_story: h.success_story || "",
+    assistance_log: Array.isArray(h.assistance_log) ? h.assistance_log : [],
+    service_log: Array.isArray(h.service_log) ? h.service_log : [],
+    updated_at: h.updated_at || new Date().toISOString(),
+    updated_by: h.updated_by || ""
+  };
+}
+
 async function loadFromSupabase() {
   await loadAccessStatus();
-  const { data: hhs, error: hhError } = await sb.from("households").select("*").order("hh_id");
-  const { data: act } = await sb.from("activity_log").select("*").order("created_at", { ascending: false }).limit(10);
-  if (hhError) toast("Access or data load error: " + hhError.message, "error");
-  state.households = hhs || [];
-  state.activity = act || [];
+  const { data: hhs, error: hhError } = await sb.from("households").select("*").order("hh_id", { ascending: true });
+  const { data: act, error: actError } = await sb.from("activity_log").select("*").order("created_at", { ascending: false }).limit(25);
+  if (hhError) {
+    console.error("Household load error", hhError);
+    toast("Household data load error: " + hhError.message, "error");
+    state.households = [];
+  } else {
+    state.households = (hhs || []).map(normalizeHousehold);
+  }
+  if (actError) {
+    console.warn("Activity load error", actError);
+    state.activity = [];
+  } else {
+    state.activity = act || [];
+  }
 }
 
 async function loadAccessStatus() {
@@ -771,7 +813,7 @@ async function loadAccessStatus() {
   const { data: me, error: meError } = await sb
     .from("rphp_approved_users")
     .select("email, role, user_type, active, full_name, agency_affiliation")
-    .eq("email", email)
+    .ilike("email", email)
     .maybeSingle();
 
   if (meError) {
@@ -825,15 +867,30 @@ async function loadAccessStatus() {
 }
 
 async function persistHousehold(hh) {
+  const clean = normalizeHousehold({ ...hh, updated_at: new Date().toISOString(), updated_by: state.user?.email || hh.updated_by || "" });
   if (DEMO_MODE) {
-    const idx = state.households.findIndex(h => h.id === hh.id);
-    if (idx >= 0) state.households[idx] = hh; else state.households.push(hh);
+    const idx = state.households.findIndex(h => h.id === clean.id);
+    if (idx >= 0) state.households[idx] = clean; else state.households.push(clean);
     saveToLocalStorage();
-  } else {
-    const { error } = await sb.from("households").upsert(hh);
-    if (error) toast("Save error: " + error.message, "error");
-    await loadFromSupabase();
+    return clean;
   }
+
+  const { data, error } = await sb
+    .from("households")
+    .upsert(clean, { onConflict: "id" })
+    .select("*")
+    .single();
+
+  if (error) {
+    console.error("Household save error", error);
+    toast("Save error: " + error.message, "error");
+    throw error;
+  }
+
+  const saved = normalizeHousehold(data || clean);
+  const idx = state.households.findIndex(h => h.id === saved.id);
+  if (idx >= 0) state.households[idx] = saved; else state.households.push(saved);
+  return saved;
 }
 
 async function logActivity(action, hhId) {
@@ -1177,9 +1234,13 @@ async function newHousehold() {
     updated_at: new Date().toISOString(),
     updated_by: state.user.email
   };
-  await persistHousehold(hh);
-  await logActivity("Created new household", hh.hh_id);
-  openHousehold(hh.id);
+  try {
+    const saved = await persistHousehold(hh);
+    await logActivity("Created new household", saved.hh_id);
+    openHousehold(saved.id);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 function openHousehold(id) {
