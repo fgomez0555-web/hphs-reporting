@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>RPHP Reporting Portal — City of West Hollywood</title>
+<script>const WEHO_LOGO_URL="https://www.governmentjobs.com/AgencyPages/weho/agencyImages/download/weho_white_on_blue.jpg";</script>
+<title>RPHP Human Services Division — City of West Hollywood</title>
 <script>
   const SUPABASE_URL = "https://ppimdipicqwphpilykto.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_PtwivzGYbWXqFmwjOOzXjA_rhEzwZyd";
@@ -21,8 +22,8 @@ input[type="date"]{cursor:pointer;}
 </style>
 </head>
 <body>
-<div id="login" class="login"><div class="login-card"><div class="login-head"><p class="eyebrow">City of West Hollywood</p><h1>RPHP Reporting Portal</h1><p style="margin:10px 0 0;color:rgba(255,255,255,.72)">APLA + NCJW shared reporting tool</p></div><div class="login-body"><form id="login-form"><div class="field"><label>Email address</label><input type="email" id="login-email" required placeholder="name@agency.org" autocomplete="email"></div><button class="btn" type="submit" style="width:100%">Send secure magic link</button></form><div id="login-msg"></div></div></div></div>
-<div id="app" class="hidden"><header class="topbar"><div class="brand"><div class="logo">W</div><div><div class="brand-title">RPHP Reporting Portal</div><div class="brand-sub">Homelessness Prevention & Housing Stabilization · FY26</div></div></div><div class="top-actions"><span class="pill" id="agency-pill">—</span><span class="pill" id="role-pill">—</span><span class="pill" id="user-pill">—</span><button class="btn secondary sm" id="logout-btn">Sign out</button></div></header><div class="shell"><aside class="side"><div class="side-label">Workspace</div><button class="navbtn active" data-view="home">⌂ Home</button><button class="navbtn" data-view="dashboard">◈ Dashboard</button><button class="navbtn" data-view="households">☷ Households</button><button class="navbtn" data-view="export">⇩ Program Report</button><div class="side-label" style="margin-top:20px">Admin</div><button class="navbtn admin-only" data-view="users">☻ User Management</button><button class="navbtn admin-only" data-view="activity">◷ Recent Activity</button><button class="navbtn admin-only" data-view="backup">⤓ Backup Data</button></aside><main class="main"><section id="view-home" class="view"></section><section id="view-dashboard" class="view hidden"></section><section id="view-households" class="view hidden"></section><section id="view-editor" class="view hidden"></section><section id="view-export" class="view hidden"></section><section id="view-users" class="view hidden"></section><section id="view-activity" class="view hidden"></section><section id="view-backup" class="view hidden"></section></main></div></div>
+<div id="login" class="login"><div class="login-card"><div class="login-head"><p class="eyebrow">City of West Hollywood</p><h1>RPHP Human Services Division</h1><p style="margin:10px 0 0;color:rgba(255,255,255,.72)">Human Services Division</p></div><div class="login-body"><form id="login-form"><div class="field"><label>Email address</label><input type="email" id="login-email" required placeholder="name@agency.org" autocomplete="email"></div><button class="btn" type="submit" style="width:100%">Send secure magic link</button></form><div id="login-msg"></div></div></div></div>
+<div id="app" class="hidden"><header class="topbar"><div class="brand"><div class="logo">W</div><div><div class="brand-title">RPHP Human Services Division</div><div class="brand-sub">Homelessness Prevention & Housing Stabilization · FY26</div></div></div><div class="top-actions"><span class="pill" id="agency-pill">—</span><span class="pill" id="role-pill">—</span><span class="pill" id="user-pill">—</span><button class="btn secondary sm" id="logout-btn">Sign out</button></div></header><div class="shell"><aside class="side"><div class="side-label">Workspace</div><button class="navbtn active" data-view="home">⌂ Home</button><button class="navbtn" data-view="dashboard">◈ Dashboard</button><button class="navbtn" data-view="households">☷ Households</button><button class="navbtn" data-view="export">⇩ Program Report</button><div class="side-label" style="margin-top:20px">Admin</div><button class="navbtn admin-only" data-view="users">☻ User Management</button><button class="navbtn admin-only" data-view="activity">◷ Recent Activity</button><button class="navbtn admin-only" data-view="backup">⤓ Backup Data</button></aside><main class="main"><section id="view-home" class="view"></section><section id="view-dashboard" class="view hidden"></section><section id="view-households" class="view hidden"></section><section id="view-editor" class="view hidden"></section><section id="view-export" class="view hidden"></section><section id="view-users" class="view hidden"></section><section id="view-activity" class="view hidden"></section><section id="view-backup" class="view hidden"></section></main></div></div>
 <div id="user-modal" class="modal"><div class="modal-card"><div class="modal-head"><strong id="user-modal-title">Add User</strong><button class="btn secondary sm" onclick="closeUserModal()">Close</button></div><div class="modal-body"><form id="user-form"><input type="hidden" id="um-original-email"><div class="form-grid"><div class="field"><label>Name</label><input id="um-name" required></div><div class="field"><label>Email</label><input id="um-email" type="email" required></div><div class="field"><label>Agency affiliation</label><select id="um-agency" required></select></div><div class="field"><label>User type</label><select id="um-role" required><option value="agency_user">Agency User</option><option value="agency_admin">Agency Admin</option><option value="city_viewer">City Viewer</option><option value="city_admin">City Admin</option></select></div><div class="field"><label>Status</label><select id="um-active"><option value="true">Active</option><option value="false">Inactive</option></select></div></div><div style="display:flex;justify-content:flex-end;gap:10px;margin-top:12px"><button type="button" class="btn secondary" onclick="closeUserModal()">Cancel</button><button class="btn" type="submit">Save User</button></div></form></div></div></div>
 <div id="toast" class="toast"></div>
 <script>
@@ -49,10 +50,74 @@ async function loadProfile(){let email=(state.session?.user?.email||'').toLowerC
 function loadLocal(){state.households=JSON.parse(localStorage.rphp_households||'[]');state.users=[state.profile];state.activity=JSON.parse(localStorage.rphp_activity||'[]')}function saveLocal(){localStorage.rphp_households=JSON.stringify(state.households);localStorage.rphp_activity=JSON.stringify(state.activity)}
 async function loadAll(){if(DEMO_MODE){loadLocal();return}let h=await sb.from('rphp_households').select('*').order('created_at',{ascending:false});if(h.error)toast('Households load error: '+h.error.message,'err');state.households=h.data||[];let a=await sb.from('rphp_activity_log').select('*').order('created_at',{ascending:false}).limit(50);state.activity=a.data||[];if(isAdmin())await loadUsers()}
 async function loadUsers(){if(DEMO_MODE)return;let {data,error}=await sb.rpc('rphp_get_users');if(error){toast('User table load error: '+error.message,'err');state.users=[]}else state.users=data||[]}
-async function persistHH(h){h.updated_at=new Date().toISOString();h.updated_by=state.profile.email;if(!isCity())h.agency_id=state.profile.agency_id;if(DEMO_MODE){let i=state.households.findIndex(x=>x.id===h.id);if(i>=0)state.households[i]=h;else state.households.unshift(h);saveLocal();return true}let {error}=await sb.from('rphp_households').upsert(h);if(error){toast('Save failed: '+error.message,'err');return false}await logAct('Saved household',h.hh_id,h.agency_id);await loadAll();return true}
-async function logAct(action,hh,agency){let row={id:uid('act'),action,hh_id:hh||null,agency_id:agency||null,actor_email:state.profile.email,created_at:new Date().toISOString()};if(DEMO_MODE){state.activity.unshift(row);saveLocal();return}await sb.from('rphp_activity_log').insert(row)}
+function cleanDate(v){return v && /^\d{4}-\d{2}-\d{2}$/.test(String(v)) ? v : null}
+function cleanNumber(v){return v===null||v===undefined||v==='' ? null : Number(v)}
+function householdPayload(h){
+  return {
+    id: h.id,
+    hh_id: h.hh_id || '',
+    agency_id: isCity() ? h.agency_id : state.profile.agency_id,
+    intake_date: cleanDate(h.intake_date),
+    hh_composition: h.hh_composition || null,
+    hh_size: cleanNumber(h.hh_size),
+    monthly_income: cleanNumber(h.monthly_income),
+    housing_at_intake: h.housing_at_intake || null,
+    age_primary: cleanNumber(h.age_primary),
+    race_ethnicity: h.race_ethnicity || null,
+    gender: h.gender || null,
+    veteran: h.veteran || null,
+    disability: h.disability || null,
+    eligible: h.eligible || null,
+    qualifying_event: h.qualifying_event || null,
+    assistance_start: cleanDate(h.assistance_start),
+    assistance_end: cleanDate(h.assistance_end),
+    arrears_flag: h.arrears_flag || null,
+    arrears_amount: cleanNumber(h.arrears_amount) || 0,
+    benefits_cert: h.benefits_cert || null,
+    housing_at_entry: h.housing_at_entry || null,
+    housing_at_exit: h.housing_at_exit || null,
+    housing_90day: h.housing_90day || null,
+    success_story: h.success_story || null,
+    assistance_log: Array.isArray(h.assistance_log) ? h.assistance_log.map(x=>({
+      date: cleanDate(x.date),
+      type: x.type || '',
+      amount: cleanNumber(x.amount) || 0,
+      notes: x.notes || ''
+    })) : [],
+    service_log: Array.isArray(h.service_log) ? h.service_log.map(x=>({
+      date: cleanDate(x.date),
+      type: x.type || '',
+      notes: x.notes || ''
+    })) : [],
+    created_at: h.created_at || new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    updated_by: state.profile.email
+  }
+}
+function validateHH(h){
+  const missing=[];
+  if(!h.hh_id) missing.push('Household ID');
+  if(!h.agency_id) missing.push('Agency');
+  if(missing.length){toast('Please complete: '+missing.join(', '),'err');return false}
+  return true
+}
+async function persistHH(h){
+  if(!validateHH(h)) return false;
+  const payload=householdPayload(h);
+  if(DEMO_MODE){let i=state.households.findIndex(x=>x.id===payload.id);if(i>=0)state.households[i]=payload;else state.households.unshift(payload);saveLocal();return true}
+  let {error}=await sb.from('rphp_households').upsert(payload,{onConflict:'id'}).select('id').single();
+  if(error){
+    console.error('Household save failed', error, payload);
+    toast('Save failed: '+(error.message||'Unknown Supabase error'),'err');
+    return false
+  }
+  await logAct('Saved household',payload.hh_id,payload.agency_id);
+  await loadAll();
+  return true
+}
+async function logAct(action,hh,agency){let row={id:uid('act'),action,hh_id:hh||null,agency_id:agency||null,actor_email:state.profile.email,created_at:new Date().toISOString()};if(DEMO_MODE){state.activity.unshift(row);saveLocal();return}let {error}=await sb.from('rphp_activity_log').insert(row);if(error)console.warn('Activity log insert failed',error)}
 function nav(v){document.querySelectorAll('.view').forEach(s=>s.classList.add('hidden'));document.getElementById('view-'+v).classList.remove('hidden');document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===v));if(v==='home')renderHome();if(v==='dashboard')renderDashboard();if(v==='households')renderHHList();if(v==='export')renderExport();if(v==='users')renderUsers();if(v==='activity')renderActivity();if(v==='backup')renderBackup()}
-function renderHome(){let h=scopedHouseholds(),total=h.length,assist=h.reduce((s,x)=>s+assistTotal(x),0),active=h.filter(x=>!x.assistance_end).length,stableCount=h.filter(x=>stable(x)==='stable').length;document.getElementById('view-home').innerHTML=`<div class="page-head"><div><h1 class="page-title">Reporting Home</h1><p class="page-sub">${isCity()?'Citywide view across APLA and NCJW.':'Agency workspace for '+agencyName(state.profile.agency_id)+'.'}</p></div><button class="btn" onclick="newHH()">+ Add Household</button></div>${agencyFilterHtml()}<div class="cards"><div class="card kpi"><div class="label">Households served</div><div class="value">${total}</div><div class="sub">${filterLabel()}</div></div><div class="card kpi"><div class="label">Active households</div><div class="value">${active}</div></div><div class="card kpi"><div class="label">Financial assistance</div><div class="value">${money(assist)}</div></div><div class="card kpi"><div class="label">Stable at 90 days</div><div class="value">${stableCount}</div></div></div><div class="actions-grid"><button class="action-card" onclick="newHH()"><p class="action-title">Add household</p><p class="action-desc">Create a new prevention/stabilization record.</p></button><button class="action-card" onclick="nav('households')"><p class="action-title">View households</p><p class="action-desc">Search and edit records available to your agency or City role.</p></button><button class="action-card" onclick="nav('dashboard')"><p class="action-title">Dashboard</p><p class="action-desc">Review performance, demographics, assistance, and outcomes.</p></button></div>`}
+function renderHome(){let h=scopedHouseholds(),total=h.length,assist=h.reduce((s,x)=>s+assistTotal(x),0),active=h.filter(x=>!x.assistance_end).length,stableCount=h.filter(x=>stable(x)==='stable').length;document.getElementById('view-home').innerHTML=`<div class="page-head"><div><h1 class="page-title">Reporting Home</h1><p class="page-sub">${isCity()?'Citywide view across .':'Agency workspace for '+agencyName(state.profile.agency_id)+'.'}</p></div><button class="btn" onclick="newHH()">+ Add Household</button></div>${agencyFilterHtml()}<div class="cards"><div class="card kpi"><div class="label">Households served</div><div class="value">${total}</div><div class="sub">${filterLabel()}</div></div><div class="card kpi"><div class="label">Active households</div><div class="value">${active}</div></div><div class="card kpi"><div class="label">Financial assistance</div><div class="value">${money(assist)}</div></div><div class="card kpi"><div class="label">Stable at 90 days</div><div class="value">${stableCount}</div></div></div><div class="actions-grid"><button class="action-card" onclick="newHH()"><p class="action-title">Add household</p><p class="action-desc">Create a new prevention/stabilization record.</p></button><button class="action-card" onclick="nav('households')"><p class="action-title">View households</p><p class="action-desc">Search and edit records available to your agency or City role.</p></button><button class="action-card" onclick="nav('dashboard')"><p class="action-title">Dashboard</p><p class="action-desc">Review performance, demographics, assistance, and outcomes.</p></button></div>`}
 function agencyFilterHtml(){if(!isCity())return'';return`<div class="toolbar"><div class="filters"><label><strong>Agency view:</strong></label><select onchange="state.agencyFilter=this.value;renderCurrent()"><option value="all" ${state.agencyFilter==='all'?'selected':''}>All agencies</option><option value="apla" ${state.agencyFilter==='apla'?'selected':''}>APLA Health</option><option value="ncjw" ${state.agencyFilter==='ncjw'?'selected':''}>NCJW | LA</option></select></div></div>`}function filterLabel(){return isCity()?(state.agencyFilter==='all'?'APLA + NCJW':agencyName(state.agencyFilter)):agencyName(state.profile.agency_id)}function renderCurrent(){let v=document.querySelector('.view:not(.hidden)').id.replace('view-','');nav(v)}
 function newHH(){let agency=isCity()?(state.agencyFilter==='all'?'apla':state.agencyFilter):state.profile.agency_id;let used=new Set(state.households.filter(h=>h.agency_id===agency).map(h=>h.hh_id));let prefix=agency==='ncjw'?'NCJW':'APLA';let n=1;while(used.has(`${prefix}-${String(n).padStart(3,'0')}`))n++;let h={id:uid('hh'),hh_id:`${prefix}-${String(n).padStart(3,'0')}`,agency_id:agency,intake_date:'',hh_composition:'',hh_size:null,monthly_income:null,housing_at_intake:'',age_primary:null,race_ethnicity:'',gender:'',veteran:'',disability:'',eligible:'',qualifying_event:'',assistance_start:'',assistance_end:'',arrears_flag:'',arrears_amount:0,benefits_cert:'',housing_at_entry:'',housing_at_exit:'',housing_90day:'',success_story:'',assistance_log:[],service_log:[],created_at:new Date().toISOString(),updated_at:new Date().toISOString(),updated_by:state.profile.email};state.currentId=h.id;state.households.unshift(h);renderEditor(h)}
 function renderHHList(){let h=scopedHouseholds();let rows=h.map(x=>`<tr onclick="openHH('${x.id}')"><td><strong>${esc(x.hh_id)}</strong></td>${isCity()?`<td>${esc(agencyName(x.agency_id))}</td>`:''}<td>${esc(x.intake_date||'—')}</td><td>${esc(x.hh_composition||'—')}</td><td>${money(assistTotal(x))}</td><td><span class="status ${x.assistance_end?'exited':'active'}">${x.assistance_end?'Exited':'Active'}</span></td><td>${esc(x.updated_by||'—')}</td></tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:30px">No household records yet.</td></tr>`;document.getElementById('view-households').innerHTML=`<div class="page-head"><div><h1 class="page-title">Households</h1><p class="page-sub">Agency users only see their own agency records. City users can view both agencies.</p></div><button class="btn" onclick="newHH()">+ Add Household</button></div>${agencyFilterHtml()}<div class="toolbar"><input id="hh-search" placeholder="Search household ID, agency, demographics…" oninput="filterRows(this.value)"><button class="btn secondary" onclick="loadAll().then(()=>renderHHList())">Refresh</button></div><div class="table-wrap"><table><thead><tr><th>Household ID</th>${isCity()?'<th>Agency</th>':''}<th>Intake</th><th>Composition</th><th>Assistance</th><th>Status</th><th>Updated by</th></tr></thead><tbody id="hh-tbody">${rows}</tbody></table></div>`}
