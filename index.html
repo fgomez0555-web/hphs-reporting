@@ -470,7 +470,10 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
           <h2 class="view-title">User Management</h2>
           <p class="view-sub">Admin-only tools to manage current portal users, agency affiliation, contact information, access status, and user type.</p>
         </div>
-        <span class="status active">Admin only</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn subtle sm" type="button" onclick="refreshAccessUsers()">Refresh Users</button>
+          <span class="status active">Admin only</span>
+        </div>
       </div>
 
       <div class="access-summary" id="access-summary"></div>
@@ -762,15 +765,62 @@ async function loadAccessStatus() {
   state.accessRole = "user";
   state.isAdmin = false;
   state.accessUsers = [];
+  state.accessLoadError = "";
   const email = (state.user && state.user.email || "").toLowerCase();
-  const { data: me } = await sb.from("rphp_approved_users").select("email, role, user_type, active, full_name, agency_affiliation").eq("email", email).maybeSingle();
+
+  const { data: me, error: meError } = await sb
+    .from("rphp_approved_users")
+    .select("email, role, user_type, active, full_name, agency_affiliation")
+    .eq("email", email)
+    .maybeSingle();
+
+  if (meError) {
+    state.accessLoadError = "Could not confirm your user access: " + meError.message;
+    toast(state.accessLoadError, "error");
+    return;
+  }
+
   if (me && me.active) {
     state.accessRole = me.user_type || me.role || "user";
     state.isAdmin = state.accessRole === "admin";
   }
+
   if (state.isAdmin) {
-    const { data: users } = await sb.from("rphp_approved_users").select("email, role, user_type, full_name, agency_affiliation, active, created_at, updated_at").order("agency_affiliation").order("full_name").order("email");
-    state.accessUsers = users || [];
+    let users = [];
+    let usersError = null;
+
+    // Preferred path: use the admin RPC if the SQL update has been applied.
+    const rpcResult = await sb.rpc("rphp_admin_list_users");
+    if (!rpcResult.error) {
+      users = rpcResult.data || [];
+    } else {
+      usersError = rpcResult.error;
+      // Fallback path: direct table select for older Supabase setups.
+      const tableResult = await sb
+        .from("rphp_approved_users")
+        .select("email, role, user_type, full_name, agency_affiliation, active, created_at, updated_at")
+        .order("agency_affiliation", { ascending: true, nullsFirst: false })
+        .order("full_name", { ascending: true, nullsFirst: false })
+        .order("email", { ascending: true });
+      if (!tableResult.error) {
+        users = tableResult.data || [];
+        usersError = null;
+      } else {
+        usersError = tableResult.error;
+      }
+    }
+
+    if (usersError) {
+      state.accessLoadError = "Could not load current users. Apply the latest User Management SQL update or check RLS permissions. Details: " + usersError.message;
+      toast("Could not load current users.", "error");
+    }
+
+    state.accessUsers = (users || []).map(u => ({
+      ...u,
+      user_type: u.user_type || u.role || "user",
+      role: u.role || u.user_type || "user",
+      active: u.active !== false
+    }));
   }
 }
 
@@ -824,6 +874,13 @@ function navigate(view) {
 // ============================================================
 // USER ACCESS MANAGEMENT
 // ============================================================
+async function refreshAccessUsers() {
+  if (!state.isAdmin) return toast("Admin access is required.", "error");
+  await loadAccessStatus();
+  renderAccess();
+  if (!state.accessLoadError) toast("Current users refreshed.", "success");
+}
+
 function renderAccess() {
   if (!state.isAdmin) {
     toast("Admin access is required.", "error");
@@ -844,7 +901,10 @@ function renderAccess() {
   }
   const list = document.getElementById("access-list");
   if (!users.length) {
-    list.innerHTML = `<div class="recent-empty">No current users found.</div>`;
+    const detail = state.accessLoadError
+      ? `<div style="margin-top:8px;color:var(--danger);font-weight:600;">${escapeHtml(state.accessLoadError)}</div>`
+      : `<div style="margin-top:8px;color:var(--grey-700);">No records were returned from <code>rphp_approved_users</code>. Add at least one active admin user, or run the latest SQL update included with this version.</div>`;
+    list.innerHTML = `<div class="recent-empty"><strong>No current users found.</strong>${detail}</div>`;
     return;
   }
   list.innerHTML = `
@@ -875,7 +935,7 @@ function renderAccess() {
               <td><span class="access-meta">${u.updated_at ? fmtDate(u.updated_at) : (u.created_at ? fmtDate(u.created_at) : "—")}</span></td>
               <td style="text-align:right; white-space:nowrap;">
                 <button class="btn subtle sm" onclick="editAccessUser('${escapeJs(u.email)}')">Edit</button>
-                <button class="btn subtle sm" onclick="toggleAccessUser('${escapeJs(u.email)}', ${u.active ? "false" : "true"})">${u.active ? "Deactivate" : "Activate"}</button>
+                <button class="btn ${u.active ? "danger" : "subtle"} sm" onclick="toggleAccessUser('${escapeJs(u.email)}', ${u.active ? "false" : "true"})" title="${u.active ? "Deactivate this user without deleting their record" : "Reactivate this user"}">${u.active ? "Deactivate" : "Reactivate"}</button>
                 <button class="btn danger sm" onclick="deleteAccessUser('${escapeJs(u.email)}')">Remove</button>
               </td>
             </tr>`;
@@ -928,14 +988,39 @@ async function saveAccessUser() {
 }
 async function toggleAccessUser(email, active) {
   if (!state.isAdmin) return toast("Admin access is required.", "error");
+  const normalizedEmail = String(email || "").toLowerCase();
+  const currentEmail = (state.user && state.user.email || "").toLowerCase();
+  if (!active && normalizedEmail === currentEmail) {
+    return toast("You cannot deactivate your own admin access while signed in.", "error");
+  }
+  const action = active ? "reactivate" : "deactivate";
+  if (!confirm(`Are you sure you want to ${action} ${email}?`)) return;
+
   if (DEMO_MODE) {
-    const u = state.accessUsers.find(x => x.email === email); if (u) u.active = active;
+    const u = state.accessUsers.find(x => String(x.email || "").toLowerCase() === normalizedEmail);
+    if (u) {
+      u.active = active;
+      u.updated_at = new Date().toISOString();
+    }
   } else {
-    const { error } = await sb.from("rphp_approved_users").update({ active, updated_at: new Date().toISOString() }).eq("email", email);
-    if (error) return toast("Access update error: " + error.message, "error");
+    // Preferred path: admin RPC avoids RLS edge cases and records updated_at consistently.
+    const rpcResult = await sb.rpc("rphp_admin_set_user_active", {
+      target_email: normalizedEmail,
+      target_active: active
+    });
+
+    if (rpcResult.error) {
+      // Fallback path for older SQL setups.
+      const { error } = await sb
+        .from("rphp_approved_users")
+        .update({ active, updated_at: new Date().toISOString() })
+        .eq("email", normalizedEmail);
+      if (error) return toast("Access update error: " + error.message, "error");
+    }
     await loadAccessStatus();
   }
   renderAccess();
+  toast(active ? "User reactivated." : "User deactivated.", "success");
 }
 async function deleteAccessUser(email) {
   if (!state.isAdmin) return toast("Admin access is required.", "error");
