@@ -285,13 +285,15 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
         <button data-nav="dashboard"><span class="si-icon">📊</span>Dashboard</button>
         <button data-nav="households"><span class="si-icon">👥</span>Households</button>
         <button data-nav="quarterly"><span class="si-icon">📄</span>Quarterly Report</button>
+        <button data-nav="activity"><span class="si-icon">🕘</span>Recent Activity</button>
+        <button data-nav="backup" id="nav-backup" class="admin-only hidden"><span class="si-icon">☁</span>Backup Data</button>
         <button data-nav="access" id="nav-access" class="hidden"><span class="si-icon">🔐</span>User Access</button>
       </div>
       <div class="sidebar-section">
         <div class="sidebar-label">Quick Actions</div>
         <button type="button" onclick="newHousehold()"><span class="si-icon">＋</span>Add Household</button>
         <button type="button" onclick="exportCsv()"><span class="si-icon">⇩</span>Export CSV</button>
-        <button type="button" onclick="exportJsonBackup()"><span class="si-icon">☁</span>Backup Data</button>
+        <button type="button" class="admin-only hidden" onclick="navigate('backup')"><span class="si-icon">☁</span>Backup Data</button>
       </div>
     </aside>
 
@@ -330,25 +332,21 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
           <p class="title">Quarterly report</p>
           <p class="desc">Print or export CSV</p>
         </button>
+        <button class="action-card" onclick="navigate('activity')">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v5l3 2"/><circle cx="12" cy="12" r="9"/></svg></div>
+          <p class="title">Recent activity</p>
+          <p class="desc">View recent record changes</p>
+        </button>
         <button class="action-card admin-only hidden" onclick="navigate('access')">
           <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 4v5c0 5-3 8-7 9-4-1-7-4-7-9V7l7-4z"/><path d="M9 12l2 2 4-5"/></svg></div>
           <p class="title">User access</p>
           <p class="desc">Approve users and manage roles</p>
         </button>
-      </div>
-      <div class="recent">
-        <div class="recent-header">
-          <h3>Recent activity</h3>
-        </div>
-        <div id="recent-list"></div>
-      </div>
-      <div class="sync-strip">
-        <span id="sync-status">—</span>
-        <div class="actions">
-          <button class="btn subtle sm" onclick="exportJsonBackup()">Export backup</button>
-          <button class="btn subtle sm" onclick="document.getElementById('import-file').click()">Restore backup</button>
-          <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJsonBackup(event)">
-        </div>
+        <button class="action-card admin-only hidden" onclick="navigate('backup')">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg></div>
+          <p class="title">Backup data</p>
+          <p class="desc">Admin-only export and restore tools</p>
+        </button>
       </div>
     </section>
 
@@ -369,6 +367,7 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
       </div>
       <div class="kpi-grid" id="kpi-grid"></div>
       <div class="kpi-grid" id="kpi-grid-2"></div>
+      <div class="breakdown-grid" id="demographic-summary-grid"></div>
       <div class="chart-grid">
         <div class="chart-card"><h3>Households served by quarter</h3><div class="chart-wrap"><canvas id="ch-quarter"></canvas></div></div>
         <div class="chart-card"><h3>Financial assistance by quarter ($)</h3><div class="chart-wrap"><canvas id="ch-assist"></canvas></div></div>
@@ -434,6 +433,30 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
         <button class="btn" onclick="window.print()">Print / save PDF</button>
       </div>
       <div id="print-body" class="print-page"></div>
+    </section>
+
+    <!-- RECENT ACTIVITY -->
+    <section id="view-activity" class="hidden">
+      <h2 class="view-title">Recent Activity</h2>
+      <p class="view-sub">Recent changes entered in the reporting portal.</p>
+      <div class="recent">
+        <div class="recent-header"><h3>Recent activity</h3></div>
+        <div id="recent-list"></div>
+      </div>
+    </section>
+
+    <!-- BACKUP MANAGEMENT -->
+    <section id="view-backup" class="hidden">
+      <h2 class="view-title">Backup Data</h2>
+      <p class="view-sub">Admin-only tools to export or restore a JSON backup of RPHP records.</p>
+      <div class="sync-strip">
+        <span id="sync-status">—</span>
+        <div class="actions">
+          <button class="btn subtle sm" onclick="exportJsonBackup()">Export backup</button>
+          <button class="btn subtle sm" onclick="document.getElementById('import-file').click()">Restore backup</button>
+          <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJsonBackup(event)">
+        </div>
+      </div>
     </section>
 
     <!-- USER ACCESS MANAGEMENT -->
@@ -684,6 +707,8 @@ function showApp() {
   document.querySelectorAll(".admin-only").forEach(el => el.classList.toggle("hidden", !state.isAdmin));
   const accessNav = document.getElementById("nav-access");
   if (accessNav) accessNav.classList.toggle("hidden", !state.isAdmin);
+  const backupNav = document.getElementById("nav-backup");
+  if (backupNav) backupNav.classList.toggle("hidden", !state.isAdmin);
   updateDeadlineChip();
   navigate("landing");
 }
@@ -756,7 +781,7 @@ async function logActivity(action, hhId) {
 // NAVIGATION
 // ============================================================
 function navigate(view) {
-  if (view === "access" && !state.isAdmin) {
+  if ((view === "access" || view === "backup") && !state.isAdmin) {
     toast("Admin access is required.", "error");
     view = "landing";
   }
@@ -770,6 +795,8 @@ function navigate(view) {
   if (view === "dashboard") renderDashboard();
   if (view === "households") renderHouseholdsList();
   if (view === "quarterly") renderQuarterly();
+  if (view === "activity") renderActivity();
+  if (view === "backup") renderBackup();
   if (view === "access") renderAccess();
 }
 
@@ -884,21 +911,31 @@ function renderLanding() {
     <div class="stat"><p class="stat-label">90-day stability rate</p><p class="stat-value">${totalWithOutcome ? fmtPct(stableRate) : "—"}</p></div>
   `;
 
-  // Recent activity
+}
+
+function renderActivity() {
   const list = document.getElementById("recent-list");
+  if (!list) return;
   if (state.activity.length === 0) {
     list.innerHTML = `<div class="recent-empty">No recent activity yet. Add a household to get started.</div>`;
   } else {
-    list.innerHTML = state.activity.slice(0, 5).map(a => `
+    list.innerHTML = state.activity.slice(0, 20).map(a => `
       <div class="recent-item">
         <span><span class="hhid">${a.hh_id || "—"}</span>${escapeHtml(a.action)}</span>
         <span class="who">${timeAgo(a.created_at)} • ${escapeHtml(a.actor)}</span>
       </div>`).join("");
   }
+}
 
-  // Sync status
+function renderBackup() {
+  if (!state.isAdmin) {
+    toast("Admin access is required.", "error");
+    navigate("landing");
+    return;
+  }
   const lastBackup = localStorage.getItem("last_backup_at");
   const sync = document.getElementById("sync-status");
+  if (!sync) return;
   if (DEMO_MODE) {
     if (!lastBackup) {
       sync.innerHTML = `<span class="warn">⚠ Demo mode — no backup yet</span> · Export a JSON backup regularly so you don't lose data.`;
@@ -909,19 +946,8 @@ function renderLanding() {
         : `<span class="ok">✓ Last backup ${days === 0 ? "today" : days + " day(s) ago"}</span>`;
     }
   } else {
-    sync.innerHTML = `<span class="ok">✓ Synced to Supabase</span>`;
+    sync.innerHTML = `<span class="ok">✓ Synced to Supabase</span> · JSON backup tools are available to admins for offline records retention.`;
   }
-}
-
-function timeAgo(iso) {
-  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
-  if (diff < 60) return "just now";
-  if (diff < 3600) return Math.floor(diff/60) + " min ago";
-  if (diff < 86400) return Math.floor(diff/3600) + "h ago";
-  return Math.floor(diff/86400) + "d ago";
-}
-function escapeHtml(s) {
-  return (s == null ? "" : String(s)).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[c]);
 }
 
 // ============================================================
@@ -1284,6 +1310,9 @@ function renderDashboard() {
     <div class="kpi"><p class="kpi-label">90-day stability rate</p><p class="kpi-value">${fmtPct(stableRate)}</p></div>
   `;
 
+  // Demographic summary cards use the current dashboard filter; detailed breakdowns remain program-to-date.
+  renderDemographicSummary(filtered);
+
   // Breakdown tables (program-to-date, not filtered)
   renderBreakdown("bd-race", RACE_ETHNICITY, all, h => h.race_ethnicity);
   renderBreakdown("bd-age", ["Under 18","18-24","25-34","35-44","45-54","55-61","62+"], all, h => ageBand(h.age_primary));
@@ -1292,6 +1321,47 @@ function renderDashboard() {
 
   // Charts
   drawCharts(all);
+}
+
+
+function topCategory(rows, accessor) {
+  const counts = {};
+  rows.forEach(h => {
+    const v = accessor(h);
+    if (!v) return;
+    counts[v] = (counts[v] || 0) + 1;
+  });
+  const entries = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+  if (!entries.length) return { label: "No data", count: 0, pct: 0 };
+  return { label: entries[0][0], count: entries[0][1], pct: rows.length ? entries[0][1] / rows.length : 0 };
+}
+
+function renderDemographicSummary(rows) {
+  const el = document.getElementById("demographic-summary-grid");
+  if (!el) return;
+  const total = rows.length;
+  const race = topCategory(rows, h => h.race_ethnicity);
+  const age = topCategory(rows, h => ageBand(h.age_primary));
+  const gender = topCategory(rows, h => h.gender);
+  const disability = rows.filter(h => h.disability === "Yes").length;
+  const veteran = rows.filter(h => h.veteran === "Yes").length;
+  el.innerHTML = `
+    <div class="breakdown-card"><h3>Demographic summary</h3>
+      <table>
+        <tr><td>Total households with intake</td><td>${total}</td></tr>
+        <tr><td>Largest race/ethnicity group</td><td>${escapeHtml(race.label)}${race.count ? ` (${race.count}, ${fmtPct(race.pct)})` : ""}</td></tr>
+        <tr><td>Largest age band</td><td>${escapeHtml(age.label)}${age.count ? ` (${age.count}, ${fmtPct(age.pct)})` : ""}</td></tr>
+        <tr><td>Largest gender group</td><td>${escapeHtml(gender.label)}${gender.count ? ` (${gender.count}, ${fmtPct(gender.pct)})` : ""}</td></tr>
+      </table>
+    </div>
+    <div class="breakdown-card"><h3>Additional indicators</h3>
+      <table>
+        <tr><td>Households reporting disability</td><td>${disability} <span style="color:var(--grey-400); font-weight:400;">(${total ? fmtPct(disability/total) : "0.0%"})</span></td></tr>
+        <tr><td>Veteran households</td><td>${veteran} <span style="color:var(--grey-400); font-weight:400;">(${total ? fmtPct(veteran/total) : "0.0%"})</span></td></tr>
+        <tr><td>Client declined race/ethnicity</td><td>${rows.filter(h => h.race_ethnicity === "Client Declined").length}</td></tr>
+        <tr><td>Unknown race/ethnicity</td><td>${rows.filter(h => h.race_ethnicity === "Unknown").length}</td></tr>
+      </table>
+    </div>`;
 }
 
 function renderBreakdown(elId, options, all, accessor) {
@@ -1362,6 +1432,18 @@ function drawChart(id, type, data) {
   });
 }
 
+function printBreakdownRows(options, rows, accessor) {
+  const counts = {};
+  options.forEach(o => counts[o] = 0);
+  rows.forEach(h => {
+    const v = accessor(h);
+    if (v && counts[v] != null) counts[v]++;
+  });
+  const total = rows.length;
+  const html = options.filter(o => counts[o] > 0).map(o => `<tr><td>${escapeHtml(o)}</td><td>${counts[o]}</td><td>${total ? fmtPct(counts[o]/total) : "0.0%"}</td></tr>`).join("");
+  return html || `<tr><td colspan="3" style="text-align:center; color: var(--grey-400);">No data entered</td></tr>`;
+}
+
 // ============================================================
 // QUARTERLY PRINT REPORT
 // ============================================================
@@ -1396,6 +1478,33 @@ function renderQuarterly() {
         <div class="print-kpi"><p class="label">Stable @ 90 days</p><p class="value">${stable}</p></div>
         <div class="print-kpi"><p class="label">Currently active</p><p class="value">${active}</p></div>
         <div class="print-kpi"><p class="label">% benefits consult.</p><p class="value">${fmtPct(pctCert)}</p></div>
+      </div>
+    </div>
+    <div class="print-section">
+      <h2>Demographic summary</h2>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+        <table class="print-table">
+          <thead><tr><th>Race / Ethnicity</th><th>Count</th><th>%</th></tr></thead>
+          <tbody>${printBreakdownRows(RACE_ETHNICITY, filtered, h => h.race_ethnicity)}</tbody>
+        </table>
+        <table class="print-table">
+          <thead><tr><th>Age Band</th><th>Count</th><th>%</th></tr></thead>
+          <tbody>${printBreakdownRows(["Under 18","18-24","25-34","35-44","45-54","55-61","62+"], filtered, h => ageBand(h.age_primary))}</tbody>
+        </table>
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 14px;">
+        <table class="print-table">
+          <thead><tr><th>Gender</th><th>Count</th><th>%</th></tr></thead>
+          <tbody>${printBreakdownRows(GENDER, filtered, h => h.gender)}</tbody>
+        </table>
+        <table class="print-table">
+          <thead><tr><th>Indicator</th><th>Count</th><th>%</th></tr></thead>
+          <tbody>
+            <tr><td>Disability reported</td><td>${filtered.filter(h => h.disability === "Yes").length}</td><td>${totalServed ? fmtPct(filtered.filter(h => h.disability === "Yes").length / totalServed) : "0.0%"}</td></tr>
+            <tr><td>Veteran household</td><td>${filtered.filter(h => h.veteran === "Yes").length}</td><td>${totalServed ? fmtPct(filtered.filter(h => h.veteran === "Yes").length / totalServed) : "0.0%"}</td></tr>
+            <tr><td>Benefits consultation completed</td><td>${filtered.filter(h => h.benefits_cert === "Yes").length}</td><td>${fmtPct(pctCert)}</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="print-section">
@@ -1451,6 +1560,7 @@ function exportJsonBackup() {
 }
 
 function importJsonBackup(e) {
+  if (!state.isAdmin) return toast("Admin access is required.", "error");
   const file = e.target.files[0];
   if (!file) return;
   portalConfirm("Replace all current data with the contents of this backup file?", "Restore backup").then(confirmed => {
