@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RPHP Reporting Portal — City of West Hollywood</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy: #1F3864;
@@ -27,7 +30,7 @@
     --danger-soft: #FEE2E2;
     --border: #E5E3DC;
     --shadow: 0 1px 2px rgba(0,0,0,0.04);
-    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; background: var(--cream); color: var(--grey-900); font-family: var(--font); -webkit-font-smoothing: antialiased; }
@@ -230,10 +233,11 @@
 
 
 /* Portal refresh: align RPHP tool with index reporting portal */
-:root { --navy:#1B2F5B; --navy-light:#243a72; --blue:#1B2F5B; --gold:#C9A24A; --cream:#F7F6F2; --off-white:#F7F6F2; --grey-50:#F7F6F2; --grey-100:#F0EEE9; --grey-200:#E0DDD5; --grey-400:#9B9690; --grey-700:#6B6660; --grey-900:#3A3733; --border:#D8D5CE; --shadow:0 1px 3px rgba(27,47,91,0.08),0 4px 16px rgba(27,47,91,0.06); --shadow-lg:0 8px 32px rgba(27,47,91,0.12); --radius:6px; --radius-lg:10px; --font:'DM Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
-body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-height:1.6;} button,input,select,textarea{font-family:var(--font);} button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid rgba(201,162,74,.45);outline-offset:2px}.hidden{display:none!important}#app-shell:not(.hidden){display:block}.login-wrap{background:var(--navy);color:white}.login-card{border:0;border-radius:12px;padding:0;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.35)}.login-card::before{content:"";display:block;height:3px;background:var(--gold)}.login-card .login-brand-panel{background:var(--navy);padding:28px 32px;text-align:center;border-bottom:3px solid var(--gold)}.login-card .login-logo-img{display:block;width:auto;max-width:190px;max-height:70px;object-fit:contain;margin:0 auto 16px;border-radius:4px;box-shadow:0 6px 20px rgba(0,0,0,.18)}.login-card .login-fields{padding:28px 32px}.login-card .program{color:rgba(255,255,255,.65);margin-bottom:6px}.login-card h2{color:white;font-family:Georgia,'Times New Roman',serif;font-size:20px;font-weight:500}.login-card .sub{color:rgba(255,255,255,.72);margin-bottom:0}.login-card label{color:var(--grey-700)}.login-mode{color:var(--grey-400)}
-.topbar{background:var(--navy);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 28px;min-height:58px;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.18)}.topbar-brand{display:flex;align-items:center;gap:14px;min-width:0}.weho-logo-header{display:block;width:auto;max-width:132px;max-height:30px;height:auto;object-fit:contain;border-radius:3px;flex-shrink:0}.brand-program{font-family:Georgia,'Times New Roman',serif;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand-sub{font-size:10.5px;color:rgba(255,255,255,.65);letter-spacing:.05em;text-transform:uppercase}.topbar-right{display:flex;align-items:center;gap:12px}.deadline-chip{font-size:12px;border-radius:18px;padding:4px 10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:white}.deadline-chip.amber{background:rgba(180,83,9,.28);color:#FFE4A3}.deadline-chip.red{background:rgba(185,28,28,.26);color:#FFD0CA}.user-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px 4px 6px;font-size:12.5px}.user-avatar{width:24px;height:24px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px}.logout-btn{font-size:12px;color:rgba(255,255,255,.7);background:none;border:0;cursor:pointer}.app-layout{display:flex;min-height:calc(100vh - 58px)}.sidebar{width:230px;background:white;border-right:1px solid var(--border);padding:24px 0;flex-shrink:0;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto}.sidebar-label{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--grey-400);padding:0 18px 8px}.sidebar-section{margin-bottom:22px}.sidebar button{width:100%;display:flex;align-items:center;gap:9px;padding:9px 18px;font-size:13px;color:var(--grey-700);cursor:pointer;border:0;border-left:3px solid transparent;background:transparent;text-align:left;transition:.15s}.sidebar button:hover{background:var(--grey-100);color:var(--navy)}.sidebar button.active{background:#EEF2FA;color:var(--navy);font-weight:700;border-left-color:var(--navy)}.si-icon{font-size:15px;width:18px;text-align:center}main{flex:1;max-width:1180px;margin:0;padding:28px 32px 60px}.view-title{font-family:Georgia,'Times New Roman',serif;font-size:28px;color:var(--navy);line-height:1.2}.view-sub{font-size:13px;color:var(--grey-400);margin-bottom:22px}.landing-header,.recent,.sync-strip,.form-section,.breakdown-card,.chart-card,.hh-list,.filter-bar,.print-page{border-color:var(--border);box-shadow:var(--shadow)}.landing-header{border-radius:var(--radius-lg);border-top:4px solid var(--navy)}.landing-header h1{font-family:Georgia,'Times New Roman',serif;font-size:26px;color:var(--navy)}.stat,.kpi{border-radius:var(--radius-lg);box-shadow:var(--shadow);border-top:3px solid var(--navy)}.stat:nth-child(2),.kpi:nth-child(2){border-top-color:var(--gold)}.stat:nth-child(3),.kpi:nth-child(3){border-top-color:var(--success)}.stat:nth-child(4),.kpi:nth-child(4){border-top-color:var(--warning)}.stat-label,.kpi-label,.recent-header h3,.breakdown-card h3,.chart-card h3{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--grey-400)}.stat-value,.kpi-value{font-family:Georgia,'Times New Roman',serif;font-weight:500;color:var(--navy)}.action-card{border-radius:var(--radius-lg);box-shadow:var(--shadow)}.action-card.primary{border-color:var(--navy)}.action-card:hover{border-color:var(--navy);box-shadow:var(--shadow-lg)}.action-card .icon{background:#EEF2FA;color:var(--navy)}.action-card.primary .icon{background:var(--navy);color:white}.btn{border-radius:var(--radius);font-weight:700;background:var(--navy)}.btn:hover{background:var(--navy-light)}.btn.secondary,.btn.subtle{background:white;color:var(--navy);border:1px solid var(--border)}.btn.secondary:hover,.btn.subtle:hover{border-color:var(--navy);color:var(--navy);background:#EEF2FA}.btn.danger{background:var(--danger);color:white}.form-section-header{background:var(--navy);border-bottom:3px solid var(--gold)}.form-row input:focus,.form-row select:focus,.form-row textarea:focus,.hh-toolbar input:focus,.filter-bar select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,47,91,.10);outline:none}.log-table th,.hh-list-row.header{background:#EEF2FA;color:var(--navy)}.log-table tbody tr:nth-child(even) td,.hh-list-row:nth-child(even):not(.header){background:#FBFAF7}.log-table tfoot td{background:#EEF2FA;color:var(--navy);border-top:2px solid var(--navy)}.print-header{border-bottom:3px solid var(--gold)}.print-header h1{font-family:Georgia,'Times New Roman',serif;color:var(--navy)}.print-kpi{border:1px solid var(--border);background:#fff;border-top:3px solid var(--navy)}.print-table th{background:var(--navy);color:white}.print-table tbody tr:nth-child(even) td{background:#F7F6F2}.confirm-modal{position:fixed;inset:0;background:rgba(27,47,91,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;backdrop-filter:blur(2px)}.confirm-modal.open{display:flex}.confirm-card{background:white;border-radius:var(--radius-lg);max-width:480px;width:100%;box-shadow:var(--shadow-lg);overflow:hidden}.confirm-card-header{padding:18px 22px;border-bottom:1px solid var(--border);font-family:Georgia,'Times New Roman',serif;color:var(--navy);font-size:18px}.confirm-card-body{padding:22px}.confirm-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}.toast{border-radius:22px;box-shadow:var(--shadow-lg)}
-@media (max-width:980px){.stat-strip,.action-row,.kpi-grid,.chart-grid,.breakdown-grid{grid-template-columns:1fr 1fr}}@media (max-width:800px){.sidebar{display:none}main{padding:20px}.topbar{padding:0 16px}.brand-sub{display:none}.weho-logo-header{max-width:112px;max-height:26px}.topbar-right .deadline-chip{display:none}.stat-strip,.action-row,.kpi-grid,.chart-grid,.breakdown-grid{grid-template-columns:1fr}}@media print{.topbar,.sidebar,.sync-strip,.filter-bar,.print-toolbar,.toast,.confirm-modal{display:none!important}.app-layout{display:block}main{max-width:none;padding:0}}
+:root { --navy:#1B2F5B; --navy-light:#243a72; --blue:#1B2F5B; --gold:#C9A24A; --cream:#F7F6F2; --off-white:#F7F6F2; --grey-50:#F7F6F2; --grey-100:#F0EEE9; --grey-200:#E0DDD5; --grey-400:#9B9690; --grey-700:#6B6660; --grey-900:#3A3733; --border:#D8D5CE; --shadow:0 1px 3px rgba(27,47,91,0.08),0 4px 16px rgba(27,47,91,0.06); --shadow-lg:0 8px 32px rgba(27,47,91,0.12); --radius:6px; --radius-lg:10px; --font:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-height:1.6;} button,input,select,textarea{font-family:var(--font);} button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid rgba(201,162,74,.45);outline-offset:2px}.hidden{display:none!important}#app-shell:not(.hidden){display:block}.login-wrap{background:var(--navy);color:white}.login-card{border:0;border-radius:12px;padding:0;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.35)}.login-card::before{content:"";display:block;height:3px;background:var(--gold)}.login-card .login-brand-panel{background:var(--navy);padding:28px 32px;text-align:center;border-bottom:3px solid var(--gold)}.login-card .login-logo-img{display:block;width:auto;max-width:190px;max-height:70px;object-fit:contain;margin:0 auto 16px;border-radius:4px;box-shadow:0 6px 20px rgba(0,0,0,.18)}.login-card .login-fields{padding:28px 32px}.login-card .program{color:rgba(255,255,255,.65);margin-bottom:6px}.login-card h2{color:white;font-family:var(--font);font-size:20px;font-weight:500}.login-card .sub{color:rgba(255,255,255,.72);margin-bottom:0}.login-card label{color:var(--grey-700)}.login-mode{color:var(--grey-400)}
+.topbar{background:var(--navy);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 28px;min-height:58px;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.18)}.topbar-brand{display:flex;align-items:center;gap:14px;min-width:0}.weho-logo-header{display:block;width:auto;max-width:132px;max-height:30px;height:auto;object-fit:contain;border-radius:3px;flex-shrink:0}.brand-program{font-family:var(--font);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand-sub{font-size:10.5px;color:rgba(255,255,255,.65);letter-spacing:.05em;text-transform:uppercase}.topbar-right{display:flex;align-items:center;gap:12px}.deadline-chip{font-size:12px;border-radius:18px;padding:4px 10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:white}.deadline-chip.amber{background:rgba(180,83,9,.28);color:#FFE4A3}.deadline-chip.red{background:rgba(185,28,28,.26);color:#FFD0CA}.user-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px 4px 6px;font-size:12.5px}.user-avatar{width:24px;height:24px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px}.logout-btn{font-size:12px;color:rgba(255,255,255,.7);background:none;border:0;cursor:pointer}.app-layout{display:flex;min-height:calc(100vh - 58px)}.sidebar{width:230px;background:white;border-right:1px solid var(--border);padding:24px 0;flex-shrink:0;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto}.sidebar-label{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--grey-400);padding:0 18px 8px}.sidebar-section{margin-bottom:22px}.sidebar button{width:100%;display:flex;align-items:center;gap:9px;padding:9px 18px;font-size:13px;color:var(--grey-700);cursor:pointer;border:0;border-left:3px solid transparent;background:transparent;text-align:left;transition:.15s}.sidebar button:hover{background:var(--grey-100);color:var(--navy)}.sidebar button.active{background:#EEF2FA;color:var(--navy);font-weight:700;border-left-color:var(--navy)}.si-icon{font-size:15px;width:18px;text-align:center}main{flex:1;max-width:1180px;margin:0;padding:28px 32px 60px}.view-title{font-family:var(--font);font-size:28px;color:var(--navy);line-height:1.2}.view-sub{font-size:13px;color:var(--grey-400);margin-bottom:22px}.landing-header,.recent,.sync-strip,.form-section,.breakdown-card,.chart-card,.hh-list,.filter-bar,.print-page{border-color:var(--border);box-shadow:var(--shadow)}.landing-header{border-radius:var(--radius-lg);border-top:4px solid var(--navy)}.landing-header h1{font-family:var(--font);font-size:26px;color:var(--navy)}.stat,.kpi{border-radius:var(--radius-lg);box-shadow:var(--shadow);border-top:3px solid var(--navy)}.stat:nth-child(2),.kpi:nth-child(2){border-top-color:var(--gold)}.stat:nth-child(3),.kpi:nth-child(3){border-top-color:var(--success)}.stat:nth-child(4),.kpi:nth-child(4){border-top-color:var(--warning)}.stat-label,.kpi-label,.recent-header h3,.breakdown-card h3,.chart-card h3{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--grey-400)}.stat-value,.kpi-value{font-family:var(--font);font-weight:500;color:var(--navy)}.action-card{border-radius:var(--radius-lg);box-shadow:var(--shadow)}.action-card.primary{border-color:var(--navy)}.action-card:hover{border-color:var(--navy);box-shadow:var(--shadow-lg)}.action-card .icon{background:#EEF2FA;color:var(--navy)}.action-card.primary .icon{background:var(--navy);color:white}.btn{border-radius:var(--radius);font-weight:700;background:var(--navy)}.btn:hover{background:var(--navy-light)}.btn.secondary,.btn.subtle{background:white;color:var(--navy);border:1px solid var(--border)}.btn.secondary:hover,.btn.subtle:hover{border-color:var(--navy);color:var(--navy);background:#EEF2FA}.btn.danger{background:var(--danger);color:white}.form-section-header{background:var(--navy);border-bottom:3px solid var(--gold)}.form-row input:focus,.form-row select:focus,.form-row textarea:focus,.hh-toolbar input:focus,.filter-bar select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,47,91,.10);outline:none}.log-table th,.hh-list-row.header{background:#EEF2FA;color:var(--navy)}.log-table tbody tr:nth-child(even) td,.hh-list-row:nth-child(even):not(.header){background:#FBFAF7}.log-table tfoot td{background:#EEF2FA;color:var(--navy);border-top:2px solid var(--navy)}.print-header{border-bottom:3px solid var(--gold)}.print-header h1{font-family:var(--font);color:var(--navy)}.print-kpi{border:1px solid var(--border);background:#fff;border-top:3px solid var(--navy)}.print-table th{background:var(--navy);color:white}.print-table tbody tr:nth-child(even) td{background:#F7F6F2}.confirm-modal{position:fixed;inset:0;background:rgba(27,47,91,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;backdrop-filter:blur(2px)}.confirm-modal.open{display:flex}.confirm-card{background:white;border-radius:var(--radius-lg);max-width:480px;width:100%;box-shadow:var(--shadow-lg);overflow:hidden}.confirm-card-header{padding:18px 22px;border-bottom:1px solid var(--border);font-family:var(--font);color:var(--navy);font-size:18px}.confirm-card-body{padding:22px}.confirm-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}.toast{border-radius:22px;box-shadow:var(--shadow-lg)}
+.access-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.access-card{background:white;border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;box-shadow:var(--shadow)}.access-card .label{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--grey-400)}.access-card .value{font-size:22px;font-weight:800;color:var(--navy);margin-top:2px}.access-table-wrap{overflow:auto}.access-table{width:100%;border-collapse:collapse;font-size:13px}.access-table th{background:#EEF2FA;color:var(--navy);padding:10px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em}.access-table td{padding:10px;border-bottom:1px solid var(--grey-100);vertical-align:middle}.access-table tbody tr:nth-child(even) td{background:#FBFAF7}.access-person{font-weight:800;color:var(--grey-900)}.access-meta{font-size:12px;color:var(--grey-400);margin-top:2px}.pill{display:inline-flex;align-items:center;border-radius:999px;padding:3px 9px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.pill.admin{background:#EEF2FA;color:var(--navy)}.pill.user{background:var(--grey-100);color:var(--grey-700)}.pill.active{background:var(--success-soft);color:var(--success)}.pill.inactive{background:var(--danger-soft);color:var(--danger)}
+@media (max-width:980px){.stat-strip,.action-row,.kpi-grid,.chart-grid,.breakdown-grid,.access-summary{grid-template-columns:1fr 1fr}}@media (max-width:800px){.access-summary{grid-template-columns:1fr}.sidebar{display:none}main{padding:20px}.topbar{padding:0 16px}.brand-sub{display:none}.weho-logo-header{max-width:112px;max-height:26px}.topbar-right .deadline-chip{display:none}.stat-strip,.action-row,.kpi-grid,.chart-grid,.breakdown-grid{grid-template-columns:1fr}}@media print{.topbar,.sidebar,.sync-strip,.filter-bar,.print-toolbar,.toast,.confirm-modal{display:none!important}.app-layout{display:block}main{max-width:none;padding:0}}
 
 </style>
 </head>
@@ -463,26 +467,42 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
     <section id="view-access" class="hidden">
       <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:14px; margin-bottom:18px;">
         <div>
-          <h2 class="view-title">User Access Management</h2>
-          <p class="view-sub">Admin-only tools to approve users, assign roles, and activate or deactivate access to the RPHP Reporting Portal.</p>
+          <h2 class="view-title">User Management</h2>
+          <p class="view-sub">Admin-only tools to manage current portal users, agency affiliation, contact information, access status, and user type.</p>
         </div>
         <span class="status active">Admin only</span>
       </div>
+
+      <div class="access-summary" id="access-summary"></div>
 
       <div class="form-section">
         <div class="form-section-header">Add or Update User</div>
         <div class="form-section-body">
           <div class="form-row">
+            <label for="access-name">Name <span class="required">*</span></label>
+            <div>
+              <input type="text" id="access-name" placeholder="Full name" autocomplete="name">
+              <div class="hint">Required for the current user list and audit trail.</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="access-agency">Agency Affiliation <span class="required">*</span></label>
+            <div>
+              <input type="text" id="access-agency" placeholder="Agency or City division">
+              <div class="hint">Examples: City of West Hollywood, NCJW, APLA, Bet Tzedek.</div>
+            </div>
+          </div>
+          <div class="form-row">
             <label for="access-email">Email Address <span class="required">*</span></label>
             <div>
-              <input type="email" id="access-email" placeholder="user@weho.org">
+              <input type="email" id="access-email" placeholder="user@agency.org" autocomplete="email">
               <div class="hint">Use the same email the person will use for the Supabase magic-link login.</div>
             </div>
           </div>
           <div class="form-row">
-            <label for="access-role">Role</label>
+            <label for="access-role">User Type <span class="required">*</span></label>
             <select id="access-role">
-              <option value="user">User</option>
+              <option value="user">Program User</option>
               <option value="admin">Admin</option>
             </select>
           </div>
@@ -495,14 +515,14 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
           </div>
           <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
             <button class="btn secondary" type="button" onclick="clearAccessForm()">Clear</button>
-            <button class="btn" type="button" onclick="saveAccessUser()">Save User Access</button>
+            <button class="btn" type="button" onclick="saveAccessUser()">Save User</button>
           </div>
         </div>
       </div>
 
       <div class="recent">
         <div class="recent-header">
-          <h3>Approved Users</h3>
+          <h3>Current Users</h3>
           <button class="btn subtle sm" type="button" onclick="loadAccessStatus().then(renderAccess)">Refresh</button>
         </div>
         <div id="access-list"></div>
@@ -633,7 +653,7 @@ async function init() {
     state.user = { email };
     state.accessRole = "admin";
     state.isAdmin = true;
-    state.accessUsers = [{ email, role: "admin", active: true, created_at: new Date().toISOString() }];
+    state.accessUsers = [{ email, full_name: "Demo Admin", agency_affiliation: "City of West Hollywood", role: "admin", user_type: "admin", active: true, created_at: new Date().toISOString() }];
     loadFromLocalStorage();
     showApp();
   } else {
@@ -675,7 +695,7 @@ async function handleLogin(e) {
     state.user = { email };
     state.accessRole = "admin";
     state.isAdmin = true;
-    state.accessUsers = [{ email, role: "admin", active: true, created_at: new Date().toISOString() }];
+    state.accessUsers = [{ email, full_name: "Demo Admin", agency_affiliation: "City of West Hollywood", role: "admin", user_type: "admin", active: true, created_at: new Date().toISOString() }];
     loadFromLocalStorage();
     showApp();
     return;
@@ -743,13 +763,13 @@ async function loadAccessStatus() {
   state.isAdmin = false;
   state.accessUsers = [];
   const email = (state.user && state.user.email || "").toLowerCase();
-  const { data: me } = await sb.from("rphp_approved_users").select("email, role, active").eq("email", email).maybeSingle();
+  const { data: me } = await sb.from("rphp_approved_users").select("email, role, user_type, active, full_name, agency_affiliation").eq("email", email).maybeSingle();
   if (me && me.active) {
-    state.accessRole = me.role || "user";
-    state.isAdmin = me.role === "admin";
+    state.accessRole = me.user_type || me.role || "user";
+    state.isAdmin = state.accessRole === "admin";
   }
   if (state.isAdmin) {
-    const { data: users } = await sb.from("rphp_approved_users").select("email, role, active, created_at, updated_at").order("email");
+    const { data: users } = await sb.from("rphp_approved_users").select("email, role, user_type, full_name, agency_affiliation, active, created_at, updated_at").order("agency_affiliation").order("full_name").order("email");
     state.accessUsers = users || [];
   }
 }
@@ -810,24 +830,65 @@ function renderAccess() {
     navigate("landing");
     return;
   }
+  const summary = document.getElementById("access-summary");
+  const users = state.accessUsers || [];
+  const activeCount = users.filter(u => u.active).length;
+  const adminCount = users.filter(u => (u.user_type || u.role || "user") === "admin").length;
+  const agencyCount = new Set(users.map(u => (u.agency_affiliation || "").trim()).filter(Boolean)).size;
+  if (summary) {
+    summary.innerHTML = `
+      <div class="access-card"><div class="label">Total Users</div><div class="value">${users.length}</div></div>
+      <div class="access-card"><div class="label">Active</div><div class="value">${activeCount}</div></div>
+      <div class="access-card"><div class="label">Admins</div><div class="value">${adminCount}</div></div>
+      <div class="access-card"><div class="label">Agencies</div><div class="value">${agencyCount}</div></div>`;
+  }
   const list = document.getElementById("access-list");
-  if (!state.accessUsers.length) {
-    list.innerHTML = `<div class="recent-empty">No approved users found.</div>`;
+  if (!users.length) {
+    list.innerHTML = `<div class="recent-empty">No current users found.</div>`;
     return;
   }
-  list.innerHTML = state.accessUsers.map(u => `
-    <div class="recent-item">
-      <span><strong>${escapeHtml(u.email)}</strong><br><span class="who">${escapeHtml(u.role || "user")} · ${u.active ? "Active" : "Inactive"}</span></span>
-      <span style="display:flex;gap:8px;align-items:center;">
-        <button class="btn subtle sm" onclick="editAccessUser('${escapeJs(u.email)}')">Edit</button>
-        <button class="btn subtle sm" onclick="toggleAccessUser('${escapeJs(u.email)}', ${u.active ? "false" : "true"})">${u.active ? "Deactivate" : "Activate"}</button>
-        <button class="btn danger sm" onclick="deleteAccessUser('${escapeJs(u.email)}')">Remove</button>
-      </span>
-    </div>`).join("");
+  list.innerHTML = `
+    <div class="access-table-wrap">
+      <table class="access-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Agency</th>
+            <th>Email</th>
+            <th>User Type</th>
+            <th>Status</th>
+            <th>Updated</th>
+            <th style="text-align:right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${users.map(u => {
+            const type = u.user_type || u.role || "user";
+            const name = u.full_name || "Name needed";
+            const agency = u.agency_affiliation || "Agency needed";
+            return `<tr>
+              <td><div class="access-person">${escapeHtml(name)}</div></td>
+              <td>${escapeHtml(agency)}</td>
+              <td>${escapeHtml(u.email)}</td>
+              <td><span class="pill ${type === "admin" ? "admin" : "user"}">${type === "admin" ? "Admin" : "Program User"}</span></td>
+              <td><span class="pill ${u.active ? "active" : "inactive"}">${u.active ? "Active" : "Inactive"}</span></td>
+              <td><span class="access-meta">${u.updated_at ? fmtDate(u.updated_at) : (u.created_at ? fmtDate(u.created_at) : "—")}</span></td>
+              <td style="text-align:right; white-space:nowrap;">
+                <button class="btn subtle sm" onclick="editAccessUser('${escapeJs(u.email)}')">Edit</button>
+                <button class="btn subtle sm" onclick="toggleAccessUser('${escapeJs(u.email)}', ${u.active ? "false" : "true"})">${u.active ? "Deactivate" : "Activate"}</button>
+                <button class="btn danger sm" onclick="deleteAccessUser('${escapeJs(u.email)}')">Remove</button>
+              </td>
+            </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>`;
 }
 
-function escapeJs(s) { return String(s || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'"); }
+function escapeJs(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, '\\''); }
 function clearAccessForm() {
+  document.getElementById("access-name").value = "";
+  document.getElementById("access-agency").value = "";
   document.getElementById("access-email").value = "";
   document.getElementById("access-role").value = "user";
   document.getElementById("access-active").value = "true";
@@ -835,18 +896,24 @@ function clearAccessForm() {
 function editAccessUser(email) {
   const u = state.accessUsers.find(x => x.email === email);
   if (!u) return;
+  document.getElementById("access-name").value = u.full_name || "";
+  document.getElementById("access-agency").value = u.agency_affiliation || "";
   document.getElementById("access-email").value = u.email;
-  document.getElementById("access-role").value = u.role || "user";
+  document.getElementById("access-role").value = u.user_type || u.role || "user";
   document.getElementById("access-active").value = String(!!u.active);
-  document.getElementById("access-email").focus();
+  document.getElementById("access-name").focus();
 }
 async function saveAccessUser() {
   if (!state.isAdmin) return toast("Admin access is required.", "error");
+  const full_name = document.getElementById("access-name").value.trim();
+  const agency_affiliation = document.getElementById("access-agency").value.trim();
   const email = document.getElementById("access-email").value.trim().toLowerCase();
-  const role = document.getElementById("access-role").value;
+  const user_type = document.getElementById("access-role").value;
   const active = document.getElementById("access-active").value === "true";
+  if (!full_name) return toast("Enter the user's name.", "error");
+  if (!agency_affiliation) return toast("Enter the user's agency affiliation.", "error");
   if (!email) return toast("Enter an email address.", "error");
-  const row = { email, role, active, updated_at: new Date().toISOString() };
+  const row = { email, full_name, agency_affiliation, user_type, role: user_type, active, updated_at: new Date().toISOString() };
   if (DEMO_MODE) {
     const i = state.accessUsers.findIndex(u => u.email === email);
     if (i >= 0) state.accessUsers[i] = { ...state.accessUsers[i], ...row }; else state.accessUsers.push({ ...row, created_at: new Date().toISOString() });
@@ -857,7 +924,7 @@ async function saveAccessUser() {
   }
   clearAccessForm();
   renderAccess();
-  toast("User access saved.", "success");
+  toast("User saved.", "success");
 }
 async function toggleAccessUser(email, active) {
   if (!state.isAdmin) return toast("Admin access is required.", "error");
