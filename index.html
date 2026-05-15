@@ -285,6 +285,7 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
         <button data-nav="dashboard"><span class="si-icon">📊</span>Dashboard</button>
         <button data-nav="households"><span class="si-icon">👥</span>Households</button>
         <button data-nav="quarterly"><span class="si-icon">📄</span>Quarterly Report</button>
+        <button data-nav="access" id="nav-access" class="hidden"><span class="si-icon">🔐</span>User Access</button>
       </div>
       <div class="sidebar-section">
         <div class="sidebar-label">Quick Actions</div>
@@ -328,6 +329,11 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
           <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M9 13h6M9 17h6"/></svg></div>
           <p class="title">Quarterly report</p>
           <p class="desc">Print or export CSV</p>
+        </button>
+        <button class="action-card admin-only hidden" onclick="navigate('access')">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 4v5c0 5-3 8-7 9-4-1-7-4-7-9V7l7-4z"/><path d="M9 12l2 2 4-5"/></svg></div>
+          <p class="title">User access</p>
+          <p class="desc">Approve users and manage roles</p>
         </button>
       </div>
       <div class="recent">
@@ -429,6 +435,56 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
       </div>
       <div id="print-body" class="print-page"></div>
     </section>
+
+    <!-- USER ACCESS MANAGEMENT -->
+    <section id="view-access" class="hidden">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:14px; margin-bottom:18px;">
+        <div>
+          <h2 class="view-title">User Access Management</h2>
+          <p class="view-sub">Admin-only tools to approve users, assign roles, and activate or deactivate access to the RPHP Reporting Portal.</p>
+        </div>
+        <span class="status active">Admin only</span>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-header">Add or Update User</div>
+        <div class="form-section-body">
+          <div class="form-row">
+            <label for="access-email">Email Address <span class="required">*</span></label>
+            <div>
+              <input type="email" id="access-email" placeholder="user@weho.org">
+              <div class="hint">Use the same email the person will use for the Supabase magic-link login.</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="access-role">Role</label>
+            <select id="access-role">
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="access-active">Status</label>
+            <select id="access-active">
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
+            <button class="btn secondary" type="button" onclick="clearAccessForm()">Clear</button>
+            <button class="btn" type="button" onclick="saveAccessUser()">Save User Access</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="recent">
+        <div class="recent-header">
+          <h3>Approved Users</h3>
+          <button class="btn subtle sm" type="button" onclick="loadAccessStatus().then(renderAccess)">Refresh</button>
+        </div>
+        <div id="access-list"></div>
+      </div>
+    </section>
   </main>
   </div>
 </div>
@@ -498,7 +554,7 @@ const ASSISTANCE_TYPE = ["Rental Arrears","Forward Rent","Security Deposit","Uti
 const SERVICE_CATEGORY = ["Intake Assessment","Case Management","Housing Search Support","Landlord Mediation","Benefits Enrollment","Employment Support","Financial Counseling","Legal Referral","Mental Health Referral","Follow-up Check-in","Other"];
 
 // State
-let state = { user: null, households: [], activity: [], currentHHId: null };
+let state = { user: null, households: [], activity: [], currentHHId: null, accessUsers: [], accessRole: "user", isAdmin: false };
 let charts = {};
 
 // ============================================================
@@ -552,6 +608,9 @@ async function init() {
     // Auto-login as a fake user
     const email = localStorage.getItem("demo_user") || "demo@weho.org";
     state.user = { email };
+    state.accessRole = "admin";
+    state.isAdmin = true;
+    state.accessUsers = [{ email, role: "admin", active: true, created_at: new Date().toISOString() }];
     loadFromLocalStorage();
     showApp();
   } else {
@@ -591,6 +650,9 @@ async function handleLogin(e) {
   if (DEMO_MODE) {
     localStorage.setItem("demo_user", email);
     state.user = { email };
+    state.accessRole = "admin";
+    state.isAdmin = true;
+    state.accessUsers = [{ email, role: "admin", active: true, created_at: new Date().toISOString() }];
     loadFromLocalStorage();
     showApp();
     return;
@@ -619,6 +681,9 @@ function showApp() {
   document.getElementById("user-email").textContent = state.user.email;
   const avatar = document.getElementById("user-avatar");
   if (avatar) avatar.textContent = (state.user.email || "U").slice(0,1).toUpperCase();
+  document.querySelectorAll(".admin-only").forEach(el => el.classList.toggle("hidden", !state.isAdmin));
+  const accessNav = document.getElementById("nav-access");
+  if (accessNav) accessNav.classList.toggle("hidden", !state.isAdmin);
   updateDeadlineChip();
   navigate("landing");
 }
@@ -640,10 +705,28 @@ function saveToLocalStorage() {
 }
 
 async function loadFromSupabase() {
-  const { data: hhs } = await sb.from("households").select("*").order("hh_id");
+  await loadAccessStatus();
+  const { data: hhs, error: hhError } = await sb.from("households").select("*").order("hh_id");
   const { data: act } = await sb.from("activity_log").select("*").order("created_at", { ascending: false }).limit(10);
+  if (hhError) toast("Access or data load error: " + hhError.message, "error");
   state.households = hhs || [];
   state.activity = act || [];
+}
+
+async function loadAccessStatus() {
+  state.accessRole = "user";
+  state.isAdmin = false;
+  state.accessUsers = [];
+  const email = (state.user && state.user.email || "").toLowerCase();
+  const { data: me } = await sb.from("rphp_approved_users").select("email, role, active").eq("email", email).maybeSingle();
+  if (me && me.active) {
+    state.accessRole = me.role || "user";
+    state.isAdmin = me.role === "admin";
+  }
+  if (state.isAdmin) {
+    const { data: users } = await sb.from("rphp_approved_users").select("email, role, active, created_at, updated_at").order("email");
+    state.accessUsers = users || [];
+  }
 }
 
 async function persistHousehold(hh) {
@@ -673,14 +756,104 @@ async function logActivity(action, hhId) {
 // NAVIGATION
 // ============================================================
 function navigate(view) {
+  if (view === "access" && !state.isAdmin) {
+    toast("Admin access is required.", "error");
+    view = "landing";
+  }
   document.querySelectorAll("main > section").forEach(s => s.classList.add("hidden"));
-  document.getElementById("view-" + view).classList.remove("hidden");
+  const targetView = document.getElementById("view-" + view);
+  if (!targetView) { toast("View not found: " + view, "error"); return; }
+  targetView.classList.remove("hidden");
   document.querySelectorAll("[data-nav]").forEach(b => b.classList.toggle("active", b.dataset.nav === view));
   updateDeadlineChip();
   if (view === "landing") renderLanding();
   if (view === "dashboard") renderDashboard();
   if (view === "households") renderHouseholdsList();
   if (view === "quarterly") renderQuarterly();
+  if (view === "access") renderAccess();
+}
+
+
+// ============================================================
+// USER ACCESS MANAGEMENT
+// ============================================================
+function renderAccess() {
+  if (!state.isAdmin) {
+    toast("Admin access is required.", "error");
+    navigate("landing");
+    return;
+  }
+  const list = document.getElementById("access-list");
+  if (!state.accessUsers.length) {
+    list.innerHTML = `<div class="recent-empty">No approved users found.</div>`;
+    return;
+  }
+  list.innerHTML = state.accessUsers.map(u => `
+    <div class="recent-item">
+      <span><strong>${escapeHtml(u.email)}</strong><br><span class="who">${escapeHtml(u.role || "user")} · ${u.active ? "Active" : "Inactive"}</span></span>
+      <span style="display:flex;gap:8px;align-items:center;">
+        <button class="btn subtle sm" onclick="editAccessUser('${escapeJs(u.email)}')">Edit</button>
+        <button class="btn subtle sm" onclick="toggleAccessUser('${escapeJs(u.email)}', ${u.active ? "false" : "true"})">${u.active ? "Deactivate" : "Activate"}</button>
+        <button class="btn danger sm" onclick="deleteAccessUser('${escapeJs(u.email)}')">Remove</button>
+      </span>
+    </div>`).join("");
+}
+
+function escapeJs(s) { return String(s || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'"); }
+function clearAccessForm() {
+  document.getElementById("access-email").value = "";
+  document.getElementById("access-role").value = "user";
+  document.getElementById("access-active").value = "true";
+}
+function editAccessUser(email) {
+  const u = state.accessUsers.find(x => x.email === email);
+  if (!u) return;
+  document.getElementById("access-email").value = u.email;
+  document.getElementById("access-role").value = u.role || "user";
+  document.getElementById("access-active").value = String(!!u.active);
+  document.getElementById("access-email").focus();
+}
+async function saveAccessUser() {
+  if (!state.isAdmin) return toast("Admin access is required.", "error");
+  const email = document.getElementById("access-email").value.trim().toLowerCase();
+  const role = document.getElementById("access-role").value;
+  const active = document.getElementById("access-active").value === "true";
+  if (!email) return toast("Enter an email address.", "error");
+  const row = { email, role, active, updated_at: new Date().toISOString() };
+  if (DEMO_MODE) {
+    const i = state.accessUsers.findIndex(u => u.email === email);
+    if (i >= 0) state.accessUsers[i] = { ...state.accessUsers[i], ...row }; else state.accessUsers.push({ ...row, created_at: new Date().toISOString() });
+  } else {
+    const { error } = await sb.from("rphp_approved_users").upsert(row);
+    if (error) return toast("Access save error: " + error.message, "error");
+    await loadAccessStatus();
+  }
+  clearAccessForm();
+  renderAccess();
+  toast("User access saved.", "success");
+}
+async function toggleAccessUser(email, active) {
+  if (!state.isAdmin) return toast("Admin access is required.", "error");
+  if (DEMO_MODE) {
+    const u = state.accessUsers.find(x => x.email === email); if (u) u.active = active;
+  } else {
+    const { error } = await sb.from("rphp_approved_users").update({ active, updated_at: new Date().toISOString() }).eq("email", email);
+    if (error) return toast("Access update error: " + error.message, "error");
+    await loadAccessStatus();
+  }
+  renderAccess();
+}
+async function deleteAccessUser(email) {
+  if (!state.isAdmin) return toast("Admin access is required.", "error");
+  if ((state.user.email || "").toLowerCase() === email.toLowerCase()) return toast("You cannot remove your own access while signed in.", "error");
+  if (!confirm("Remove access for " + email + "?")) return;
+  if (DEMO_MODE) state.accessUsers = state.accessUsers.filter(u => u.email !== email);
+  else {
+    const { error } = await sb.from("rphp_approved_users").delete().eq("email", email);
+    if (error) return toast("Access remove error: " + error.message, "error");
+    await loadAccessStatus();
+  }
+  renderAccess();
 }
 
 // ============================================================
