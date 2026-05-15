@@ -39,7 +39,7 @@ const RACE_ETHNICITY=['American Indian or Alaska Native','Asian','Black or Afric
 const GENDER=['Female','Male','Non-binary','Transgender','Other','Client Declined'];
 const ASSISTANCE_TYPE=['Rental Arrears','Forward Rent','Security Deposit','Utility Assistance','Moving Costs','Application Fees','Furniture/Household Goods','Transportation','Childcare','Other'];
 const SERVICE_CATEGORY=['Intake Assessment','Case Management','Housing Search Support','Landlord Mediation','Benefits Enrollment','Employment Support','Financial Counseling','Legal Referral','Mental Health Referral','Follow-up Check-in','Other'];
-let state={session:null,profile:null,households:[],users:[],activity:[],currentId:null,charts:{},agencyFilter:'all',reportQuarter:'Q4-2026',reportAgency:'all'};
+let state={session:null,profile:null,households:[],users:[],activity:[],currentId:null,charts:{},agencyFilter:'all',dashboardQuarter:'all',reportQuarter:'Q4-2026',reportAgency:'all'};
 const REPORT_QUARTERS={
   'Q1-2026':{label:'Q1',fy:'FY 2025–26',period:'October 1 – December 31, 2025',start:'2025-10-01',end:'2025-12-31'},
   'Q2-2026':{label:'Q2',fy:'FY 2025–26',period:'January 1 – March 31, 2026',start:'2026-01-01',end:'2026-03-31'},
@@ -170,9 +170,61 @@ async function deleteHH(id){let h=state.households.find(x=>x.id===id);if(!h)retu
 function renderAssistLog(h){let rows=(h.assistance_log||[]).map((r,i)=>`<tr><td><input type="date" ${dateAttrs()} value="${esc(r.date||'')}" onchange="updAssist(${i},'date',this.value)"></td><td><select onchange="updAssist(${i},'type',this.value)"><option></option>${ASSISTANCE_TYPE.map(o=>`<option ${r.type===o?'selected':''}>${esc(o)}</option>`).join('')}</select></td><td><input type="number" value="${esc(r.amount||0)}" onchange="updAssist(${i},'amount',this.value)"></td><td>${esc(fiscalQuarter(r.date)||'—')}</td><td><input value="${esc(r.notes||'')}" onchange="updAssist(${i},'notes',this.value)"></td><td><button class="btn danger sm" onclick="delAssist(${i})">×</button></td></tr>`).join('');return`<table class="log-table"><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Quarter</th><th>Notes</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="6" style="color:var(--muted)">No disbursements entered.</td></tr>'}</tbody><tfoot><tr><td colspan="2"><strong>Total</strong></td><td><strong>${money(assistTotal(h))}</strong></td><td colspan="3"></td></tr></tfoot></table>`}
 function renderServiceLog(h){let rows=(h.service_log||[]).map((r,i)=>`<tr><td><input type="date" ${dateAttrs()} value="${esc(r.date||'')}" onchange="updService(${i},'date',this.value)"></td><td><select onchange="updService(${i},'category',this.value)"><option></option>${SERVICE_CATEGORY.map(o=>`<option ${r.category===o?'selected':''}>${esc(o)}</option>`).join('')}</select></td><td>${esc(fiscalQuarter(r.date)||'—')}</td><td><input value="${esc(r.notes||'')}" onchange="updService(${i},'notes',this.value)"></td><td><button class="btn danger sm" onclick="delService(${i})">×</button></td></tr>`).join('');return`<table class="log-table"><thead><tr><th>Date</th><th>Category</th><th>Quarter</th><th>Notes</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="5" style="color:var(--muted)">No sessions entered.</td></tr>'}</tbody><tfoot><tr><td colspan="3"><strong>Total sessions</strong></td><td colspan="2"><strong>${sessions(h)}</strong></td></tr></tfoot></table>`}
 function addAssist(){let h=current();h.assistance_log=h.assistance_log||[];h.assistance_log.push({date:'',type:'',amount:0,notes:''});renderEditor(h)}function updAssist(i,k,v){let h=current();if(k==='amount')v=Number(v)||0;h.assistance_log[i][k]=v;renderEditor(h)}function delAssist(i){let h=current();h.assistance_log.splice(i,1);renderEditor(h)}function addService(){let h=current();h.service_log=h.service_log||[];h.service_log.push({date:'',category:'',notes:''});renderEditor(h)}function updService(i,k,v){let h=current();h.service_log[i][k]=v;renderEditor(h)}function delService(i){let h=current();h.service_log.splice(i,1);renderEditor(h)}
-function renderDashboard(){let h=scopedHouseholds(),out=outcomeSummary(h);document.getElementById('view-dashboard').innerHTML=`<div class="page-head"><div><h1 class="page-title">Dashboard</h1><p class="page-sub">Program activity, demographics, assistance, services, and housing outcomes.</p></div></div>${agencyFilterHtml()}<div class="cards" id="dash-kpis"></div><div class="grid2"><div class="card"><div class="card-head"><p class="card-title">Households by Quarter</p></div><div class="card-body"><div class="chartbox"><canvas id="chartQ"></canvas></div></div></div><div class="card"><div class="card-head"><p class="card-title">Assistance by Quarter</p></div><div class="card-body"><div class="chartbox"><canvas id="chartA"></canvas></div></div></div></div><div class="grid2" style="margin-top:16px"><div class="card"><div class="card-head"><p class="card-title">Housing Outcomes</p></div><div class="card-body"><table class="breakdown"><tbody id="bd-outcomes"></tbody></table></div></div><div class="card"><div class="card-head"><p class="card-title">Housing Status at Exit</p></div><div class="card-body"><table class="breakdown"><tbody id="bd-exit"></tbody></table></div></div></div><div class="grid2" style="margin-top:16px"><div class="card"><div class="card-head"><p class="card-title">Race / Ethnicity</p></div><div class="card-body"><table class="breakdown"><tbody id="bd-race"></tbody></table></div></div><div class="card"><div class="card-head"><p class="card-title">Age Bands</p></div><div class="card-body"><table class="breakdown"><tbody id="bd-age"></tbody></table></div></div><div class="card"><div class="card-head"><p class="card-title">Household Composition</p></div><div class="card-body"><table class="breakdown"><tbody id="bd-comp"></tbody></table></div></div><div class="card"><div class="card-head"><p class="card-title">Qualifying Event</p></div><div class="card-body"><table class="breakdown"><tbody id="bd-event"></tbody></table></div></div></div>`;let assist=h.reduce((s,x)=>s+assistTotal(x),0),serv=h.reduce((s,x)=>s+sessions(x),0);document.getElementById('dash-kpis').innerHTML=`<div class="card kpi"><div class="label">Households served</div><div class="value">${h.length}</div><div class="sub">${filterLabel()}</div></div><div class="card kpi"><div class="label">Financial assistance</div><div class="value">${money(assist)}</div></div><div class="card kpi"><div class="label">Case management sessions</div><div class="value">${serv}</div></div><div class="card kpi"><div class="label">Stable at 90 days</div><div class="value">${pct(out.base?out.stableCount/out.base:0)}</div><div class="sub">${out.stableCount} of ${out.base} with 90-day outcome</div></div>`;document.getElementById('bd-outcomes').innerHTML=`<tr><td>Active / in progress</td><td>${out.active}</td></tr><tr><td>Exited</td><td>${out.exited}</td></tr><tr><td>Stable at 90 days</td><td>${out.stableCount}</td></tr><tr><td>Unstable at 90 days</td><td>${out.unstableCount}</td></tr><tr><td>90-day outcome pending</td><td>${out.pending}</td></tr>`;breakdown('bd-exit',HOUSING_STATUS_FULL,h.filter(x=>x.housing_at_exit),x=>x.housing_at_exit);breakdown('bd-race',RACE_ETHNICITY,h,x=>x.race_ethnicity);breakdown('bd-age',['Under 18','18-24','25-34','35-44','45-54','55-61','62+'],h,x=>ageBand(x.age_primary));breakdown('bd-comp',HH_COMPOSITION,h,x=>x.hh_composition);breakdown('bd-event',QUALIFYING_EVENT,h,x=>x.qualifying_event);drawDash(h)}
+
+function dashboardHouseholds(){
+  let h=scopedHouseholds();
+  let qKey=state.dashboardQuarter||'all';
+  if(qKey==='all') return h;
+  return h.filter(x=>inReportQuarter(x,qKey));
+}
+function dashboardFilterHtml(){
+  return `<div class="filterbar"><label>Dashboard period</label><select onchange="state.dashboardQuarter=this.value;renderDashboard()"><option value="all" ${state.dashboardQuarter==='all'?'selected':''}>All FY 2025–26</option>${Object.entries(REPORT_QUARTERS).map(([k,v])=>`<option value="${k}" ${state.dashboardQuarter===k?'selected':''}>${v.label} · ${v.period}</option>`).join('')}</select></div>`;
+}
+
+function renderDashboard(){
+  let h=dashboardHouseholds();
+  let out=outcomeSummary(h);
+  let qLabel=state.dashboardQuarter==='all'?'All FY 2025–26':((REPORT_QUARTERS[state.dashboardQuarter]||{}).label+' · '+((REPORT_QUARTERS[state.dashboardQuarter]||{}).period||''));
+
+  document.getElementById('view-dashboard').innerHTML=`<div class="page-head"><div><h1 class="page-title">Dashboard</h1><p class="page-sub">Program activity, demographics, assistance, services, and housing outcomes.</p></div></div>${agencyFilterHtml()}${dashboardFilterHtml()}<div class="cards" id="dash-kpis"></div><div class="grid2"><div class="card"><div class="card-head"><p class="card-title">Households by Quarter</p></div><div class="card-body"><div class="chartbox"><canvas id="chartQ"></canvas></div></div></div><div class="card"><div class="card-head"><p class="card-title">Assistance by Quarter</p></div><div class="card-body"><div class="chartbox"><canvas id="chartA"></canvas></div></div></div></div><div class="grid2" style="margin-top:16px"><div class="card"><div class="card-head"><p class="card-title">Housing Outcomes</p></div><div class="card-body"><table class="breakdown"><tbody id="bd-outcomes"></tbody></table></div></div><div class="card"><div class="card-head"><p class="card-title">Housing Status at Exit</p></div><div class="card-body"><table class="breakdown"><tbody id="bd-exit"></tbody></table></div></div></div><div class="grid2" style="margin-top:16px"><div class="card"><div class="card-head"><p class="card-title">Race / Ethnicity</p></div><div class="card-body"><table class="breakdown"><tbody id="bd-race"></tbody></table></div></div><div class="card"><div class="card-head"><p class="card-title">Age Bands</p></div><div class="card-body"><table class="breakdown"><tbody id="bd-age"></tbody></table></div></div><div class="card"><div class="card-head"><p class="card-title">Household Composition</p></div><div class="card-body"><table class="breakdown"><tbody id="bd-comp"></tbody></table></div></div><div class="card"><div class="card-head"><p class="card-title">Qualifying Event</p></div><div class="card-body"><table class="breakdown"><tbody id="bd-event"></tbody></table></div></div></div>`;
+
+  let assist=h.reduce((s,x)=>s+assistTotal(x),0);
+  let serv=h.reduce((s,x)=>s+sessions(x),0);
+  let qm=state.dashboardQuarter==='all'?null:quarterMetrics(h,state.dashboardQuarter);
+  document.getElementById('dash-kpis').innerHTML=`
+    <div class="card kpi"><div class="label">Households served</div><div class="value">${h.length}</div><div class="sub">${esc(qLabel)}</div></div>
+    <div class="card kpi"><div class="label">${qm?'New intakes':'Active households'}</div><div class="value">${qm?qm.newIntakes:h.filter(x=>!x.assistance_end&&!x.housing_at_exit).length}</div></div>
+    <div class="card kpi"><div class="label">${qm?'Ongoing households':'Financial assistance'}</div><div class="value">${qm?qm.ongoingCases:money(assist)}</div></div>
+    <div class="card kpi"><div class="label">${qm?'Cases closed':'Service sessions'}</div><div class="value">${qm?qm.closedCases:serv}</div></div>
+    <div class="card kpi"><div class="label">Stable at 90 days</div><div class="value">${out.base?pct(out.stableCount/out.base):'0%'}</div><div class="sub">${out.stableCount} of ${out.base}</div></div>`;
+
+  document.getElementById('bd-outcomes').innerHTML=`<tr><td>Active / in progress</td><td>${out.active}</td></tr><tr><td>Exited / closed</td><td>${out.exited}</td></tr><tr><td>Stable at 90 days</td><td>${out.stableCount}</td></tr><tr><td>Unstable at 90 days</td><td>${out.unstableCount}</td></tr><tr><td>Pending 90-day outcome</td><td>${out.pending}</td></tr>`;
+  document.getElementById('bd-exit').innerHTML=breakdownRows([...HOUSING_STATUS_FULL,'Active / Pending'],h,x=>x.housing_at_exit||'Active / Pending');
+  document.getElementById('bd-race').innerHTML=breakdownRows(RACE_ETHNICITY,h,x=>x.race_ethnicity);
+  document.getElementById('bd-age').innerHTML=breakdownRows(['Under 18','18-24','25-34','35-44','45-54','55-61','62+'],h,x=>ageBand(x.age_primary));
+  document.getElementById('bd-comp').innerHTML=breakdownRows(HH_COMPOSITION,h,x=>x.hh_composition);
+  document.getElementById('bd-event').innerHTML=breakdownRows(QUALIFYING_EVENT,h,x=>x.qualifying_event);
+
+  let labels=Object.values(REPORT_QUARTERS).map(q=>q.label);
+  let keys=Object.keys(REPORT_QUARTERS);
+  let quarterSource=scopedHouseholds();
+  let counts=keys.map(k=>quarterSource.filter(x=>inReportQuarter(x,k)).length);
+  let amounts=keys.map(k=>{
+    let q=REPORT_QUARTERS[k];
+    return quarterSource.reduce((sum,x)=>sum+(x.assistance_log||[]).filter(e=>betweenDates(e.date,q.start,q.end)).reduce((s,e)=>s+Number(e.amount||0),0),0);
+  });
+
+  draw('chartQ','bar',labels,counts,'Households');
+  draw('chartA','bar',labels,amounts,'Assistance');
+}
 function breakdown(id,opts,h,fn){let total=h.length,counts={};opts.forEach(o=>counts[o]=0);h.forEach(x=>{let v=fn(x);if(counts[v]!=null)counts[v]++});document.getElementById(id).innerHTML=opts.filter(o=>counts[o]).map(o=>`<tr><td>${esc(o)}</td><td>${counts[o]} <span style="color:var(--muted);font-weight:500">(${pct(total?counts[o]/total:0)})</span></td></tr>`).join('')||'<tr><td colspan="2" style="text-align:center;color:var(--muted)">No data yet</td></tr>'}
-function drawDash(h){let qs=['Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26'],counts=qs.map(q=>h.filter(x=>fiscalQuarter(x.intake_date)===q).length),amounts=qs.map(q=>h.filter(x=>fiscalQuarter(x.intake_date)===q).reduce((s,x)=>s+assistTotal(x),0));draw('chartQ','bar',qs,counts,'Households');draw('chartA','line',qs,amounts,'Assistance $')}function draw(id,type,labels,data,label){if(state.charts[id])state.charts[id].destroy();let ctx=document.getElementById(id);state.charts[id]=new Chart(ctx,{type,data:{labels,datasets:[{label,data,borderWidth:2,backgroundColor:'rgba(37,99,235,.35)',borderColor:'#1B2F5B',tension:.25,fill:type==='line'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}})}
+function drawDash(h){let qs=['Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26'],counts=qs.map(q=>h.filter(x=>fiscalQuarter(x.intake_date)===q).length),amounts=qs.map(q=>h.filter(x=>fiscalQuarter(x.intake_date)===q).reduce((s,x)=>s+assistTotal(x),0));draw('chartQ','bar',qs,counts,'Households');draw('chartA','line',qs,amounts,'Assistance $')}function draw(id,type,labels,data,label){
+  if(state.charts[id]){try{state.charts[id].destroy()}catch(e){}}
+  let ctx=document.getElementById(id);
+  if(!ctx||typeof Chart==='undefined')return;
+  state.charts[id]=new Chart(ctx,{type,data:{labels,datasets:[{label,data,borderWidth:2,backgroundColor:'rgba(37,99,235,.35)',borderColor:'#1B2F5B',tension:.25,fill:type==='line'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+}
+function chart(id,type,labels,data,label){draw(id,type,labels,data,label)}
 
 function reportScopedHouseholds(){
   let base=scopedHouseholds();
@@ -209,7 +261,7 @@ function renderExport(){
   let serviceByType={};
   h.forEach(x=>(x.service_log||[]).forEach(e=>{
     if(betweenDates(e.date,q.start,q.end)){
-      let k=e.type||'Other / Unknown';
+      let k=e.category||e.type||'Other / Unknown';
       serviceByType[k]=(serviceByType[k]||0)+1;
     }
   }));
