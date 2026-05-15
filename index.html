@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RPHP Reporting Portal — City of West Hollywood</title>
+<title>HPHS Reporting — FY26</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -230,15 +230,6 @@
   .toast.show { opacity: 1; }
   .toast.success { background: var(--success); }
   .toast.error { background: var(--danger); }
-
-
-/* Portal refresh: align RPHP tool with index reporting portal */
-:root { --navy:#1B2F5B; --navy-light:#243a72; --blue:#1B2F5B; --gold:#C9A24A; --cream:#F7F6F2; --off-white:#F7F6F2; --grey-50:#F7F6F2; --grey-100:#F0EEE9; --grey-200:#E0DDD5; --grey-400:#9B9690; --grey-700:#6B6660; --grey-900:#3A3733; --border:#D8D5CE; --shadow:0 1px 3px rgba(27,47,91,0.08),0 4px 16px rgba(27,47,91,0.06); --shadow-lg:0 8px 32px rgba(27,47,91,0.12); --radius:6px; --radius-lg:10px; --font:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
-body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-height:1.6;} button,input,select,textarea{font-family:var(--font);} button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid rgba(201,162,74,.45);outline-offset:2px}.hidden{display:none!important}#app-shell:not(.hidden){display:block}.login-wrap{background:var(--navy);color:white}.login-card{border:0;border-radius:12px;padding:0;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.35)}.login-card::before{content:"";display:block;height:3px;background:var(--gold)}.login-card .login-brand-panel{background:var(--navy);padding:28px 32px;text-align:center;border-bottom:3px solid var(--gold)}.login-card .login-logo-img{display:block;width:auto;max-width:190px;max-height:70px;object-fit:contain;margin:0 auto 16px;border-radius:4px;box-shadow:0 6px 20px rgba(0,0,0,.18)}.login-card .login-fields{padding:28px 32px}.login-card .program{color:rgba(255,255,255,.65);margin-bottom:6px}.login-card h2{color:white;font-family:var(--font);font-size:20px;font-weight:500}.login-card .sub{color:rgba(255,255,255,.72);margin-bottom:0}.login-card label{color:var(--grey-700)}.login-mode{color:var(--grey-400)}
-.topbar{background:var(--navy);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 28px;min-height:58px;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.18)}.topbar-brand{display:flex;align-items:center;gap:14px;min-width:0}.weho-logo-header{display:block;width:auto;max-width:132px;max-height:30px;height:auto;object-fit:contain;border-radius:3px;flex-shrink:0}.brand-program{font-family:var(--font);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand-sub{font-size:10.5px;color:rgba(255,255,255,.65);letter-spacing:.05em;text-transform:uppercase}.topbar-right{display:flex;align-items:center;gap:12px}.deadline-chip{font-size:12px;border-radius:18px;padding:4px 10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:white}.deadline-chip.amber{background:rgba(180,83,9,.28);color:#FFE4A3}.deadline-chip.red{background:rgba(185,28,28,.26);color:#FFD0CA}.user-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px 4px 6px;font-size:12.5px}.user-avatar{width:24px;height:24px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px}.logout-btn{font-size:12px;color:rgba(255,255,255,.7);background:none;border:0;cursor:pointer}.app-layout{display:flex;min-height:calc(100vh - 58px)}.sidebar{width:230px;background:white;border-right:1px solid var(--border);padding:24px 0;flex-shrink:0;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto}.sidebar-label{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--grey-400);padding:0 18px 8px}.sidebar-section{margin-bottom:22px}.sidebar button{width:100%;display:flex;align-items:center;gap:9px;padding:9px 18px;font-size:13px;color:var(--grey-700);cursor:pointer;border:0;border-left:3px solid transparent;background:transparent;text-align:left;transition:.15s}.sidebar button:hover{background:var(--grey-100);color:var(--navy)}.sidebar button.active{background:#EEF2FA;color:var(--navy);font-weight:700;border-left-color:var(--navy)}.si-icon{font-size:15px;width:18px;text-align:center}main{flex:1;max-width:1180px;margin:0;padding:28px 32px 60px}.view-title{font-family:var(--font);font-size:28px;color:var(--navy);line-height:1.2}.view-sub{font-size:13px;color:var(--grey-400);margin-bottom:22px}.landing-header,.recent,.sync-strip,.form-section,.breakdown-card,.chart-card,.hh-list,.filter-bar,.print-page{border-color:var(--border);box-shadow:var(--shadow)}.landing-header{border-radius:var(--radius-lg);border-top:4px solid var(--navy)}.landing-header h1{font-family:var(--font);font-size:26px;color:var(--navy)}.stat,.kpi{border-radius:var(--radius-lg);box-shadow:var(--shadow);border-top:3px solid var(--navy)}.stat:nth-child(2),.kpi:nth-child(2){border-top-color:var(--gold)}.stat:nth-child(3),.kpi:nth-child(3){border-top-color:var(--success)}.stat:nth-child(4),.kpi:nth-child(4){border-top-color:var(--warning)}.stat-label,.kpi-label,.recent-header h3,.breakdown-card h3,.chart-card h3{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--grey-400)}.stat-value,.kpi-value{font-family:var(--font);font-weight:500;color:var(--navy)}.action-card{border-radius:var(--radius-lg);box-shadow:var(--shadow)}.action-card.primary{border-color:var(--navy)}.action-card:hover{border-color:var(--navy);box-shadow:var(--shadow-lg)}.action-card .icon{background:#EEF2FA;color:var(--navy)}.action-card.primary .icon{background:var(--navy);color:white}.btn{border-radius:var(--radius);font-weight:700;background:var(--navy)}.btn:hover{background:var(--navy-light)}.btn.secondary,.btn.subtle{background:white;color:var(--navy);border:1px solid var(--border)}.btn.secondary:hover,.btn.subtle:hover{border-color:var(--navy);color:var(--navy);background:#EEF2FA}.btn.danger{background:var(--danger);color:white}.form-section-header{background:var(--navy);border-bottom:3px solid var(--gold)}.form-row input:focus,.form-row select:focus,.form-row textarea:focus,.hh-toolbar input:focus,.filter-bar select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,47,91,.10);outline:none}.log-table th,.hh-list-row.header{background:#EEF2FA;color:var(--navy)}.log-table tbody tr:nth-child(even) td,.hh-list-row:nth-child(even):not(.header){background:#FBFAF7}.log-table tfoot td{background:#EEF2FA;color:var(--navy);border-top:2px solid var(--navy)}.print-header{border-bottom:3px solid var(--gold)}.print-header h1{font-family:var(--font);color:var(--navy)}.print-kpi{border:1px solid var(--border);background:#fff;border-top:3px solid var(--navy)}.print-table th{background:var(--navy);color:white}.print-table tbody tr:nth-child(even) td{background:#F7F6F2}.confirm-modal{position:fixed;inset:0;background:rgba(27,47,91,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;backdrop-filter:blur(2px)}.confirm-modal.open{display:flex}.confirm-card{background:white;border-radius:var(--radius-lg);max-width:480px;width:100%;box-shadow:var(--shadow-lg);overflow:hidden}.confirm-card-header{padding:18px 22px;border-bottom:1px solid var(--border);font-family:var(--font);color:var(--navy);font-size:18px}.confirm-card-body{padding:22px}.confirm-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}.toast{border-radius:22px;box-shadow:var(--shadow-lg)}
-.access-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.access-card{background:white;border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;box-shadow:var(--shadow)}.access-card .label{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--grey-400)}.access-card .value{font-size:22px;font-weight:800;color:var(--navy);margin-top:2px}.access-table-wrap{overflow:auto}.access-table{width:100%;border-collapse:collapse;font-size:13px}.access-table th{background:#EEF2FA;color:var(--navy);padding:10px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em}.access-table td{padding:10px;border-bottom:1px solid var(--grey-100);vertical-align:middle}.access-table tbody tr:nth-child(even) td{background:#FBFAF7}.access-person{font-weight:800;color:var(--grey-900)}.access-meta{font-size:12px;color:var(--grey-400);margin-top:2px}.pill{display:inline-flex;align-items:center;border-radius:999px;padding:3px 9px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.pill.admin{background:#EEF2FA;color:var(--navy)}.pill.user{background:var(--grey-100);color:var(--grey-700)}.pill.active{background:var(--success-soft);color:var(--success)}.pill.inactive{background:var(--danger-soft);color:var(--danger)}
-@media (max-width:980px){.stat-strip,.action-row,.kpi-grid,.chart-grid,.breakdown-grid,.access-summary{grid-template-columns:1fr 1fr}}@media (max-width:800px){.access-summary{grid-template-columns:1fr}.sidebar{display:none}main{padding:20px}.topbar{padding:0 16px}.brand-sub{display:none}.weho-logo-header{max-width:112px;max-height:26px}.topbar-right .deadline-chip{display:none}.stat-strip,.action-row,.kpi-grid,.chart-grid,.breakdown-grid{grid-template-columns:1fr}}@media print{.topbar,.sidebar,.sync-strip,.filter-bar,.print-toolbar,.toast,.confirm-modal{display:none!important}.app-layout{display:block}main{max-width:none;padding:0}}
-
 </style>
 </head>
 <body>
@@ -246,60 +237,40 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
 <!-- LOGIN -->
 <div id="login-screen" class="login-wrap">
   <div class="login-card">
-    <div class="login-brand-panel">
-      <img class="login-logo-img" src="https://www.governmentjobs.com/AgencyPages/weho/agencyImages/download/weho_white_on_blue.jpg" alt="City of West Hollywood logo">
-      <p class="program">City of West Hollywood · Human Services Division</p>
-      <h2>RPHP Reporting Portal</h2>
-      <p class="sub">Homelessness Prevention &amp; Housing Stabilization · FY26</p>
-    </div>
-    <div class="login-fields">
-      <form id="login-form">
-        <label for="login-email">Email Address</label>
-        <input type="email" id="login-email" required placeholder="you@weho.org" autocomplete="email">
-        <button type="submit" class="btn">Send Secure Login Link →</button>
-      </form>
-      <div id="login-msg"></div>
-      <div class="login-mode" id="login-mode-text"></div>
-    </div>
+    <p class="program">City of West Hollywood</p>
+    <h2>Homelessness Prevention &amp; Housing Stabilization</h2>
+    <p class="sub">FY26 Reporting Tool • Oct 1, 2025 – Sept 30, 2026</p>
+    <form id="login-form">
+      <label for="login-email">Your email</label>
+      <input type="email" id="login-email" required placeholder="you@weho.org" autocomplete="email">
+      <button type="submit" class="btn">Send magic link</button>
+    </form>
+    <div id="login-msg"></div>
+    <div class="login-mode" id="login-mode-text"></div>
   </div>
 </div>
 
 <!-- APP SHELL -->
 <div id="app-shell" class="hidden">
-  <header class="topbar">
-    <div class="topbar-brand">
-      <img class="weho-logo-header" src="https://www.governmentjobs.com/AgencyPages/weho/agencyImages/download/weho_white_on_blue.jpg" alt="City of West Hollywood logo">
-      <div>
-        <div class="brand-program">RPHP Reporting Portal</div>
-        <div class="brand-sub">Homelessness Prevention &amp; Housing Stabilization · FY26</div>
-      </div>
+  <nav class="topnav">
+    <div class="brand">
+      <span class="brand-title">HPHS Reporting</span>
+      <span class="brand-sub">FY26 • Oct 2025 – Sep 2026</span>
     </div>
-    <div class="topbar-right">
-      <span id="deadline-chip" class="deadline-chip">FY26</span>
-      <div class="user-pill"><div class="user-avatar" id="user-avatar">U</div><span id="user-email"></span></div>
-      <button class="logout-btn" id="logout-btn">Sign out</button>
+    <div class="nav-links">
+      <button data-nav="landing" class="active">Home</button>
+      <button data-nav="dashboard">Dashboard</button>
+      <button data-nav="households">Households</button>
+      <button data-nav="quarterly">Quarterly report</button>
+      <button data-nav="activity">Activity</button>
+      <button data-nav="access" id="nav-access" class="hidden">Users</button>
+      <button data-nav="backup" id="nav-backup" class="hidden">Backup</button>
     </div>
-  </header>
-
-  <div class="app-layout">
-    <aside class="sidebar" aria-label="Main navigation">
-      <div class="sidebar-section">
-        <div class="sidebar-label">Workspace</div>
-        <button data-nav="landing" class="active"><span class="si-icon">⊞</span>Home</button>
-        <button data-nav="dashboard"><span class="si-icon">📊</span>Dashboard</button>
-        <button data-nav="households"><span class="si-icon">👥</span>Households</button>
-        <button data-nav="quarterly"><span class="si-icon">📄</span>Quarterly Report</button>
-        <button data-nav="activity"><span class="si-icon">🕘</span>Recent Activity</button>
-        <button data-nav="backup" id="nav-backup" class="admin-only hidden"><span class="si-icon">☁</span>Backup Data</button>
-        <button data-nav="access" id="nav-access" class="hidden"><span class="si-icon">🔐</span>User Access</button>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-label">Quick Actions</div>
-        <button type="button" onclick="newHousehold()"><span class="si-icon">＋</span>Add Household</button>
-        <button type="button" onclick="exportCsv()"><span class="si-icon">⇩</span>Export CSV</button>
-        <button type="button" class="admin-only hidden" onclick="navigate('backup')"><span class="si-icon">☁</span>Backup Data</button>
-      </div>
-    </aside>
+    <div class="user-info">
+      <span id="user-email"></span>
+      <button id="logout-btn">Sign out</button>
+    </div>
+  </nav>
 
   <main>
     <!-- LANDING -->
@@ -336,21 +307,10 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
           <p class="title">Quarterly report</p>
           <p class="desc">Print or export CSV</p>
         </button>
-        <button class="action-card" onclick="navigate('activity')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v5l3 2"/><circle cx="12" cy="12" r="9"/></svg></div>
-          <p class="title">Recent activity</p>
-          <p class="desc">View recent record changes</p>
-        </button>
-        <button class="action-card admin-only hidden" onclick="navigate('access')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 4v5c0 5-3 8-7 9-4-1-7-4-7-9V7l7-4z"/><path d="M9 12l2 2 4-5"/></svg></div>
-          <p class="title">User access</p>
-          <p class="desc">Approve users and manage roles</p>
-        </button>
-        <button class="action-card admin-only hidden" onclick="navigate('backup')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg></div>
-          <p class="title">Backup data</p>
-          <p class="desc">Admin-only export and restore tools</p>
-        </button>
+      </div>
+      <div class="sync-strip">
+        <span><strong>Workspace ready.</strong> Use the menu above to enter households, review the dashboard, generate quarterly reports, or view activity.</span>
+        <span id="sync-status"><span class="ok">✓ Synced</span></span>
       </div>
     </section>
 
@@ -371,7 +331,6 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
       </div>
       <div class="kpi-grid" id="kpi-grid"></div>
       <div class="kpi-grid" id="kpi-grid-2"></div>
-      <div class="breakdown-grid" id="demographic-summary-grid"></div>
       <div class="chart-grid">
         <div class="chart-card"><h3>Households served by quarter</h3><div class="chart-wrap"><canvas id="ch-quarter"></canvas></div></div>
         <div class="chart-card"><h3>Financial assistance by quarter ($)</h3><div class="chart-wrap"><canvas id="ch-assist"></canvas></div></div>
@@ -439,22 +398,42 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
       <div id="print-body" class="print-page"></div>
     </section>
 
-    <!-- RECENT ACTIVITY -->
+    <!-- ACTIVITY -->
     <section id="view-activity" class="hidden">
       <h2 class="view-title">Recent Activity</h2>
-      <p class="view-sub">Recent changes entered in the reporting portal.</p>
-      <div class="recent">
-        <div class="recent-header"><h3>Recent activity</h3></div>
-        <div id="recent-list"></div>
+      <p class="view-sub">Recent household and reporting activity in this workspace.</p>
+      <div class="recent"><div class="recent-header"><h3>Recent activity</h3></div><div id="recent-list"></div></div>
+    </section>
+
+    <!-- USER MANAGEMENT -->
+    <section id="view-access" class="hidden">
+      <h2 class="view-title">User Management</h2>
+      <p class="view-sub">Admin-only access list for the RPHP reporting tool. Users must be active to sign in and use the portal.</p>
+      <div class="stat-strip" id="access-summary"></div>
+      <div class="form-section">
+        <div class="form-section-header">Add or Update User</div>
+        <div class="form-section-body">
+          <div class="form-row"><label>Name <span class="required">*</span></label><input id="user-full-name" type="text" placeholder="Full name"></div>
+          <div class="form-row"><label>Email <span class="required">*</span></label><input id="user-email-input" type="email" placeholder="name@example.org"></div>
+          <div class="form-row"><label>Agency Affiliation <span class="required">*</span></label><input id="user-agency" type="text" placeholder="Agency or department"></div>
+          <div class="form-row"><label>User Type <span class="required">*</span></label><select id="user-type"><option value="user">Standard User</option><option value="admin">Admin</option></select></div>
+          <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px;"><button class="btn secondary" onclick="clearUserForm()">Clear</button><button class="btn" onclick="saveUserFromPanel()">Save User</button></div>
+        </div>
+      </div>
+      <div class="hh-list">
+        <div class="hh-list-row header" style="grid-template-columns:1.2fr 1.4fr 1.2fr .8fr .8fr 1fr;">
+          <span>Name</span><span>Email</span><span>Agency</span><span>Type</span><span>Status</span><span>Actions</span>
+        </div>
+        <div id="users-list-body"></div>
       </div>
     </section>
 
-    <!-- BACKUP MANAGEMENT -->
+    <!-- BACKUP -->
     <section id="view-backup" class="hidden">
       <h2 class="view-title">Backup Data</h2>
-      <p class="view-sub">Admin-only tools to export or restore a JSON backup of RPHP records.</p>
+      <p class="view-sub">Admin-only JSON backup and restore tools.</p>
       <div class="sync-strip">
-        <span id="sync-status">—</span>
+        <span id="backup-status">—</span>
         <div class="actions">
           <button class="btn subtle sm" onclick="exportJsonBackup()">Export backup</button>
           <button class="btn subtle sm" onclick="document.getElementById('import-file').click()">Restore backup</button>
@@ -462,90 +441,7 @@ body{background:var(--off-white);color:var(--grey-900);font-size:14px;line-heigh
         </div>
       </div>
     </section>
-
-    <!-- USER ACCESS MANAGEMENT -->
-    <section id="view-access" class="hidden">
-      <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:14px; margin-bottom:18px;">
-        <div>
-          <h2 class="view-title">User Management</h2>
-          <p class="view-sub">Admin-only tools to manage current portal users, agency affiliation, contact information, access status, and user type.</p>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <button class="btn subtle sm" type="button" onclick="refreshAccessUsers()">Refresh Users</button>
-          <span class="status active">Admin only</span>
-        </div>
-      </div>
-
-      <div class="access-summary" id="access-summary"></div>
-
-      <div class="form-section">
-        <div class="form-section-header">Add or Update User</div>
-        <div class="form-section-body">
-          <div class="form-row">
-            <label for="access-name">Name <span class="required">*</span></label>
-            <div>
-              <input type="text" id="access-name" placeholder="Full name" autocomplete="name">
-              <div class="hint">Required for the current user list and audit trail.</div>
-            </div>
-          </div>
-          <div class="form-row">
-            <label for="access-agency">Agency Affiliation <span class="required">*</span></label>
-            <div>
-              <input type="text" id="access-agency" placeholder="Agency or City division">
-              <div class="hint">Examples: City of West Hollywood, NCJW, APLA, Bet Tzedek.</div>
-            </div>
-          </div>
-          <div class="form-row">
-            <label for="access-email">Email Address <span class="required">*</span></label>
-            <div>
-              <input type="email" id="access-email" placeholder="user@agency.org" autocomplete="email">
-              <div class="hint">Use the same email the person will use for the Supabase magic-link login.</div>
-            </div>
-          </div>
-          <div class="form-row">
-            <label for="access-role">User Type <span class="required">*</span></label>
-            <select id="access-role">
-              <option value="user">Program User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label for="access-active">Status</label>
-            <select id="access-active">
-              <option value="true">Active</option>
-              <option value="false">Inactive</option>
-            </select>
-          </div>
-          <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
-            <button class="btn secondary" type="button" onclick="clearAccessForm()">Clear</button>
-            <button class="btn" type="button" onclick="saveAccessUser()">Save User</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="recent">
-        <div class="recent-header">
-          <h3>Current Users</h3>
-          <button class="btn subtle sm" type="button" onclick="loadAccessStatus().then(renderAccess)">Refresh</button>
-        </div>
-        <div id="access-list"></div>
-      </div>
-    </section>
   </main>
-  </div>
-</div>
-
-<div id="confirm-modal" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
-  <div class="confirm-card">
-    <div class="confirm-card-header" id="confirm-title">Confirm Action</div>
-    <div class="confirm-card-body">
-      <p id="confirm-message" style="font-size:13px;color:var(--grey-700);margin:0;"></p>
-      <div class="confirm-actions">
-        <button class="btn secondary" id="confirm-cancel">Cancel</button>
-        <button class="btn" id="confirm-ok">Confirm</button>
-      </div>
-    </div>
-  </div>
 </div>
 
 <div id="toast" class="toast"></div>
@@ -600,7 +496,7 @@ const ASSISTANCE_TYPE = ["Rental Arrears","Forward Rent","Security Deposit","Uti
 const SERVICE_CATEGORY = ["Intake Assessment","Case Management","Housing Search Support","Landlord Mediation","Benefits Enrollment","Employment Support","Financial Counseling","Legal Referral","Mental Health Referral","Follow-up Check-in","Other"];
 
 // State
-let state = { user: null, households: [], activity: [], currentHHId: null, accessUsers: [], accessRole: "user", isAdmin: false };
+let state = { user: null, households: [], activity: [], currentHHId: null, isAdmin: false, accessRole: "user", accessUsers: [], accessLoadError: "" };
 let charts = {};
 
 // ============================================================
@@ -641,6 +537,19 @@ function toast(msg, kind) {
   setTimeout(() => t.className = "toast", 2400);
 }
 function uid() { return "hh_" + Math.random().toString(36).slice(2,10); }
+function normalizeHousehold(h) {
+  return {
+    id: h.id || uid(), hh_id: h.hh_id || "", intake_date: h.intake_date || null,
+    hh_composition: h.hh_composition || "", hh_size: h.hh_size == null ? null : Number(h.hh_size),
+    monthly_income: h.monthly_income == null ? null : Number(h.monthly_income), housing_at_intake: h.housing_at_intake || "",
+    age_primary: h.age_primary == null ? null : Number(h.age_primary), race_ethnicity: h.race_ethnicity || "", gender: h.gender || "", veteran: h.veteran || "", disability: h.disability || "",
+    eligible: h.eligible || "", qualifying_event: h.qualifying_event || "", assistance_start: h.assistance_start || null, assistance_end: h.assistance_end || null,
+    arrears_flag: h.arrears_flag || "", arrears_amount: h.arrears_amount == null ? 0 : Number(h.arrears_amount), benefits_cert: h.benefits_cert || "",
+    housing_at_entry: h.housing_at_entry || "", housing_at_exit: h.housing_at_exit || "", housing_90day: h.housing_90day || "", success_story: h.success_story || "",
+    assistance_log: Array.isArray(h.assistance_log) ? h.assistance_log : [], service_log: Array.isArray(h.service_log) ? h.service_log : [],
+    updated_at: h.updated_at || new Date().toISOString(), updated_by: h.updated_by || ""
+  };
+}
 
 // ============================================================
 // AUTH + STORAGE
@@ -654,9 +563,6 @@ async function init() {
     // Auto-login as a fake user
     const email = localStorage.getItem("demo_user") || "demo@weho.org";
     state.user = { email };
-    state.accessRole = "admin";
-    state.isAdmin = true;
-    state.accessUsers = [{ email, full_name: "Demo Admin", agency_affiliation: "City of West Hollywood", role: "admin", user_type: "admin", active: true, created_at: new Date().toISOString() }];
     loadFromLocalStorage();
     showApp();
   } else {
@@ -696,9 +602,6 @@ async function handleLogin(e) {
   if (DEMO_MODE) {
     localStorage.setItem("demo_user", email);
     state.user = { email };
-    state.accessRole = "admin";
-    state.isAdmin = true;
-    state.accessUsers = [{ email, full_name: "Demo Admin", agency_affiliation: "City of West Hollywood", role: "admin", user_type: "admin", active: true, created_at: new Date().toISOString() }];
     loadFromLocalStorage();
     showApp();
     return;
@@ -725,14 +628,8 @@ function showApp() {
   document.getElementById("login-screen").classList.add("hidden");
   document.getElementById("app-shell").classList.remove("hidden");
   document.getElementById("user-email").textContent = state.user.email;
-  const avatar = document.getElementById("user-avatar");
-  if (avatar) avatar.textContent = (state.user.email || "U").slice(0,1).toUpperCase();
-  document.querySelectorAll(".admin-only").forEach(el => el.classList.toggle("hidden", !state.isAdmin));
-  const accessNav = document.getElementById("nav-access");
-  if (accessNav) accessNav.classList.toggle("hidden", !state.isAdmin);
-  const backupNav = document.getElementById("nav-backup");
-  if (backupNav) backupNav.classList.toggle("hidden", !state.isAdmin);
-  updateDeadlineChip();
+  document.getElementById("nav-access")?.classList.toggle("hidden", !state.isAdmin);
+  document.getElementById("nav-backup")?.classList.toggle("hidden", !state.isAdmin);
   navigate("landing");
 }
 
@@ -752,118 +649,37 @@ function saveToLocalStorage() {
   }));
 }
 
-function normalizeHousehold(h = {}) {
-  return {
-    id: h.id || uid(),
-    hh_id: h.hh_id || "",
-    intake_date: h.intake_date || null,
-    hh_composition: h.hh_composition || "",
-    hh_size: h.hh_size == null ? null : Number(h.hh_size),
-    monthly_income: h.monthly_income == null ? null : Number(h.monthly_income),
-    housing_at_intake: h.housing_at_intake || "",
-    age_primary: h.age_primary == null ? null : Number(h.age_primary),
-    race_ethnicity: h.race_ethnicity || "",
-    gender: h.gender || "",
-    veteran: h.veteran || "",
-    disability: h.disability || "",
-    eligible: h.eligible || "",
-    qualifying_event: h.qualifying_event || "",
-    assistance_start: h.assistance_start || null,
-    assistance_end: h.assistance_end || null,
-    arrears_flag: h.arrears_flag || "",
-    arrears_amount: h.arrears_amount == null ? 0 : Number(h.arrears_amount),
-    benefits_cert: h.benefits_cert || "",
-    housing_at_entry: h.housing_at_entry || "",
-    housing_at_exit: h.housing_at_exit || "",
-    housing_90day: h.housing_90day || "",
-    success_story: h.success_story || "",
-    assistance_log: Array.isArray(h.assistance_log) ? h.assistance_log : [],
-    service_log: Array.isArray(h.service_log) ? h.service_log : [],
-    updated_at: h.updated_at || new Date().toISOString(),
-    updated_by: h.updated_by || ""
-  };
-}
-
 async function loadFromSupabase() {
   await loadAccessStatus();
   const { data: hhs, error: hhError } = await sb.from("households").select("*").order("hh_id", { ascending: true });
   const { data: act, error: actError } = await sb.from("activity_log").select("*").order("created_at", { ascending: false }).limit(25);
-  if (hhError) {
-    console.error("Household load error", hhError);
-    toast("Household data load error: " + hhError.message, "error");
-    state.households = [];
-  } else {
-    state.households = (hhs || []).map(normalizeHousehold);
-  }
-  if (actError) {
-    console.warn("Activity load error", actError);
-    state.activity = [];
-  } else {
-    state.activity = act || [];
-  }
+  if (hhError) { console.error(hhError); toast("Household load error: " + hhError.message, "error"); state.households = []; }
+  else state.households = (hhs || []).map(normalizeHousehold);
+  if (actError) { console.warn(actError); state.activity = []; }
+  else state.activity = act || [];
 }
 
 async function loadAccessStatus() {
-  state.accessRole = "user";
-  state.isAdmin = false;
-  state.accessUsers = [];
-  state.accessLoadError = "";
-  const email = (state.user && state.user.email || "").toLowerCase();
-
-  const { data: me, error: meError } = await sb
-    .from("rphp_approved_users")
-    .select("email, role, user_type, active, full_name, agency_affiliation")
-    .ilike("email", email)
-    .maybeSingle();
-
-  if (meError) {
-    state.accessLoadError = "Could not confirm your user access: " + meError.message;
-    toast(state.accessLoadError, "error");
-    return;
-  }
-
-  if (me && me.active) {
-    state.accessRole = me.user_type || me.role || "user";
-    state.isAdmin = state.accessRole === "admin";
-  }
-
+  state.isAdmin = false; state.accessRole = "user"; state.accessUsers = []; state.accessLoadError = "";
+  const email = (state.user?.email || "").toLowerCase();
+  const { data: me, error: meError } = await sb.from("rphp_approved_users")
+    .select("email, full_name, agency_affiliation, role, user_type, active")
+    .ilike("email", email).maybeSingle();
+  if (meError) { state.accessLoadError = meError.message; return; }
+  if (me && me.active) { state.accessRole = me.user_type || me.role || "user"; state.isAdmin = state.accessRole === "admin"; }
   if (state.isAdmin) {
-    let users = [];
-    let usersError = null;
-
-    // Preferred path: use the admin RPC if the SQL update has been applied.
-    const rpcResult = await sb.rpc("rphp_admin_list_users");
-    if (!rpcResult.error) {
-      users = rpcResult.data || [];
-    } else {
-      usersError = rpcResult.error;
-      // Fallback path: direct table select for older Supabase setups.
-      const tableResult = await sb
-        .from("rphp_approved_users")
-        .select("email, role, user_type, full_name, agency_affiliation, active, created_at, updated_at")
-        .order("agency_affiliation", { ascending: true, nullsFirst: false })
-        .order("full_name", { ascending: true, nullsFirst: false })
-        .order("email", { ascending: true });
-      if (!tableResult.error) {
-        users = tableResult.data || [];
-        usersError = null;
-      } else {
-        usersError = tableResult.error;
-      }
+    const rpc = await sb.rpc("rphp_admin_list_users");
+    if (!rpc.error) state.accessUsers = (rpc.data || []).map(normalizeUserRow);
+    else {
+      const tbl = await sb.from("rphp_approved_users").select("email, full_name, agency_affiliation, role, user_type, active, created_at, updated_at").order("agency_affiliation", { ascending: true }).order("full_name", { ascending: true });
+      if (tbl.error) state.accessLoadError = tbl.error.message;
+      else state.accessUsers = (tbl.data || []).map(normalizeUserRow);
     }
-
-    if (usersError) {
-      state.accessLoadError = "Could not load current users. Apply the latest User Management SQL update or check RLS permissions. Details: " + usersError.message;
-      toast("Could not load current users.", "error");
-    }
-
-    state.accessUsers = (users || []).map(u => ({
-      ...u,
-      user_type: u.user_type || u.role || "user",
-      role: u.role || u.user_type || "user",
-      active: u.active !== false
-    }));
   }
+}
+
+function normalizeUserRow(u) {
+  return { email: u.email || "", full_name: u.full_name || "", agency_affiliation: u.agency_affiliation || "", role: u.role || u.user_type || "user", user_type: u.user_type || u.role || "user", active: u.active !== false, created_at: u.created_at, updated_at: u.updated_at };
 }
 
 async function persistHousehold(hh) {
@@ -874,19 +690,8 @@ async function persistHousehold(hh) {
     saveToLocalStorage();
     return clean;
   }
-
-  const { data, error } = await sb
-    .from("households")
-    .upsert(clean, { onConflict: "id" })
-    .select("*")
-    .single();
-
-  if (error) {
-    console.error("Household save error", error);
-    toast("Save error: " + error.message, "error");
-    throw error;
-  }
-
+  const { data, error } = await sb.from("households").upsert(clean, { onConflict: "id" }).select("*").single();
+  if (error) { console.error("Household save error", error); toast("Save error: " + error.message, "error"); throw error; }
   const saved = normalizeHousehold(data || clean);
   const idx = state.households.findIndex(h => h.id === saved.id);
   if (idx >= 0) state.households[idx] = saved; else state.households.push(saved);
@@ -908,188 +713,19 @@ async function logActivity(action, hhId) {
 // NAVIGATION
 // ============================================================
 function navigate(view) {
-  if ((view === "access" || view === "backup") && !state.isAdmin) {
-    toast("Admin access is required.", "error");
-    view = "landing";
-  }
+  if ((view === "access" || view === "backup") && !state.isAdmin) { toast("Admin access is required.", "error"); view = "landing"; }
   document.querySelectorAll("main > section").forEach(s => s.classList.add("hidden"));
-  const targetView = document.getElementById("view-" + view);
-  if (!targetView) { toast("View not found: " + view, "error"); return; }
-  targetView.classList.remove("hidden");
+  const target = document.getElementById("view-" + view);
+  if (!target) { toast("View not found: " + view, "error"); return; }
+  target.classList.remove("hidden");
   document.querySelectorAll("[data-nav]").forEach(b => b.classList.toggle("active", b.dataset.nav === view));
-  updateDeadlineChip();
   if (view === "landing") renderLanding();
   if (view === "dashboard") renderDashboard();
   if (view === "households") renderHouseholdsList();
   if (view === "quarterly") renderQuarterly();
   if (view === "activity") renderActivity();
-  if (view === "backup") renderBackup();
   if (view === "access") renderAccess();
-}
-
-
-// ============================================================
-// USER ACCESS MANAGEMENT
-// ============================================================
-async function refreshAccessUsers() {
-  if (!state.isAdmin) return toast("Admin access is required.", "error");
-  await loadAccessStatus();
-  renderAccess();
-  if (!state.accessLoadError) toast("Current users refreshed.", "success");
-}
-
-function renderAccess() {
-  if (!state.isAdmin) {
-    toast("Admin access is required.", "error");
-    navigate("landing");
-    return;
-  }
-  const summary = document.getElementById("access-summary");
-  const users = state.accessUsers || [];
-  const activeCount = users.filter(u => u.active).length;
-  const adminCount = users.filter(u => (u.user_type || u.role || "user") === "admin").length;
-  const agencyCount = new Set(users.map(u => (u.agency_affiliation || "").trim()).filter(Boolean)).size;
-  if (summary) {
-    summary.innerHTML = `
-      <div class="access-card"><div class="label">Total Users</div><div class="value">${users.length}</div></div>
-      <div class="access-card"><div class="label">Active</div><div class="value">${activeCount}</div></div>
-      <div class="access-card"><div class="label">Admins</div><div class="value">${adminCount}</div></div>
-      <div class="access-card"><div class="label">Agencies</div><div class="value">${agencyCount}</div></div>`;
-  }
-  const list = document.getElementById("access-list");
-  if (!users.length) {
-    const detail = state.accessLoadError
-      ? `<div style="margin-top:8px;color:var(--danger);font-weight:600;">${escapeHtml(state.accessLoadError)}</div>`
-      : `<div style="margin-top:8px;color:var(--grey-700);">No records were returned from <code>rphp_approved_users</code>. Add at least one active admin user, or run the latest SQL update included with this version.</div>`;
-    list.innerHTML = `<div class="recent-empty"><strong>No current users found.</strong>${detail}</div>`;
-    return;
-  }
-  list.innerHTML = `
-    <div class="access-table-wrap">
-      <table class="access-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Agency</th>
-            <th>Email</th>
-            <th>User Type</th>
-            <th>Status</th>
-            <th>Updated</th>
-            <th style="text-align:right;">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${users.map(u => {
-            const type = u.user_type || u.role || "user";
-            const name = u.full_name || "Name needed";
-            const agency = u.agency_affiliation || "Agency needed";
-            return `<tr>
-              <td><div class="access-person">${escapeHtml(name)}</div></td>
-              <td>${escapeHtml(agency)}</td>
-              <td>${escapeHtml(u.email)}</td>
-              <td><span class="pill ${type === "admin" ? "admin" : "user"}">${type === "admin" ? "Admin" : "Program User"}</span></td>
-              <td><span class="pill ${u.active ? "active" : "inactive"}">${u.active ? "Active" : "Inactive"}</span></td>
-              <td><span class="access-meta">${u.updated_at ? fmtDate(u.updated_at) : (u.created_at ? fmtDate(u.created_at) : "—")}</span></td>
-              <td style="text-align:right; white-space:nowrap;">
-                <button class="btn subtle sm" onclick="editAccessUser('${escapeJs(u.email)}')">Edit</button>
-                <button class="btn ${u.active ? "danger" : "subtle"} sm" onclick="toggleAccessUser('${escapeJs(u.email)}', ${u.active ? "false" : "true"})" title="${u.active ? "Deactivate this user without deleting their record" : "Reactivate this user"}">${u.active ? "Deactivate" : "Reactivate"}</button>
-                <button class="btn danger sm" onclick="deleteAccessUser('${escapeJs(u.email)}')">Remove</button>
-              </td>
-            </tr>`;
-          }).join("")}
-        </tbody>
-      </table>
-    </div>`;
-}
-
-function escapeJs(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
-function clearAccessForm() {
-  document.getElementById("access-name").value = "";
-  document.getElementById("access-agency").value = "";
-  document.getElementById("access-email").value = "";
-  document.getElementById("access-role").value = "user";
-  document.getElementById("access-active").value = "true";
-}
-function editAccessUser(email) {
-  const u = state.accessUsers.find(x => x.email === email);
-  if (!u) return;
-  document.getElementById("access-name").value = u.full_name || "";
-  document.getElementById("access-agency").value = u.agency_affiliation || "";
-  document.getElementById("access-email").value = u.email;
-  document.getElementById("access-role").value = u.user_type || u.role || "user";
-  document.getElementById("access-active").value = String(!!u.active);
-  document.getElementById("access-name").focus();
-}
-async function saveAccessUser() {
-  if (!state.isAdmin) return toast("Admin access is required.", "error");
-  const full_name = document.getElementById("access-name").value.trim();
-  const agency_affiliation = document.getElementById("access-agency").value.trim();
-  const email = document.getElementById("access-email").value.trim().toLowerCase();
-  const user_type = document.getElementById("access-role").value;
-  const active = document.getElementById("access-active").value === "true";
-  if (!full_name) return toast("Enter the user's name.", "error");
-  if (!agency_affiliation) return toast("Enter the user's agency affiliation.", "error");
-  if (!email) return toast("Enter an email address.", "error");
-  const row = { email, full_name, agency_affiliation, user_type, role: user_type, active, updated_at: new Date().toISOString() };
-  if (DEMO_MODE) {
-    const i = state.accessUsers.findIndex(u => u.email === email);
-    if (i >= 0) state.accessUsers[i] = { ...state.accessUsers[i], ...row }; else state.accessUsers.push({ ...row, created_at: new Date().toISOString() });
-  } else {
-    const { error } = await sb.from("rphp_approved_users").upsert(row);
-    if (error) return toast("Access save error: " + error.message, "error");
-    await loadAccessStatus();
-  }
-  clearAccessForm();
-  renderAccess();
-  toast("User saved.", "success");
-}
-async function toggleAccessUser(email, active) {
-  if (!state.isAdmin) return toast("Admin access is required.", "error");
-  const normalizedEmail = String(email || "").toLowerCase();
-  const currentEmail = (state.user && state.user.email || "").toLowerCase();
-  if (!active && normalizedEmail === currentEmail) {
-    return toast("You cannot deactivate your own admin access while signed in.", "error");
-  }
-  const action = active ? "reactivate" : "deactivate";
-  if (!confirm(`Are you sure you want to ${action} ${email}?`)) return;
-
-  if (DEMO_MODE) {
-    const u = state.accessUsers.find(x => String(x.email || "").toLowerCase() === normalizedEmail);
-    if (u) {
-      u.active = active;
-      u.updated_at = new Date().toISOString();
-    }
-  } else {
-    // Preferred path: admin RPC avoids RLS edge cases and records updated_at consistently.
-    const rpcResult = await sb.rpc("rphp_admin_set_user_active", {
-      target_email: normalizedEmail,
-      target_active: active
-    });
-
-    if (rpcResult.error) {
-      // Fallback path for older SQL setups.
-      const { error } = await sb
-        .from("rphp_approved_users")
-        .update({ active, updated_at: new Date().toISOString() })
-        .eq("email", normalizedEmail);
-      if (error) return toast("Access update error: " + error.message, "error");
-    }
-    await loadAccessStatus();
-  }
-  renderAccess();
-  toast(active ? "User reactivated." : "User deactivated.", "success");
-}
-async function deleteAccessUser(email) {
-  if (!state.isAdmin) return toast("Admin access is required.", "error");
-  if ((state.user.email || "").toLowerCase() === email.toLowerCase()) return toast("You cannot remove your own access while signed in.", "error");
-  if (!confirm("Remove access for " + email + "?")) return;
-  if (DEMO_MODE) state.accessUsers = state.accessUsers.filter(u => u.email !== email);
-  else {
-    const { error } = await sb.from("rphp_approved_users").delete().eq("email", email);
-    if (error) return toast("Access remove error: " + error.message, "error");
-    await loadAccessStatus();
-  }
-  renderAccess();
+  if (view === "backup") renderBackup();
 }
 
 // ============================================================
@@ -1120,43 +756,79 @@ function renderLanding() {
     <div class="stat"><p class="stat-label">90-day stability rate</p><p class="stat-value">${totalWithOutcome ? fmtPct(stableRate) : "—"}</p></div>
   `;
 
+  const sync = document.getElementById("sync-status");
+  if (sync) sync.innerHTML = DEMO_MODE ? `<span class="warn">⚠ Demo mode</span>` : `<span class="ok">✓ Synced to Supabase</span>`;
 }
 
+function timeAgo(iso) {
+  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (diff < 60) return "just now";
+  if (diff < 3600) return Math.floor(diff/60) + " min ago";
+  if (diff < 86400) return Math.floor(diff/3600) + "h ago";
+  return Math.floor(diff/86400) + "d ago";
+}
+function escapeHtml(s) {
+  return (s == null ? "" : String(s)).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[c]);
+}
+
+
+// ============================================================
+// ACTIVITY / BACKUP / USER MANAGEMENT
+// ============================================================
 function renderActivity() {
   const list = document.getElementById("recent-list");
   if (!list) return;
-  if (state.activity.length === 0) {
-    list.innerHTML = `<div class="recent-empty">No recent activity yet. Add a household to get started.</div>`;
-  } else {
-    list.innerHTML = state.activity.slice(0, 20).map(a => `
-      <div class="recent-item">
-        <span><span class="hhid">${a.hh_id || "—"}</span>${escapeHtml(a.action)}</span>
-        <span class="who">${timeAgo(a.created_at)} • ${escapeHtml(a.actor)}</span>
-      </div>`).join("");
-  }
+  if (state.activity.length === 0) list.innerHTML = `<div class="recent-empty">No recent activity yet. Add a household to get started.</div>`;
+  else list.innerHTML = state.activity.slice(0, 25).map(a => `<div class="recent-item"><span><span class="hhid">${a.hh_id || "—"}</span>${escapeHtml(a.action)}</span><span class="who">${timeAgo(a.created_at)} • ${escapeHtml(a.actor)}</span></div>`).join("");
 }
-
 function renderBackup() {
-  if (!state.isAdmin) {
-    toast("Admin access is required.", "error");
-    navigate("landing");
-    return;
-  }
-  const lastBackup = localStorage.getItem("last_backup_at");
-  const sync = document.getElementById("sync-status");
-  if (!sync) return;
-  if (DEMO_MODE) {
-    if (!lastBackup) {
-      sync.innerHTML = `<span class="warn">⚠ Demo mode — no backup yet</span> · Export a JSON backup regularly so you don't lose data.`;
-    } else {
-      const days = Math.floor((Date.now() - new Date(lastBackup).getTime()) / (1000*60*60*24));
-      sync.innerHTML = days > 7
-        ? `<span class="warn">⚠ Last backup ${days} days ago</span> · Consider exporting again.`
-        : `<span class="ok">✓ Last backup ${days === 0 ? "today" : days + " day(s) ago"}</span>`;
-    }
-  } else {
-    sync.innerHTML = `<span class="ok">✓ Synced to Supabase</span> · JSON backup tools are available to admins for offline records retention.`;
-  }
+  if (!state.isAdmin) return navigate("landing");
+  const el = document.getElementById("backup-status");
+  const last = localStorage.getItem("last_backup_at");
+  if (!el) return;
+  el.innerHTML = DEMO_MODE ? `<span class="warn">⚠ Demo mode</span> · Backups are strongly recommended.` : `<span class="ok">✓ Synced to Supabase</span> · Backup tools are available for offline records retention.${last ? " Last backup: " + new Date(last).toLocaleString() : ""}`;
+}
+function renderAccess() {
+  if (!state.isAdmin) return navigate("landing");
+  const users = state.accessUsers || [];
+  const activeCount = users.filter(u => u.active).length;
+  const adminCount = users.filter(u => (u.user_type || u.role) === "admin").length;
+  document.getElementById("access-summary").innerHTML = `
+    <div class="stat"><p class="stat-label">Current users</p><p class="stat-value">${users.length}</p></div>
+    <div class="stat"><p class="stat-label">Active users</p><p class="stat-value">${activeCount}</p></div>
+    <div class="stat"><p class="stat-label">Admins</p><p class="stat-value">${adminCount}</p></div>
+    <div class="stat"><p class="stat-label">Inactive</p><p class="stat-value">${users.length - activeCount}</p></div>`;
+  const body = document.getElementById("users-list-body");
+  if (state.accessLoadError) body.innerHTML = `<div class="recent-empty">Could not load users: ${escapeHtml(state.accessLoadError)}</div>`;
+  else if (!users.length) body.innerHTML = `<div class="recent-empty">No users found. Add the first user above.</div>`;
+  else body.innerHTML = users.map(u => `<div class="hh-list-row" style="grid-template-columns:1.2fr 1.4fr 1.2fr .8fr .8fr 1fr; cursor:default;">
+    <span>${escapeHtml(u.full_name || "—")}</span><span>${escapeHtml(u.email)}</span><span>${escapeHtml(u.agency_affiliation || "—")}</span><span>${(u.user_type || "user") === "admin" ? "Admin" : "User"}</span><span><span class="status ${u.active ? "active" : "empty"}">${u.active ? "Active" : "Inactive"}</span></span>
+    <span><button class="btn secondary sm" onclick="editUser('${escapeJs(u.email)}')">Edit</button> <button class="btn ${u.active ? "danger" : "secondary"} sm" onclick="setUserActive('${escapeJs(u.email)}', ${!u.active})">${u.active ? "Deactivate" : "Reactivate"}</button></span>
+  </div>`).join("");
+}
+function escapeJs(s) { return String(s || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'"); }
+function clearUserForm() { document.getElementById("user-full-name").value=""; document.getElementById("user-email-input").value=""; document.getElementById("user-agency").value=""; document.getElementById("user-type").value="user"; }
+function editUser(email) { const u = state.accessUsers.find(x => x.email === email); if (!u) return; document.getElementById("user-full-name").value = u.full_name || ""; document.getElementById("user-email-input").value = u.email || ""; document.getElementById("user-agency").value = u.agency_affiliation || ""; document.getElementById("user-type").value = u.user_type || "user"; window.scrollTo({ top: 0, behavior: "smooth" }); }
+async function saveUserFromPanel() {
+  if (!state.isAdmin) return toast("Admin access is required.", "error");
+  const full_name = document.getElementById("user-full-name").value.trim();
+  const email = document.getElementById("user-email-input").value.trim().toLowerCase();
+  const agency_affiliation = document.getElementById("user-agency").value.trim();
+  const user_type = document.getElementById("user-type").value;
+  if (!full_name || !email || !agency_affiliation || !user_type) return toast("Name, email, agency, and user type are required.", "error");
+  const row = { email, full_name, agency_affiliation, role: user_type, user_type, active: true };
+  let result = await sb.rpc("rphp_admin_upsert_user", { target_email: email, target_full_name: full_name, target_agency_affiliation: agency_affiliation, target_user_type: user_type, target_active: true });
+  if (result.error) result = await sb.from("rphp_approved_users").upsert(row, { onConflict: "email" });
+  if (result.error) return toast("User save error: " + result.error.message, "error");
+  await loadAccessStatus(); clearUserForm(); renderAccess(); toast("User saved.", "success");
+}
+async function setUserActive(email, active) {
+  if (!state.isAdmin) return toast("Admin access is required.", "error");
+  if (email.toLowerCase() === (state.user?.email || "").toLowerCase() && !active) return toast("You cannot deactivate your own account.", "error");
+  let result = await sb.rpc("rphp_admin_set_user_active", { target_email: email, target_active: active });
+  if (result.error) result = await sb.from("rphp_approved_users").update({ active }).ilike("email", email);
+  if (result.error) return toast("User update error: " + result.error.message, "error");
+  await loadAccessStatus(); renderAccess(); toast(active ? "User reactivated." : "User deactivated.", "success");
 }
 
 // ============================================================
@@ -1238,9 +910,7 @@ async function newHousehold() {
     const saved = await persistHousehold(hh);
     await logActivity("Created new household", saved.hh_id);
     openHousehold(saved.id);
-  } catch (err) {
-    console.error(err);
-  }
+  } catch (err) { console.error(err); }
 }
 
 function openHousehold(id) {
@@ -1251,7 +921,7 @@ function openHousehold(id) {
 
 async function deleteCurrentHousehold() {
   if (!state.currentHHId) return;
-  if (!(await portalConfirm("Delete this household record permanently? This cannot be undone.", "Delete record"))) return;
+  if (!confirm("Delete this household record permanently? This cannot be undone.")) return;
   const hh = state.households.find(h => h.id === state.currentHHId);
   if (DEMO_MODE) {
     state.households = state.households.filter(h => h.id !== state.currentHHId);
@@ -1488,7 +1158,8 @@ function filterByQuarter(filter) {
 }
 
 function renderDashboard() {
-  const filter = document.getElementById("quarter-filter").value;
+  const qEl = document.getElementById("quarter-filter");
+  const filter = qEl ? qEl.value : "all";
   const filtered = filterByQuarter(filter);
   const all = state.households.filter(h => h.intake_date);
 
@@ -1523,9 +1194,6 @@ function renderDashboard() {
     <div class="kpi"><p class="kpi-label">90-day stability rate</p><p class="kpi-value">${fmtPct(stableRate)}</p></div>
   `;
 
-  // Demographic summary cards use the current dashboard filter; detailed breakdowns remain program-to-date.
-  renderDemographicSummary(filtered);
-
   // Breakdown tables (program-to-date, not filtered)
   renderBreakdown("bd-race", RACE_ETHNICITY, all, h => h.race_ethnicity);
   renderBreakdown("bd-age", ["Under 18","18-24","25-34","35-44","45-54","55-61","62+"], all, h => ageBand(h.age_primary));
@@ -1534,47 +1202,6 @@ function renderDashboard() {
 
   // Charts
   drawCharts(all);
-}
-
-
-function topCategory(rows, accessor) {
-  const counts = {};
-  rows.forEach(h => {
-    const v = accessor(h);
-    if (!v) return;
-    counts[v] = (counts[v] || 0) + 1;
-  });
-  const entries = Object.entries(counts).sort((a,b) => b[1] - a[1]);
-  if (!entries.length) return { label: "No data", count: 0, pct: 0 };
-  return { label: entries[0][0], count: entries[0][1], pct: rows.length ? entries[0][1] / rows.length : 0 };
-}
-
-function renderDemographicSummary(rows) {
-  const el = document.getElementById("demographic-summary-grid");
-  if (!el) return;
-  const total = rows.length;
-  const race = topCategory(rows, h => h.race_ethnicity);
-  const age = topCategory(rows, h => ageBand(h.age_primary));
-  const gender = topCategory(rows, h => h.gender);
-  const disability = rows.filter(h => h.disability === "Yes").length;
-  const veteran = rows.filter(h => h.veteran === "Yes").length;
-  el.innerHTML = `
-    <div class="breakdown-card"><h3>Demographic summary</h3>
-      <table>
-        <tr><td>Total households with intake</td><td>${total}</td></tr>
-        <tr><td>Largest race/ethnicity group</td><td>${escapeHtml(race.label)}${race.count ? ` (${race.count}, ${fmtPct(race.pct)})` : ""}</td></tr>
-        <tr><td>Largest age band</td><td>${escapeHtml(age.label)}${age.count ? ` (${age.count}, ${fmtPct(age.pct)})` : ""}</td></tr>
-        <tr><td>Largest gender group</td><td>${escapeHtml(gender.label)}${gender.count ? ` (${gender.count}, ${fmtPct(gender.pct)})` : ""}</td></tr>
-      </table>
-    </div>
-    <div class="breakdown-card"><h3>Additional indicators</h3>
-      <table>
-        <tr><td>Households reporting disability</td><td>${disability} <span style="color:var(--grey-400); font-weight:400;">(${total ? fmtPct(disability/total) : "0.0%"})</span></td></tr>
-        <tr><td>Veteran households</td><td>${veteran} <span style="color:var(--grey-400); font-weight:400;">(${total ? fmtPct(veteran/total) : "0.0%"})</span></td></tr>
-        <tr><td>Client declined race/ethnicity</td><td>${rows.filter(h => h.race_ethnicity === "Client Declined").length}</td></tr>
-        <tr><td>Unknown race/ethnicity</td><td>${rows.filter(h => h.race_ethnicity === "Unknown").length}</td></tr>
-      </table>
-    </div>`;
 }
 
 function renderBreakdown(elId, options, all, accessor) {
@@ -1645,18 +1272,6 @@ function drawChart(id, type, data) {
   });
 }
 
-function printBreakdownRows(options, rows, accessor) {
-  const counts = {};
-  options.forEach(o => counts[o] = 0);
-  rows.forEach(h => {
-    const v = accessor(h);
-    if (v && counts[v] != null) counts[v]++;
-  });
-  const total = rows.length;
-  const html = options.filter(o => counts[o] > 0).map(o => `<tr><td>${escapeHtml(o)}</td><td>${counts[o]}</td><td>${total ? fmtPct(counts[o]/total) : "0.0%"}</td></tr>`).join("");
-  return html || `<tr><td colspan="3" style="text-align:center; color: var(--grey-400);">No data entered</td></tr>`;
-}
-
 // ============================================================
 // QUARTERLY PRINT REPORT
 // ============================================================
@@ -1676,8 +1291,8 @@ function renderQuarterly() {
 
   document.getElementById("print-body").innerHTML = `
     <div class="print-header">
-      <p class="program">City of West Hollywood · Human Services Division</p>
-      <h1>RPHP Quarterly Report</h1>
+      <p class="program">City of West Hollywood</p>
+      <h1>Homelessness Prevention &amp; Housing Stabilization</h1>
       <p class="period">Reporting period: ${filter === "all" ? "FY26 to date (Oct 1, 2025 – Sept 30, 2026)" : filter} • Report generated ${new Date().toLocaleDateString()}</p>
     </div>
     <div class="print-section">
@@ -1694,33 +1309,6 @@ function renderQuarterly() {
       </div>
     </div>
     <div class="print-section">
-      <h2>Demographic summary</h2>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 18px;">
-        <table class="print-table">
-          <thead><tr><th>Race / Ethnicity</th><th>Count</th><th>%</th></tr></thead>
-          <tbody>${printBreakdownRows(RACE_ETHNICITY, filtered, h => h.race_ethnicity)}</tbody>
-        </table>
-        <table class="print-table">
-          <thead><tr><th>Age Band</th><th>Count</th><th>%</th></tr></thead>
-          <tbody>${printBreakdownRows(["Under 18","18-24","25-34","35-44","45-54","55-61","62+"], filtered, h => ageBand(h.age_primary))}</tbody>
-        </table>
-      </div>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 14px;">
-        <table class="print-table">
-          <thead><tr><th>Gender</th><th>Count</th><th>%</th></tr></thead>
-          <tbody>${printBreakdownRows(GENDER, filtered, h => h.gender)}</tbody>
-        </table>
-        <table class="print-table">
-          <thead><tr><th>Indicator</th><th>Count</th><th>%</th></tr></thead>
-          <tbody>
-            <tr><td>Disability reported</td><td>${filtered.filter(h => h.disability === "Yes").length}</td><td>${totalServed ? fmtPct(filtered.filter(h => h.disability === "Yes").length / totalServed) : "0.0%"}</td></tr>
-            <tr><td>Veteran household</td><td>${filtered.filter(h => h.veteran === "Yes").length}</td><td>${totalServed ? fmtPct(filtered.filter(h => h.veteran === "Yes").length / totalServed) : "0.0%"}</td></tr>
-            <tr><td>Benefits consultation completed</td><td>${filtered.filter(h => h.benefits_cert === "Yes").length}</td><td>${fmtPct(pctCert)}</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="print-section">
       <h2>Household roster</h2>
       <table class="print-table">
         <thead><tr><th>ID</th><th>Intake</th><th>Quarter</th><th>Composition</th><th>Event</th><th>Total $</th><th>Sessions</th><th>Status</th><th>Stability</th></tr></thead>
@@ -1732,7 +1320,7 @@ function renderQuarterly() {
       </table>
     </div>
     <div class="print-section" style="margin-top: 32px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 11px; color: var(--grey-400);">
-      Generated by RPHP Reporting Portal • No personally identifying information is included in this report.
+      Generated by HPHS Reporting Tool • No personally identifying information is included in this report.
     </div>
   `;
 }
@@ -1760,29 +1348,24 @@ function exportCsv() {
     const v = r[c] == null ? "" : String(r[c]);
     return /[",\n]/.test(v) ? `"${v.replace(/"/g,'""')}"` : v;
   }).join(","))).join("\n");
-  downloadBlob(csv, "text/csv", `RPHP_FY26_summary_${new Date().toISOString().slice(0,10)}.csv`);
+  downloadBlob(csv, "text/csv", `HPHS_FY26_summary_${new Date().toISOString().slice(0,10)}.csv`);
   toast("CSV downloaded");
 }
 
 function exportJsonBackup() {
+  if (!state.isAdmin) return toast("Admin access is required.", "error");
   const payload = { schemaVersion: 1, exportedAt: new Date().toISOString(), exportedBy: state.user.email, households: state.households, activity: state.activity };
-  downloadBlob(JSON.stringify(payload, null, 2), "application/json", `RPHP_FY26_backup_${new Date().toISOString().slice(0,10)}.json`);
+  downloadBlob(JSON.stringify(payload, null, 2), "application/json", `HPHS_FY26_backup_${new Date().toISOString().slice(0,10)}.json`);
   localStorage.setItem("last_backup_at", new Date().toISOString());
   toast("Backup downloaded", "success");
-  renderLanding();
+  renderBackup();
 }
 
 function importJsonBackup(e) {
-  if (!state.isAdmin) return toast("Admin access is required.", "error");
+  if (!state.isAdmin) { e.target.value = ""; return toast("Admin access is required.", "error"); }
   const file = e.target.files[0];
   if (!file) return;
-  portalConfirm("Replace all current data with the contents of this backup file?", "Restore backup").then(confirmed => {
-    if (!confirmed) { e.target.value = ""; return; }
-    continueImportJsonBackup(e, file);
-  });
-}
-
-function continueImportJsonBackup(e, file) {
+  if (!confirm("Replace all current data with the contents of this backup file?")) { e.target.value = ""; return; }
   const reader = new FileReader();
   reader.onload = async () => {
     try {
@@ -1813,37 +1396,6 @@ function downloadBlob(content, mime, filename) {
   URL.revokeObjectURL(url);
 }
 
-
-
-function updateDeadlineChip() {
-  const chip = document.getElementById("deadline-chip");
-  if (!chip) return;
-  const q = todayQuarter();
-  const endMap = { "Q1 FY26":"2025-12-31", "Q2 FY26":"2026-03-31", "Q3 FY26":"2026-06-30", "Q4 FY26":"2026-09-30" };
-  const end = endMap[q] ? new Date(endMap[q] + "T23:59:59") : null;
-  if (!end) { chip.textContent = "FY26"; return; }
-  const days = Math.ceil((end - new Date()) / 86400000);
-  chip.classList.remove("amber", "red");
-  if (days < 0) { chip.textContent = `${q} closed`; chip.classList.add("red"); }
-  else { chip.textContent = `${q} · ${days} days left`; if (days <= 7) chip.classList.add("red"); else if (days <= 21) chip.classList.add("amber"); }
-}
-
-function portalConfirm(message, okText = "Confirm") {
-  const modal = document.getElementById("confirm-modal");
-  const msg = document.getElementById("confirm-message");
-  const ok = document.getElementById("confirm-ok");
-  const cancel = document.getElementById("confirm-cancel");
-  if (!modal || !msg || !ok || !cancel) return Promise.resolve(confirm(message));
-  msg.textContent = message;
-  ok.textContent = okText;
-  modal.classList.add("open");
-  return new Promise(resolve => {
-    const cleanup = (value) => { modal.classList.remove("open"); ok.onclick = null; cancel.onclick = null; modal.onclick = null; resolve(value); };
-    ok.onclick = () => cleanup(true);
-    cancel.onclick = () => cleanup(false);
-    modal.onclick = (e) => { if (e.target === modal) cleanup(false); };
-  });
-}
 // Init
 init();
 </script>
