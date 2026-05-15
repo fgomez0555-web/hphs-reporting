@@ -885,7 +885,7 @@ function renderAccess() {
     </div>`;
 }
 
-function escapeJs(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, '\\''); }
+function escapeJs(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
 function clearAccessForm() {
   document.getElementById("access-name").value = "";
   document.getElementById("access-agency").value = "";
