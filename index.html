@@ -172,6 +172,8 @@ const FY='FY26';
 const HH_COMPOSITION=['Single Adult','Adult Couple (no children)','Single Parent w/ Children','Two Parents w/ Children','Multi-generational','Other'];
 const HOUSING_STATUS_INTAKE=['Permanently Housed - Lease in own name','Permanently Housed - On lease w/ others','Doubled-up / Couch Surfing','Rental w/ Eviction Notice','Hotel/Motel (self-pay)','Subsidized Housing','Other'];
 const HOUSING_STATUS_FULL=[...HOUSING_STATUS_INTAKE.slice(0,5),'Emergency Shelter','Transitional Housing','Unsheltered',...HOUSING_STATUS_INTAKE.slice(5)];
+const HOUSING_EXIT_OPTIONS=HOUSING_STATUS_FULL;
+const HOUSING_INTAKE=HOUSING_STATUS_INTAKE;
 const QUALIFYING_EVENT=['Loss of Employment','Reduction in Income','Medical Emergency','Domestic Violence','Death of Household Member','Disability Onset','Eviction Notice','Utility Shutoff','Family Conflict','Natural Disaster','Other'];
 const RACE_ETHNICITY=['American Indian or Alaska Native','Asian','Black or African American','Hispanic or Latino/a/e','Middle Eastern or North African','Native Hawaiian or Pacific Islander','White','Multi-racial','Client Declined','Unknown'];
 const GENDER=['Female','Male','Non-binary','Transgender','Other','Client Declined'];
@@ -310,15 +312,11 @@ function renderServiceLog(h){let rows=(h.service_log||[]).map((r,i)=>`<tr><td><i
 function addAssist(){let h=current();h.assistance_log=h.assistance_log||[];h.assistance_log.push({date:'',type:'',amount:0,notes:''});renderEditor(h)}function updAssist(i,k,v){let h=current();if(k==='amount')v=Number(v)||0;h.assistance_log[i][k]=v;renderEditor(h)}function delAssist(i){let h=current();h.assistance_log.splice(i,1);renderEditor(h)}function addService(){let h=current();h.service_log=h.service_log||[];h.service_log.push({date:'',category:'',notes:''});renderEditor(h)}function updService(i,k,v){let h=current();h.service_log[i][k]=v;renderEditor(h)}function delService(i){let h=current();h.service_log.splice(i,1);renderEditor(h)}
 
 function dashboardHouseholds(){
-  let h=scopedHouseholds();
-  let qKey=state.dashboardQuarter||'all';
-  if(qKey==='all') return h;
-  return h.filter(x=>inReportQuarter(x,qKey));
+  return quarterHouseholds(state.dashboardQuarter||'all');
 }
 function dashboardFilterHtml(){
-  let labels={'all':'All FY26','Q1-2026':'Q1','Q2-2026':'Q2','Q3-2026':'Q3','Q4-2026':'Q4'};
   let buttons=[['all','All FY26'],...Object.entries(REPORT_QUARTERS).map(([k,v])=>[k,v.label])].map(([k,label])=>`<button class="period-btn ${state.dashboardQuarter===k?'active':''}" onclick="state.dashboardQuarter='${k}';renderDashboard()">${label}</button>`).join('');
-  let sub=state.dashboardQuarter==='all'?'Showing all records with activity in FY 2025–26.':'Showing records with intake, assistance, service activity, or active overlap during the selected quarter.';
+  let sub=state.dashboardQuarter==='all'?'Showing all FY 2025–26 activity.':'Showing records with intake, assistance, service activity, or active overlap during the selected quarter.';
   return `<div class="dashboard-filter-card"><div class="filter-copy"><p class="filter-title">Dashboard period</p><p class="filter-sub">${sub}</p></div><div class="segmented-period" aria-label="Dashboard period filter">${buttons}</div></div>`;
 }
 
@@ -343,7 +341,7 @@ function quarterHouseholds(key=state.dashboardQuarter){
 function metricsFor(h,key){
   let range = key==='all' ? fyRange() : REPORT_QUARTERS[key];
   let newIntakes=h.filter(x=>betweenDates(x.intake_date,range.start,range.end)).length;
-  let closedCases=h.filter(x=>betweenDates(x.assistance_end,range.start,range.end)||!!x.housing_at_exit).length;
+  let closedCases=h.filter(x=>betweenDates(x.assistance_end,range.start,range.end)||(x.housing_at_exit&&(!x.assistance_end||betweenDates(x.assistance_end,range.start,range.end)))).length;
   let activeAtEnd=h.filter(x=>{
     let intake=dateOnly(x.intake_date);
     let end=dateOnly(x.assistance_end);
@@ -380,6 +378,15 @@ function serviceRowsFor(h,key){
 }
 
 function renderDashboard(){
+  try {
+    return _renderDashboardImpl();
+  } catch(err) {
+    console.error('renderDashboard failed', err);
+    let el=document.getElementById('view-dashboard');
+    if(el) el.innerHTML=`<div class="page-head"><div><h1 class="page-title">Dashboard</h1><p class="page-sub">This section could not load because of a page error.</p></div></div><div class="notice" style="background:#FEE2E2;border:1px solid #FCA5A5;color:#7F1D1D;padding:14px;border-radius:10px;"><strong>Unable to render this section.</strong><br>${esc(err.message||err)}</div>`;
+  }
+}
+function _renderDashboardImpl(){
   let ytd=ytdHouseholds();
   let qKey=state.dashboardQuarter||'all';
   let qh=quarterHouseholds(qKey);
@@ -434,6 +441,7 @@ function renderDashboard(){
   draw('chartQ','bar',labels,counts,'Households served');
   draw('chartA','bar',labels,amounts,'Assistance');
 }
+
 function breakdown(id,opts,h,fn){let total=h.length,counts={};opts.forEach(o=>counts[o]=0);h.forEach(x=>{let v=fn(x);if(counts[v]!=null)counts[v]++});document.getElementById(id).innerHTML=opts.filter(o=>counts[o]).map(o=>`<tr><td>${esc(o)}</td><td>${counts[o]} <span style="color:var(--muted);font-weight:500">(${pct(total?counts[o]/total:0)})</span></td></tr>`).join('')||'<tr><td colspan="2" style="text-align:center;color:var(--muted)">No data yet</td></tr>'}
 function drawDash(h){let qs=['Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26'],counts=qs.map(q=>h.filter(x=>fiscalQuarter(x.intake_date)===q).length),amounts=qs.map(q=>h.filter(x=>fiscalQuarter(x.intake_date)===q).reduce((s,x)=>s+assistTotal(x),0));draw('chartQ','bar',qs,counts,'Households');draw('chartA','line',qs,amounts,'Assistance $')}function draw(id,type,labels,data,label){
   if(state.charts[id]){try{state.charts[id].destroy()}catch(e){}}
@@ -461,6 +469,15 @@ function reportScopeLabel(){
 }
 
 function renderExport(){
+  try {
+    return _renderExportImpl();
+  } catch(err) {
+    console.error('renderExport failed', err);
+    let el=document.getElementById('view-export');
+    if(el) el.innerHTML=`<div class="page-head"><div><h1 class="page-title">Quarterly Program Report Export</h1><p class="page-sub">This section could not load because of a page error.</p></div></div><div class="notice" style="background:#FEE2E2;border:1px solid #FCA5A5;color:#7F1D1D;padding:14px;border-radius:10px;"><strong>Unable to render this section.</strong><br>${esc(err.message||err)}</div>`;
+  }
+}
+function _renderExportImpl(){
   let q=REPORT_QUARTERS[state.reportQuarter]||REPORT_QUARTERS['Q4-2026'];
   let base=reportScopedHouseholds();
   let ytd=base.filter(x=>{
@@ -499,6 +516,7 @@ function renderExport(){
 
   <div class="export-section"><h2>Certification</h2><p style="font-size:12px;line-height:1.6;color:#374151">I certify that the information included in this quarterly program report is accurate to the best of my knowledge and reflects records entered for the reporting period identified above.</p><div class="signature-grid"><div class="signature-line">Authorized Agency Representative Signature / Date</div><div class="signature-line">Printed Name / Title</div></div></div></div>`;
 }
+
 function breakdownRows(opts,h,fn){let total=h.length,counts={};opts.forEach(o=>counts[o]=0);h.forEach(x=>{let v=fn(x);if(counts[v]!=null)counts[v]++});return opts.filter(o=>counts[o]).map(o=>`<tr><td>${esc(o)}</td><td style="text-align:right"><strong>${counts[o]}</strong> (${pct(total?counts[o]/total:0)})</td></tr>`).join('')||'<tr><td>No data yet</td></tr>'}
 function renderUsers(){if(!isAdmin()){document.getElementById('view-users').innerHTML='<p>Admin access required.</p>';return}let rows=state.users.map(u=>`<tr><td><strong>${esc(u.name||'—')}</strong><br><span style="color:var(--muted)">${esc(u.email)}</span></td><td>${esc(agencyName(u.agency_id))}</td><td><span class="status ${u.user_type.startsWith('city')?'city':'agency'}">${esc(u.user_type.replace('_',' '))}</span></td><td><span class="status ${u.active?'active':'inactive'}">${u.active?'Active':'Inactive'}</span></td><td><button class="btn secondary sm" onclick='openUserModal(${JSON.stringify(u)})'>Edit</button> <button class="btn ${u.active?'danger':'subtle'} sm" onclick="setActive('${esc(u.email)}',${!u.active})">${u.active?'Deactivate':'Reactivate'}</button></td></tr>`).join('')||'<tr><td colspan="5">No users found.</td></tr>';document.getElementById('view-users').innerHTML=`<div class="page-head"><div><h1 class="page-title">User Management</h1><p class="page-sub">Maintain name, email, agency affiliation, user type, and active status.</p></div><button class="btn" onclick="openUserModal()">+ Add User</button></div><div class="table-wrap"><table><thead><tr><th>User</th><th>Agency</th><th>User Type</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div>`}
 function populateAgencySelect(){let s=document.getElementById('um-agency');s.innerHTML=AGENCIES.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('')}function openUserModal(u=null){populateAgencySelect();document.getElementById('user-modal-title').textContent=u?'Edit User':'Add User';document.getElementById('um-original-email').value=u?.email||'';document.getElementById('um-name').value=u?.name||'';document.getElementById('um-email').value=u?.email||'';document.getElementById('um-agency').value=u?.agency_id||'apla';document.getElementById('um-role').value=u?.user_type||'agency_user';document.getElementById('um-active').value=String(u?.active??true);document.getElementById('user-modal').classList.add('open')}function closeUserModal(){document.getElementById('user-modal').classList.remove('open')}
